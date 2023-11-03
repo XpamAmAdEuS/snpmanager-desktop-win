@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
 
-namespace Contoso.App.Common
+namespace Snp.App.Common
 {
     class DoubleToThicknessConverter : IValueConverter
     {

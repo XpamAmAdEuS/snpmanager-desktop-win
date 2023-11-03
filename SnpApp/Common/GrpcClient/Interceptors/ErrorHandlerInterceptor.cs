@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 
-namespace Contoso.App.Common.GrpcClient.Interceptors;
+namespace Snp.App.Common.GrpcClient.Interceptors;
 
 public class ErrorHandlerInterceptor : Interceptor
 {

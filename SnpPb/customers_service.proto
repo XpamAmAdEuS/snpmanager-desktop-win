@@ -22,7 +22,7 @@ message SearchCustomerRequest {
   repeated string fields =  6;
 }
 
-message GetCustomerRequest { string id = 1; }
+message GetCustomerRequest { uint64 id = 1; }
 
 message GetCustomerResponse { Customer customer = 1; }
 

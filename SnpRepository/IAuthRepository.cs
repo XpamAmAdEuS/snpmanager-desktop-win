@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-
-namespace Contoso.Models
+namespace Snp.Models
 {
     /// <summary>
     /// Defines methods for interacting with the auth backend.

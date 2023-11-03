@@ -4,7 +4,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
 
-namespace Contoso.App.Common.GrpcClient.Interceptors
+namespace Snp.App.Common.GrpcClient.Interceptors
 {
     public class AuthorizationHeaderInterceptor : Interceptor
     {
@@ -20,7 +20,7 @@ namespace Contoso.App.Common.GrpcClient.Interceptors
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
             _logger = logger;
-            var apiToken = configuration.Values[Constants.SelectedAppJwtTokenKey]?.ToString();
+            var apiToken = configuration.Values[Constants.StoredJwtTokenKey]?.ToString();
             _apiToken = apiToken;
         }
 

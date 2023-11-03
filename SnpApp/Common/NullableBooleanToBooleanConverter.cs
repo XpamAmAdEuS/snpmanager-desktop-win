@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Data;
 
-namespace Contoso.App.Common
+namespace Snp.App.Common
 {
     public class NullableBooleanToBooleanConverter : IValueConverter
     {

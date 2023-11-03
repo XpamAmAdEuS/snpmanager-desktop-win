@@ -1,10 +1,7 @@
-using System;
 using Windows.Storage;
-using Microsoft.UI;
-using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 
-namespace Contoso.App.Helper
+namespace Snp.App.Helper
 {
     /// <summary>
     /// Class providing functionality around switching and restoring theme settings

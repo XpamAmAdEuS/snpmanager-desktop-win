@@ -4,7 +4,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.Logging;
 
-namespace Contoso.App.Common.GrpcClient.Interceptors
+namespace Snp.App.Common.GrpcClient.Interceptors
 
 {
     public class ClientLoggerInterceptor : Interceptor

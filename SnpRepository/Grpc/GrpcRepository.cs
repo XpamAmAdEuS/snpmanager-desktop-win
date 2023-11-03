@@ -6,12 +6,12 @@ namespace Snp.Repository.Grpc
     /// <summary>
     /// Contains methods for interacting with the app backend using GRPC. 
     /// </summary>
-    public class GrpcContosoRepository : IContosoRepository
+    public class GrpcSnpRepository : ISnpRepository
     {
         private readonly CallInvoker _invoker; 
         
 
-        public GrpcContosoRepository(CallInvoker invoker)
+        public GrpcSnpRepository(CallInvoker invoker)
         {
             _invoker = invoker;
         }

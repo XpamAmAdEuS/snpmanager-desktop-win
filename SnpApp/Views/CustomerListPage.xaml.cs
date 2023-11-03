@@ -1,27 +1,3 @@
-//  ---------------------------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//
-//  The MIT License (MIT)
-//
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-//
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
-//  ---------------------------------------------------------------------------------
-
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,16 +9,16 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Contoso.App.ViewModels;
+using Snp.App.ViewModels;
 
-namespace Contoso.App.Views
+namespace Snp.App.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CustomerListPage : Page
+    public sealed partial class CustomerListPage
     {
-        private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         /// <summary>
         /// Initializes the page.
@@ -82,15 +58,15 @@ namespace Contoso.App.Views
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 // If no search query is entered, refresh the complete list.
-                if (String.IsNullOrEmpty(sender.Text))
+                if (string.IsNullOrEmpty(sender.Text))
                 {
-                    await dispatcherQueue.EnqueueAsync(async () =>
+                    await _dispatcherQueue.EnqueueAsync(async () =>
                         await ViewModel.GetCustomerListAsync());
                     sender.ItemsSource = null;
                 }
                 else
                 {
-                    string[] parameters = sender.Text.Split(new char[] { ' ' },
+                    var parameters = sender.Text.Split(new [] { ' ' },
                         StringSplitOptions.RemoveEmptyEntries);
                     sender.ItemsSource = ViewModel.Customers
                         .Where(customer => parameters.Any(parameter =>
@@ -129,7 +105,7 @@ namespace Contoso.App.Views
         /// </summary>
         private async Task ResetCustomerList()
         {
-            await dispatcherQueue.EnqueueAsync(async () =>
+            await _dispatcherQueue.EnqueueAsync(async () =>
                 await ViewModel.GetCustomerListAsync());
         }
 
@@ -138,7 +114,7 @@ namespace Contoso.App.Views
         /// </summary>
         private async Task FilterCustomerList(string text)
         {
-            string[] parameters = text.Split(new char[] { ' ' },
+            var parameters = text.Split(new[] { ' ' },
                 StringSplitOptions.RemoveEmptyEntries);
 
             var matches = ViewModel.Customers.Where(customer => parameters
@@ -154,7 +130,7 @@ namespace Contoso.App.Views
                     customer.Email.StartsWith(parameter)))
                 .ToList();
 
-            await dispatcherQueue.EnqueueAsync(() =>
+            await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Customers.Clear();
                 foreach (var match in matches)
@@ -167,7 +143,7 @@ namespace Contoso.App.Views
         /// <summary>
         /// Resets the customer list when leaving the page.
         /// </summary>
-        protected async override void OnNavigatedFrom(NavigationEventArgs e)
+        protected override async void OnNavigatedFrom(NavigationEventArgs e)
         {
             await ResetCustomerList();
         }
@@ -175,7 +151,7 @@ namespace Contoso.App.Views
         /// <summary>
         /// Applies any existing filter when navigating to the page.
         /// </summary>
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(CustomerSearchBox.AutoSuggestBox.Text))
             {
@@ -213,11 +189,9 @@ namespace Contoso.App.Views
         private void DataGrid_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Escape &&
-                ViewModel.SelectedCustomer != null &&
-                ViewModel.SelectedCustomer.IsModified &&
-                !ViewModel.SelectedCustomer.IsInEdit)
+                ViewModel.SelectedCustomer is { IsModified: true, IsInEdit: false })
             {
-                (sender as DataGrid).CancelEdit(DataGridEditingUnit.Row);
+                (sender as DataGrid)?.CancelEdit(DataGridEditingUnit.Row);
             }
         }
 
@@ -225,8 +199,11 @@ namespace Contoso.App.Views
         /// Selects the tapped customer. 
         /// </summary>
         private void DataGrid_RightTapped(object sender, RightTappedRoutedEventArgs e) =>
-            ViewModel.SelectedCustomer = (e.OriginalSource as FrameworkElement).DataContext as CustomerViewModel;
+            ViewModel.SelectedCustomer = (e.OriginalSource as FrameworkElement)?.DataContext as CustomerViewModel;
         
+        
+        private void AddSite_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(SiteDetailPage), ViewModel.SelectedCustomer.Model.Id);
 
         /// <summary>
         /// Sorts the data in the DataGrid.

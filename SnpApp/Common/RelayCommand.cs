@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Contoso.App.Common
+namespace Snp.App.Common
 {
     /// <summary>
     /// A command whose sole purpose is to relay its functionality 

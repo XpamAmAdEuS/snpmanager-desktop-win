@@ -1,43 +1,17 @@
-//  ---------------------------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//
-//  The MIT License (MIT)
-//
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-//
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
-//  ---------------------------------------------------------------------------------
-
 using System;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Snp.Models;
-using Contoso.App.ViewModels;
-using CommunityToolkit.WinUI.UI.Controls;
+using Snp.App.ViewModels;
 
-namespace Contoso.App.Views
+namespace Snp.App.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CustomerDetailPage : Page
+    public sealed partial class CustomerDetailPage
     {
         /// <summary>
         /// Initializes the page.
@@ -83,14 +57,14 @@ namespace Contoso.App.Views
         /// <summary>
         /// Check whether there are unsaved changes and warn the user.
         /// </summary>
-        protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             if (ViewModel.IsModified)
             {
                 // Cancel the navigation immediately, otherwise it will continue at the await call. 
                 e.Cancel = true;
 
-                void resumeNavigation()
+                void ResumeNavigation()
                 {
                     if (e.NavigationMode == NavigationMode.Back)
                     {
@@ -102,23 +76,28 @@ namespace Contoso.App.Views
                     }
                 }
 
-                var saveDialog = new SaveChangesDialog() { Title = $"Save changes?" };
-                saveDialog.XamlRoot = this.Content.XamlRoot;
+                var saveDialog = new SaveChangesDialog
+                {
+                    Title = "Save changes?",
+                    XamlRoot = Content.XamlRoot
+                };
                 await saveDialog.ShowAsync();
-                SaveChangesDialogResult result = saveDialog.Result;
+                var result = saveDialog.Result;
 
                 switch (result)
                 {
                     case SaveChangesDialogResult.Save:
                         await ViewModel.SaveAsync();
-                        resumeNavigation();
+                        ResumeNavigation();
                         break;
                     case SaveChangesDialogResult.DontSave:
                         await ViewModel.RevertChangesAsync();
-                        resumeNavigation();
+                        ResumeNavigation();
                         break;
                     case SaveChangesDialogResult.Cancel:
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
 

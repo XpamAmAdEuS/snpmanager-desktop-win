@@ -5,7 +5,7 @@ namespace Snp.Repository
     /// <summary>
     /// Defines methods for interacting with the app backend.
     /// </summary>
-    public interface IContosoRepository
+    public interface ISnpRepository
     {
         /// <summary>
         /// Returns the customers repository.

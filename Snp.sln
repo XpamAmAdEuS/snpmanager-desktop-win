@@ -6,7 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snp.Models", "SnpModels\Snp.Models.csproj", "{DD85A833-C876-44CE-AE65-C6CF655386B8}"
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snp.Repository", "SnpRepository\Snp.Repository.csproj", "{56D49EFB-F0D3-423E-A0BC-FFA98C74DDC6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.App", "SnpApp\Snp.App.csproj", "{1A52DFC8-B645-4DF2-BB81-C027F1A1EF64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snp.App", "SnpApp\Snp.App.csproj", "{1A52DFC8-B645-4DF2-BB81-C027F1A1EF64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snp.Pb", "SnpPb\Snp.Pb.csproj", "{FF27D6DC-7BB9-4204-970E-A1156932E2DB}"
 EndProject

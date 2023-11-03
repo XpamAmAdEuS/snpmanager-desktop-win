@@ -9,7 +9,7 @@ using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Hosting;
 
-namespace Contoso.App.Common
+namespace Snp.App.Common
 {
 #if WINUI_PRERELEASE
     public class DefaultElementAnimator : ElementAnimator

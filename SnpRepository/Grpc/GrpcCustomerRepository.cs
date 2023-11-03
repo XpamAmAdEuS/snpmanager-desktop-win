@@ -58,12 +58,15 @@ namespace Snp.Repository.Grpc
         
         public async Task<Customer> GetOneById(uint id)
         {
-            var request = new  SearchCustomerRequest();
-            var result =  await _client.SearchCustomerAsync(request);
+            var request = new  GetCustomerRequest
+            {
+                Id = id
+            };
+            var result =  await _client.GetCustomerAsync(request);
             
 
             var c = new Customer();
-            c.FromPb(result.Data[0]);
+            c.FromPb(result.Customer);
             
             return Task.FromResult(c).GetAwaiter().GetResult();
         }

@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Windows.Storage;
 
 
-namespace Contoso.App.Helper
+namespace Snp.App.Helper
 {
     public static class NavigationOrientationHelper
     {
@@ -44,16 +44,16 @@ namespace Contoso.App.Helper
 
         public static void UpdateNavigationViewForElement(bool isLeftMode, UIElement element)
         {
-            NavigationView _navView = AppShell.GetForElement(element).NavigationView;
+            var navView = AppShell.GetForElement(element).NavigationView;
             if (isLeftMode)
             {
-                _navView.PaneDisplayMode = NavigationViewPaneDisplayMode.Auto;
-                Grid.SetRow(_navView, 0);
+                navView.PaneDisplayMode = NavigationViewPaneDisplayMode.Auto;
+                Grid.SetRow(navView, 0);
             }
             else
             {
-                _navView.PaneDisplayMode = NavigationViewPaneDisplayMode.Top;
-                Grid.SetRow(_navView, 1);
+                navView.PaneDisplayMode = NavigationViewPaneDisplayMode.Top;
+                Grid.SetRow(navView, 1);
             }
         }
         

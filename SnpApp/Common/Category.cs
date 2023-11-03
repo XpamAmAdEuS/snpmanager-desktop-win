@@ -1,7 +1,7 @@
 using System;
 using Microsoft.UI.Xaml.Controls;
 
-namespace Contoso.App.Common
+namespace Snp.App.Common
 {
 
     public class CategoryBase { }

@@ -5,10 +5,10 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using muxc = Microsoft.UI.Xaml.Controls;
 using Windows.System;
-using Contoso.App.Helper;
-using Contoso.App.Views;
+using Snp.App.Helper;
+using Snp.App.Views;
 
-namespace Contoso.App
+namespace Snp.App
 {
     /// <summary>
     /// The "chrome" layer of the app that provides top-level navigation with

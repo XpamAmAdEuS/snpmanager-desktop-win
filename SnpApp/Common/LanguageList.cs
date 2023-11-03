@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contoso.App.Common
+namespace Snp.App.Common
 {
     class LanguageList
     {

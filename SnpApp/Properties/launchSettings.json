@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Contoso.App (Package)": {
+    "Snp.App (Package)": {
       "commandName": "MsixPackage"
     }
   }

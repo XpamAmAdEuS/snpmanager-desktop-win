@@ -1,43 +1,17 @@
-﻿//  ---------------------------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-// 
-//  The MIT License (MIT)
-// 
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-// 
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-// 
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
-//  ---------------------------------------------------------------------------------
-
-using System;
+﻿using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using Windows.Foundation;
-using Contoso.App.Common;
+using Snp.App.Common;
 using Snp.Models;
 using Snp.Repository;
 using muxc = Microsoft.UI.Xaml.Controls;
 
-namespace Contoso.App.UserControls
+namespace Snp.App.UserControls
 {
     
     public enum SignInResult
     {
-        SignInOK,
+        SignInOk,
         SignInFail,
         SignInCancel,
         Nothing
@@ -189,7 +163,7 @@ namespace Contoso.App.UserControls
         private bool TryAutoLogin()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (!localSettings.Values.TryGetValue(Constants.SelectedAppJwtTokenKey, out var value)) return false;
+            if (!localSettings.Values.TryGetValue(Constants.StoredJwtTokenKey, out var value)) return false;
             var token = value.ToString();
 
             if (!string.IsNullOrEmpty(token))

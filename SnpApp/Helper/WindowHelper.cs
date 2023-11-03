@@ -1,13 +1,3 @@
-//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
-
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -18,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using WinRT.Interop;
 
-namespace Contoso.App.Helper
+namespace Snp.App.Helper
 {
     // Helper class to allow the app to find the Window that contains an
     // arbitrary UIElement (GetWindowForElement).  To do this, we keep track
@@ -27,7 +17,7 @@ namespace Contoso.App.Helper
     // windows.  In the future, we would like to support this in platform APIs.
     public class WindowHelper
     {
-        static public Window CreateWindow()
+        public static Window CreateWindow()
         {
             Window newWindow = new MainWindow
             {
@@ -37,7 +27,7 @@ namespace Contoso.App.Helper
             return newWindow;
         }
 
-        static public void TrackWindow(Window window)
+        public static void TrackWindow(Window window)
         {
             window.Closed += (sender,args) => {
                 _activeWindows.Remove(window);
@@ -45,14 +35,14 @@ namespace Contoso.App.Helper
             _activeWindows.Add(window);
         }
 
-        static public AppWindow GetAppWindow(Window window)
+        public static AppWindow GetAppWindow(Window window)
         {
             IntPtr hWnd = WindowNative.GetWindowHandle(window);
             WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
             return AppWindow.GetFromWindowId(wndId);
         }
 
-        static public Window GetWindowForElement(UIElement element)
+        public static Window GetWindowForElement(UIElement element)
         {
             if (element.XamlRoot != null)
             {
@@ -67,7 +57,7 @@ namespace Contoso.App.Helper
             return null;
         }
         // get dpi for an element
-        static public double GetRasterizationScaleForElement(UIElement element)
+        public static double GetRasterizationScaleForElement(UIElement element)
         {
             if (element.XamlRoot != null)
             {
@@ -82,16 +72,16 @@ namespace Contoso.App.Helper
             return 0.0;
         }
 
-        static public List<Window> ActiveWindows { get { return _activeWindows; }}
+        public static List<Window> ActiveWindows { get { return _activeWindows; }}
 
-        static private List<Window> _activeWindows = new List<Window>();
+        private static List<Window> _activeWindows = new ();
 
-        static public StorageFolder GetAppLocalFolder()
+        public static StorageFolder GetAppLocalFolder()
         {
             StorageFolder localFolder;
             if (!NativeHelper.IsAppPackaged)
             {
-                localFolder = Task.Run(async () => await StorageFolder.GetFolderFromPathAsync(System.AppContext.BaseDirectory)).Result;
+                localFolder = Task.Run(async () => await StorageFolder.GetFolderFromPathAsync(AppContext.BaseDirectory)).Result;
             }
             else
             {

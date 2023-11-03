@@ -3,11 +3,11 @@ using System.Reflection;
 using Microsoft.UI.Xaml;
 using Windows.Globalization;
 using Windows.Storage;
-using Contoso.App.Common;
-using Contoso.App.Common.GrpcClient.Interceptors;
-using Contoso.App.Helper;
-using Contoso.App.UserControls;
-using Contoso.App.ViewModels;
+using Snp.App.Common;
+using Snp.App.Common.GrpcClient.Interceptors;
+using Snp.App.Helper;
+using Snp.App.UserControls;
+using Snp.App.ViewModels;
 using Snp.Models;
 using Snp.Repository;
 using Snp.Repository.Grpc;
@@ -18,12 +18,12 @@ using Grpc.Net.Client;
 using Microsoft.Extensions.Logging;
 
 
-namespace Contoso.App
+namespace Snp.App
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
 
         /// <summary>
@@ -38,13 +38,12 @@ namespace Contoso.App
         /// </summary>
         public static MainViewModel ViewModel { get; set; }
         
-        const string StoredAccountIdKey = "accountid";
-        const string StoredAuthorityKey = "authority";
+        
 
         /// <summary>
         /// Pipeline for interacting with backend service or database.
         /// </summary>
-        public static IContosoRepository Repository { get; private set; }
+        public static ISnpRepository Repository { get; private set; }
         
         public static readonly IAuthRepository AuthRepository = new GrpcAuthRepository($"{Constants.GrpcUrl}");
         
@@ -92,7 +91,7 @@ namespace Contoso.App
         /// <summary>
         /// Invoked when the application is launched normally by the end user.
         /// </summary>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             //m_window = new MainWindow();
             
@@ -125,7 +124,7 @@ namespace Contoso.App
                     .Intercept(new AuthorizationHeaderInterceptor(LogFactory.CreateLogger<AuthorizationHeaderInterceptor>(),ApplicationData.Current.LocalSettings))
                     .Intercept(new ErrorHandlerInterceptor());
                 
-                Repository = new GrpcContosoRepository(_invoker);
+                Repository = new GrpcSnpRepository(_invoker);
             }
             catch (System.Exception ex)
             {
@@ -136,16 +135,16 @@ namespace Contoso.App
         
         private bool HasAccountStored()
         {
-            return ApplicationData.Current.LocalSettings.Values.ContainsKey(StoredAccountIdKey);
+            return ApplicationData.Current.LocalSettings.Values.ContainsKey(Constants.StoredAccountIdKey);
         }
         
         private bool HasTokenStored()
         {
-            var keyExist=  ApplicationData.Current.LocalSettings.Values.ContainsKey(StoredAccountIdKey);
+            var keyExist=  ApplicationData.Current.LocalSettings.Values.ContainsKey(Constants.StoredAccountIdKey);
 
             if (!keyExist) return false;
             if (!ApplicationData.Current.LocalSettings.Values.TryGetValue(
-                    Constants.SelectedAppJwtTokenKey, out object token)) return false;
+                    Constants.StoredAccountIdKey, out object token)) return false;
             return token != null;
         }
         
@@ -157,8 +156,8 @@ namespace Contoso.App
         
         private void RemoveAccountData()
         {
-            ApplicationData.Current.LocalSettings.Values.Remove(StoredAccountIdKey);
-            ApplicationData.Current.LocalSettings.Values.Remove(StoredAuthorityKey);
+            ApplicationData.Current.LocalSettings.Values.Remove(Constants.StoredAccountIdKey);
+            ApplicationData.Current.LocalSettings.Values.Remove(Constants.StoredAuthorityKey);
         }
         
         /// <summary>
@@ -184,8 +183,8 @@ namespace Contoso.App
 
             if (e.GetType() == typeof(TokenChangedEventArgs))
             {
-                var test = e as TokenChangedEventArgs;
-                ApplicationData.Current.LocalSettings.Values[Constants.SelectedAppJwtTokenKey] = test.NewValue;
+                var jwt = e as TokenChangedEventArgs;
+                ApplicationData.Current.LocalSettings.Values[Constants.StoredJwtTokenKey] = jwt.NewValue;
                 UseGrpc();
             }
             // EventAggregator.GetEvent<UserLoginSuccessful>().Publish(e.LoginSuccessfulResult);

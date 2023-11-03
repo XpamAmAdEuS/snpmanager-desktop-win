@@ -16,11 +16,11 @@ statusNotificationTargets:
 
 # Customers Orders Database sample
 
-A WinUI 3 sample app that showcases UI controls (including a data grid) and the latest design guidance for apps on Windows 11. It also demonstrates features useful to enterprise developers, like Azure Active Directory (AAD) authentication, Entity Framework, and cloud API services. The sample is based around creating and managing customer accounts, orders, and products for the fictitious company Contoso.
+A WinUI 3 sample app that showcases UI controls (including a data grid) and the latest design guidance for apps on Windows 11. It also demonstrates features useful to enterprise developers, like Azure Active Directory (AAD) authentication, Entity Framework, and cloud API services. The sample is based around creating and managing customer accounts, orders, and products for the fictitious company Snp.
 
-> Note - This sample is targeted and tested for Windows 11 Insider Preview using the Insider Preview SDK Build 22000, and Visual Studio 2022 version 17.1 or later. If you are developing on Windows 10, retarget the Contoso.App project to Windows 10, version 2004 (10.0; Build 19041).
+> Note - This sample is targeted and tested for Windows 11 Insider Preview using the Insider Preview SDK Build 22000, and Visual Studio 2022 version 17.1 or later. If you are developing on Windows 10, retarget the Snp.App project to Windows 10, version 2004 (10.0; Build 19041).
 
-![ContosoApp screenshot 1](images/customer-list.png)
+![SnpApp screenshot 1](images/customer-list.png)
 
 ## May 2022 update
 
@@ -111,12 +111,12 @@ the [Windows Insider Program](https://insider.windows.com).
 
 #### Run
 
-Set your startup project as **Contoso.App**, the architecture to x86 or x64, and press F5 to run.
+Set your startup project as **Snp.App**, the architecture to x86 or x64, and press F5 to run.
 
 #### Complete setup
 
 To fully explore the sample, you'll need to connect to your own Azure Active Directory and data source. Values you need to fill
-are in [Constants.cs](ContosoRepository/Constants.cs).
+are in [Constants.cs](SnpRepository/Constants.cs).
 
 * **Deskptop app Client Id**: Set the *AccountClientId* field to your Azure account client Id.
 * **API endpoint**: Set the value of the *BaseUrl* constant to match the url the backing service is running on.
@@ -134,9 +134,9 @@ First, complete the steps in [Register an application with the Microsoft identit
 
 | App registration <br/> setting | Value for this sample app                                                                                                                                                                                                                                                                                                                                                                         | Notes                                                                                                       |
 |-------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------|
-|                       **Name** | `active-directory-contoso-customer-oders-protected-api`                                                                                                                                                                                                                                                                                                                                           | Suggested value for this sample. <br/> You can change the app name at any time.                             |
+|                       **Name** | `active-directory-snp-customer-oders-protected-api`                                                                                                                                                                                                                                                                                                                                           | Suggested value for this sample. <br/> You can change the app name at any time.                             |
 |    **Supported account types** | **Accounts in this organizational directory only (Any Azure AD directory - Multitenant)**                                                                                                                                                                                                                                                                                                         | Required for this sample. <br/> Support for the Single tenant.                                              |
-|              **Expose an API** | **Scope name**: `Contoso.ReadWrite`<br/>**Who can consent?**: **Admins and users**<br/>**Admin consent display name**: `Act on behalf of the user`<br/>**Admin consent description**: `Allows the API to act on behalf of the user.`<br/>**User consent display name**: `Act on your behalf`<br/>**User consent description**: `Allows the API to act on your behalf.`<br/>**State**: **Enabled** | Add a new scope that reads as follows `api://{clientId}/Contoso.ReadWrite`. Required value for this sample. |
+|              **Expose an API** | **Scope name**: `Snp.ReadWrite`<br/>**Who can consent?**: **Admins and users**<br/>**Admin consent display name**: `Act on behalf of the user`<br/>**Admin consent description**: `Allows the API to act on behalf of the user.`<br/>**User consent display name**: `Act on your behalf`<br/>**User consent description**: `Allows the API to act on your behalf.`<br/>**State**: **Enabled** | Add a new scope that reads as follows `api://{clientId}/Snp.ReadWrite`. Required value for this sample. |
 
 ### Register the Azure Active Directory app (Client desktop app)
 
@@ -144,40 +144,25 @@ Then, complete the steps in [Register an application with the Microsoft identity
 
 | App registration <br/> setting | Value for this sample app                                                           | Notes                                                                                                          |
 |-------------------------------:|:------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------|
-|                       **Name** | `active-directory-contoso-customer-oders-winui3`                                    | Suggested value for this sample. <br/> You can change the app name at any time.                                |
+|                       **Name** | `active-directory-snp-customer-oders-winui3`                                    | Suggested value for this sample. <br/> You can change the app name at any time.                                |
 |    **Supported account types** | **Accounts in any organizational directory (Any Azure AD directory - Multitenant)** | Suggested value for this sample.                                                                               |
 |              **Platform type** | **Mobile and desktop applications**                                                 | Required value for this sample                                                                                 |
 |              **Redirect URIs** | `https://login.microsoftonline.com/common/oauth2/nativeclient`                      | Required value for this sample                                                                                 |
-|            **API Permissions** | `active-directory-contoso-customer-oders-protected-api` <br/> `  Contoso.ReadWrite` | Add a new delegated permission for `api://<application-id>/Contoso.ReadWrite`. Required value for this sample. | 
+|            **API Permissions** | `active-directory-snp-customer-oders-protected-api` <br/> `  Snp.ReadWrite` | Add a new delegated permission for `api://<application-id>/Snp.ReadWrite`. Required value for this sample. | 
 
-
-1. Navigate to [Constants.cs](ContosoRepository/Constants.cs) and complete the following values:
-
-   ```csharp
-   public const string ApiUrl = @"http://localhost:65027";
-   ...
-   public const string AccountClientId = "Application_Client_ID_From_Azure_Portal";
-   public const string WebApiClientId = "Application_Client_ID_From_Azure_Portal";
-   ...
-   public const string SqlAzureConnectionString = "Data Source=(LocalDB)\\ContosoDb;Initial Catalog=CONTOSODB;Integrated Security=True";
-   ...
-   ```
-
-2. Press **F5**
-3. Navigate to **Settings** and select the **REST** option, so the Database Customer Orders sample app starts using the service endpoints.
 
 ## Code at a glance
 
 If you're only interested in specific tasks and don't want to browse or run the entire sample, check out some of these files:
 
-* Authentication, user info, and Microsoft Graph: [AuthenticationControl.xaml](ContosoApp/UserControls/AuthenticationControl.xaml)
-and [AuthenticationViewModel.cs](ContosoApp/ViewModels/AuthenticationViewModel.cs)
-* Master/details and form layouts UI: [CustomerListPage.xaml](ContosoApp/Views/CustomerListPage.xaml),
-[MainViewModel.cs](ContosoApp/ViewModels/MainViewModel.cs), [CustomerDetailPage.xaml](ContosoApp/Views/CustomerDetailPage.xaml),
-[CustomerViewModel.cs](ContosoApp/ViewModels/CustomerViewModel.cs), [OrderListPage.xaml],
+* Authentication, user info, and Microsoft Graph: [AuthenticationControl.xaml](SnpApp/UserControls/AuthenticationControl.xaml)
+and [AuthenticationViewModel.cs](SnpApp/ViewModels/AuthenticationViewModel.cs)
+* Master/details and form layouts UI: [CustomerListPage.xaml](SnpApp/Views/CustomerListPage.xaml),
+[MainViewModel.cs](SnpApp/ViewModels/MainViewModel.cs), [CustomerDetailPage.xaml](SnpApp/Views/CustomerDetailPage.xaml),
+[CustomerViewModel.cs](SnpApp/ViewModels/CustomerViewModel.cs), [OrderListPage.xaml],
 [OrderListPageViewModel.cs], [OrderDetailPage.xaml],
 [OrderViewModel.cs]
-* Database and REST connections: The [Contoso.Repository](ContosoRepository) project.
+* Database and REST connections: The [Snp.Repository](SnpRepository) project.
 
 ## Design patterns
 

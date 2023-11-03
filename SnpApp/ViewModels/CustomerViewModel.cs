@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
 using Snp.Models;
 
 
-namespace Contoso.App.ViewModels
+namespace Snp.App.ViewModels
 {
     /// <summary>
     /// Provides a bindable wrapper for the Customer model class, encapsulating various services for access by the UI.
@@ -32,6 +34,7 @@ namespace Contoso.App.ViewModels
                 if (_model != value)
                 {
                     _model = value;
+                    RefreshSites();
 
                     // Raise the PropertyChanged event for all properties.
                     OnPropertyChanged(string.Empty);
@@ -170,6 +173,16 @@ namespace Contoso.App.ViewModels
         /// </remarks>
         public bool IsModified { get; set; }
         
+        
+        public ObservableCollection<Site> Sites { get; } = new ();
+        
+        private Site _selectedSite;
+        
+        public Site SelectedSite
+        {
+            get => _selectedSite;
+            set => Set(ref _selectedSite, value);
+        }
 
         private bool _isLoading;
 
@@ -193,7 +206,7 @@ namespace Contoso.App.ViewModels
             set => Set(ref _isNewCustomer, value);
         }
 
-        private bool _isInEdit = false;
+        private bool _isInEdit;
 
         /// <summary>
         /// Gets or sets a value that indicates whether the customer data is being edited.
@@ -263,7 +276,31 @@ namespace Contoso.App.ViewModels
         /// </summary>
         public async Task RefreshCustomerAsync()
         {
+            RefreshSites();
             Model = await App.Repository.Customers.GetOneById(Model.Id);
+        }
+        
+        public void RefreshSites() => Task.Run(LoadSitesAsync);
+        
+        public async Task LoadSitesAsync()
+        {
+            await dispatcherQueue.EnqueueAsync(() =>
+            {
+                IsLoading = true;
+            });
+
+            var sites = await App.Repository.Sites.GetByCustomerId(Model.Id);
+
+            await dispatcherQueue.EnqueueAsync(() =>
+            {
+                Sites.Clear();
+                foreach (var order in sites)
+                {
+                    Sites.Add(order);
+                }
+
+                IsLoading = false;
+            });
         }
         
         /// <summary>

@@ -10,9 +10,9 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Contoso.App.Helper;
+using Snp.App.Helper;
 
-namespace Contoso.App.Common
+namespace Snp.App.Common
 {
     /// <summary>
     /// SuspensionManager captures global session state to simplify process lifetime management

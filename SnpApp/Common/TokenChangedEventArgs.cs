@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Contoso.App.Common;
+namespace Snp.App.Common;
 
 
     public class TokenChangedEventArgs : EventArgs

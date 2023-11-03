@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Snp.Models
 {
@@ -22,6 +23,8 @@ namespace Snp.Models
             Customer = customer;
             CustomerId = customer.Id;
         }
+        
+        public List<LineItem> LineItems { get; set; } = new();
         
         /// <summary>
         /// Gets or sets the customer placing the order.

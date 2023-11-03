@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Contoso.App.Helper;
+using Snp.App.Helper;
 using System.IO;
 using System.Reflection;
 
-namespace Contoso.App.Common
+namespace Snp.App.Common
 {
     internal class FileLoader
     {
