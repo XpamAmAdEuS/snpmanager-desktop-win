@@ -228,3 +228,7 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+/.idea/.idea.snpmanager-desktop-win.dir/.idea/.gitignore
+/.idea/.idea.snpmanager-desktop-win.dir/.idea/encodings.xml
+/.idea/.idea.snpmanager-desktop-win.dir/.idea/indexLayout.xml
+/.idea/.idea.snpmanager-desktop-win.dir/.idea/vcs.xml
