@@ -55,7 +55,7 @@ This update includes:
 * Update UI to follow the latest [Windows 11 design principles](https://docs.microsoft.com/windows/apps/design/signature-experiences/design-principles).
 * Bug fixes and enhancements
 
-To see how we updated the UI to look at home on Windows 11, see [Updating the Customers Orders Database sample UI to Windows 11](windows-11-update.md).
+To see how we updated the UI to look at home on Windows 11, see [Updating the Customers Orders Database sample UI to Windows 11].
 
 ### June 2020 update
 
@@ -132,23 +132,23 @@ You can then either start the service running locally, or deploy it to Azure.
 
 First, complete the steps in [Register an application with the Microsoft identity platform](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app) to register the web application.
 
-| App registration <br/> setting | Value for this sample app                                           | Notes                                                                                                       |
-|-------------------------------:|:--------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------|
-| **Name**                       | `active-directory-contoso-customer-oders-protected-api`             | Suggested value for this sample. <br/> You can change the app name at any time.                             |
-| **Supported account types**    | **Accounts in this organizational directory only (Any Azure AD directory - Multitenant)**  | Required for this sample. <br/> Support for the Single tenant.                       |
-| **Expose an API**              | **Scope name**: `Contoso.ReadWrite`<br/>**Who can consent?**: **Admins and users**<br/>**Admin consent display name**: `Act on behalf of the user`<br/>**Admin consent description**: `Allows the API to act on behalf of the user.`<br/>**User consent display name**: `Act on your behalf`<br/>**User consent description**: `Allows the API to act on your behalf.`<br/>**State**: **Enabled**  | Add a new scope that reads as follows `api://{clientId}/Contoso.ReadWrite`. Required value for this sample. |
+| App registration <br/> setting | Value for this sample app                                                                                                                                                                                                                                                                                                                                                                         | Notes                                                                                                       |
+|-------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------|
+|                       **Name** | `active-directory-contoso-customer-oders-protected-api`                                                                                                                                                                                                                                                                                                                                           | Suggested value for this sample. <br/> You can change the app name at any time.                             |
+|    **Supported account types** | **Accounts in this organizational directory only (Any Azure AD directory - Multitenant)**                                                                                                                                                                                                                                                                                                         | Required for this sample. <br/> Support for the Single tenant.                                              |
+|              **Expose an API** | **Scope name**: `Contoso.ReadWrite`<br/>**Who can consent?**: **Admins and users**<br/>**Admin consent display name**: `Act on behalf of the user`<br/>**Admin consent description**: `Allows the API to act on behalf of the user.`<br/>**User consent display name**: `Act on your behalf`<br/>**User consent description**: `Allows the API to act on your behalf.`<br/>**State**: **Enabled** | Add a new scope that reads as follows `api://{clientId}/Contoso.ReadWrite`. Required value for this sample. |
 
 ### Register the Azure Active Directory app (Client desktop app)
 
 Then, complete the steps in [Register an application with the Microsoft identity platform](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app) to register the deskptop application.
 
-| App registration <br/> setting  | Value for this sample app                                                            | Notes                                                                                           |
-|--------------------------------:|:-------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------|
-| **Name**                        | `active-directory-contoso-customer-oders-winui3`                                     | Suggested value for this sample. <br/> You can change the app name at any time.                 |
-| **Supported account types**     | **Accounts in any organizational directory (Any Azure AD directory - Multitenant)**  | Suggested value for this sample.                                                                |
-| **Platform type**               | **Mobile and desktop applications**                                                  | Required value for this sample                                                                  |
-| **Redirect URIs**               | `https://login.microsoftonline.com/common/oauth2/nativeclient`                       | Required value for this sample                                                                  |
-| **API Permissions**             | `active-directory-contoso-customer-oders-protected-api` <br/> `  Contoso.ReadWrite`  | Add a new delegated permission for `api://<application-id>/Contoso.ReadWrite`. Required value for this sample. | 
+| App registration <br/> setting | Value for this sample app                                                           | Notes                                                                                                          |
+|-------------------------------:|:------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------|
+|                       **Name** | `active-directory-contoso-customer-oders-winui3`                                    | Suggested value for this sample. <br/> You can change the app name at any time.                                |
+|    **Supported account types** | **Accounts in any organizational directory (Any Azure AD directory - Multitenant)** | Suggested value for this sample.                                                                               |
+|              **Platform type** | **Mobile and desktop applications**                                                 | Required value for this sample                                                                                 |
+|              **Redirect URIs** | `https://login.microsoftonline.com/common/oauth2/nativeclient`                      | Required value for this sample                                                                                 |
+|            **API Permissions** | `active-directory-contoso-customer-oders-protected-api` <br/> `  Contoso.ReadWrite` | Add a new delegated permission for `api://<application-id>/Contoso.ReadWrite`. Required value for this sample. | 
 
 
 1. Navigate to [Constants.cs](ContosoRepository/Constants.cs) and complete the following values:
@@ -163,8 +163,8 @@ Then, complete the steps in [Register an application with the Microsoft identity
    ...
    ```
 
-1. Press **F5**
-1. Navigate to **Settings** and select the **REST** option, so the Database Customer Orders sample app starts using the service endpoints.
+2. Press **F5**
+3. Navigate to **Settings** and select the **REST** option, so the Database Customer Orders sample app starts using the service endpoints.
 
 ## Code at a glance
 
@@ -174,10 +174,10 @@ If you're only interested in specific tasks and don't want to browse or run the 
 and [AuthenticationViewModel.cs](ContosoApp/ViewModels/AuthenticationViewModel.cs)
 * Master/details and form layouts UI: [CustomerListPage.xaml](ContosoApp/Views/CustomerListPage.xaml),
 [MainViewModel.cs](ContosoApp/ViewModels/MainViewModel.cs), [CustomerDetailPage.xaml](ContosoApp/Views/CustomerDetailPage.xaml),
-[CustomerViewModel.cs](ContosoApp/ViewModels/CustomerViewModel.cs), [OrderListPage.xaml](ContosoApp/Views/OrderListPage.xaml),
-[OrderListPageViewModel.cs](ContosoApp/ViewModels/OrderListPageViewModel.cs), [OrderDetailPage.xaml](ContosoApp/Views/OrderDetailPage.xaml),
-[OrderViewModel.cs](ContosoApp/ViewModels/OrderViewModel.cs)
-* Database and REST connections: The [Contoso.Repository](ContosoRepository/) project.
+[CustomerViewModel.cs](ContosoApp/ViewModels/CustomerViewModel.cs), [OrderListPage.xaml],
+[OrderListPageViewModel.cs], [OrderDetailPage.xaml],
+[OrderViewModel.cs]
+* Database and REST connections: The [Contoso.Repository](ContosoRepository) project.
 
 ## Design patterns
 
