@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="3.24.4" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.58.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.59.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser" />
+        <Protobuf Include="announcement_message.proto" GrpcServices="None" />
+        <Protobuf Include="announcement_service.proto" GrpcServices="Client" />
+        <Protobuf Include="auth_service.proto" GrpcServices="Client" />
+        <Protobuf Include="customer_message.proto" GrpcServices="None" />
+        <Protobuf Include="customer_music_message.proto" GrpcServices="None" />
+        <Protobuf Include="customer_music_service.proto" GrpcServices="Client" />
+        <Protobuf Include="customer_music_type_message.proto" GrpcServices="None" />
+        <Protobuf Include="customers_service.proto" GrpcServices="Client" />
+        <Protobuf Include="enabled_filter_message.proto" GrpcServices="None" />
+        <Protobuf Include="health_service.proto" GrpcServices="Client" />
+        <Protobuf Include="import_music_message.proto" GrpcServices="None" />
+        <Protobuf Include="import_music_service.proto" GrpcServices="Client" />
+        <Protobuf Include="music_message.proto" GrpcServices="None" />
+        <Protobuf Include="music_preference_message.proto" GrpcServices="None" />
+        <Protobuf Include="music_service.proto" GrpcServices="Client" />
+        <Protobuf Include="music_type_message.proto" GrpcServices="None" />
+        <Protobuf Include="music_type_service.proto" GrpcServices="Client" />
+        <Protobuf Include="music_upload_service.proto" GrpcServices="Client" />
+        <Protobuf Include="playlist.proto" GrpcServices="None" />
+        <Protobuf Include="promotion_message.proto" GrpcServices="None" />
+        <Protobuf Include="promotion_service.proto" GrpcServices="Client" />
+        <Protobuf Include="site_announcement_message.proto" GrpcServices="None" />
+        <Protobuf Include="site_ftp_message.proto" GrpcServices="None" />
+        <Protobuf Include="site_message.proto" GrpcServices="None" />
+        <Protobuf Include="site_player_message.proto" GrpcServices="None" />
+        <Protobuf Include="site_pos_message.proto" GrpcServices="None" />
+        <Protobuf Include="site_service.proto" GrpcServices="Client" />
+        <Protobuf Include="user_message.proto" GrpcServices="None" />
+        <Protobuf Include="user_service.proto" GrpcServices="Client" />
+    </ItemGroup>
+
+<!--    <ItemGroup>-->
+<!--        <Content Include="*.proto">-->
+<!--            <Pack>true</Pack>-->
+<!--            <PackagePath>contentFiles;content</PackagePath>-->
+<!--            <IncludeInPackage>true</IncludeInPackage>-->
+<!--            <CopyToOutput>true</CopyToOutput>-->
+<!--            <BuildAction>Content</BuildAction>-->
+<!--            <copyToOutput>true</copyToOutput>-->
+<!--            <CopyToOutputDirectory>Always</CopyToOutputDirectory>-->
+<!--            <CopyToPublishDirectory>Always</CopyToPublishDirectory>-->
+<!--        </Content>-->
+<!--    </ItemGroup>-->
+
+</Project>

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "customer_music_message.proto";
+
+
+message SearchCustomerMusicResponse {
+  repeated CustomerMusic data = 1;
+  uint32 totalRecords = 2;
+}
+
+message SearchCustomerMusicRequest {
+  uint64 customer_id = 1;
+  string search_text = 2;
+  string sort_column = 3;
+  string sort_direction = 4;
+  uint32 per_page = 5;
+  uint32 current_page = 6;
+  repeated string fields =  7;
+}
+
+
+service CustomerMusicService {
+
+  rpc SearchCustomerMusic(SearchCustomerMusicRequest) returns (SearchCustomerMusicResponse) {}
+
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+message Promotion {
+  uint64   id= 1;
+  uint64   customer_id= 2;
+  string   file_name= 3;
+  int64    file_size= 4;
+  string   hash= 5;
+  string   title= 6;
+  int32    duration= 7;
+  bool     enabled= 8;
+}

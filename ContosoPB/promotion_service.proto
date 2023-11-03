@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package snp.v1;
+
+option go_package = ".;pb";
+
+import "promotion_message.proto";
+
+message FindPromotionsByCustomerIdResponse { repeated Promotion announcements = 1; }
+
+message FindPromotionsByCustomerIdRequest { repeated int64 id = 1; }
+
+message SearchPromotionResponse {
+  repeated Promotion data = 1;
+  uint32 totalRecords = 2;
+}
+
+message SearchPromotionRequest {
+  uint64 customerId = 1;
+  string search_text = 2;
+  string sort_column = 3;
+  string sort_direction = 4;
+  uint32 per_page = 5;
+  uint32 current_page = 6;
+  repeated string fields =  7;
+}
+
+service PromotionService {
+
+  rpc SearchPromotion(SearchPromotionRequest) returns (SearchPromotionResponse) {
+    
+  }
+
+  rpc GetPromotion(FindPromotionsByCustomerIdRequest) returns (FindPromotionsByCustomerIdResponse) {
+    
+  }
+}

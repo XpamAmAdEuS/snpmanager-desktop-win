@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+message ImportMusic {
+  uint64   id        = 1;
+  string   file_name  = 2;
+  int64   file_size   = 3;
+  string   hash      = 4;
+  string   artist     = 5;
+  string   title     = 6;
+  string  album    = 7;
+  string  genre      = 8;
+  int32  duration     = 9;
+  optional bool selected= 10;
+}

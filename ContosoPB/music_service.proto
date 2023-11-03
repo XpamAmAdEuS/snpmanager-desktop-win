@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "music_message.proto";
+import "enabled_filter_message.proto";
+
+
+message FindMusicsResponse { repeated Music musics = 1; }
+
+message SearchMusicResponse {
+  repeated Music data = 1;
+  uint32 totalRecords = 2;
+}
+
+message SearchMusicRequest {
+  string search_text = 1;
+  string sort_column = 2;
+  string sort_direction = 3;
+  uint32 per_page = 4;
+  uint32 current_page = 5;
+  FilterEnabled enabled_filter = 6;
+  repeated string fields =  7;
+}
+
+message GetMusicRequest { string id = 1; }
+
+message GetMusicResponse { Music music = 1; }
+
+message CreateMusicRequest {
+  string title = 1;
+  string  person = 2;
+  string  address = 4;
+  string  phone = 5;
+  string email = 6;
+  bool muted = 7;
+  uint32 size_limit = 8;
+}
+
+message CreateMusicResponse { Music music = 1; }
+
+
+service MusicService {
+
+  rpc SearchMusic(SearchMusicRequest) returns (SearchMusicResponse) {
+   
+  }
+
+  rpc CreateMusic(CreateMusicRequest) returns (CreateMusicResponse) {
+    
+  }
+
+  rpc GetMusic(GetMusicRequest) returns (GetMusicResponse) {
+    
+  }
+}

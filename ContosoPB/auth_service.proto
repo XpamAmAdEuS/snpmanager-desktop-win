@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "google/protobuf/empty.proto";
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse { string access_token = 1; }
+message AuthoritiesResponse { repeated string authorities = 1; }
+
+service AuthService {
+  rpc Login(LoginRequest) returns (LoginResponse) {};
+  rpc GetAuthorities(google.protobuf.Empty) returns (AuthoritiesResponse) {};
+}

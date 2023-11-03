@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "site_message.proto";
+
+message GetCustomerSitesResponse { repeated Site sites = 1; }
+
+message GetCustomerSitesRequest { int64 id = 1; }
+
+message GetSiteResponse { Site site = 1; }
+
+message GetSiteRequest { int64 id = 1; }
+
+message CreateSiteRequest { }
+
+message CreateSiteResponse { Site site = 1;}
+
+message SearchSiteResponse {
+  repeated Site data = 1;
+  uint32 totalRecords = 3;
+}
+
+message SearchSiteRequest {
+  string search_text = 1;
+  string sort_column = 2;
+  string sort_direction = 3;
+  uint32 per_page = 4;
+  uint32 current_page = 5;
+  uint64 customer_id = 6;
+  repeated string fields =7;
+}
+
+
+service SiteService {
+
+  rpc SearchSite(SearchSiteRequest) returns (SearchSiteResponse) {}
+
+  rpc GetSites(GetCustomerSitesRequest) returns (GetCustomerSitesResponse) {}
+
+  rpc CreateSite(CreateSiteRequest) returns (CreateSiteResponse) {}
+
+  rpc GetSite(GetSiteRequest) returns (GetSiteResponse) {}
+}
+
+

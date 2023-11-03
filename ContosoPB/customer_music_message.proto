@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "customer_message.proto";
+import "music_message.proto";
+
+message CustomerMusic  {
+  uint64    id       = 1;
+  uint64    customer_id = 2;
+  Customer   customer = 3;
+  uint64   music_id     = 4;
+  Music      music = 5;
+  int64  rating      = 6;
+  bool  enabled     = 7;
+  int64  play_count   = 8;
+}

@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "google/protobuf/any.proto";
+import "import_music_message.proto";
+import "music_type_message.proto";
+
+
+message SearchImportMusicResponse {
+  repeated ImportMusic data = 1;
+  uint32 totalRecords = 2;
+  repeated MusicType musicTypes = 3;
+}
+
+message SearchImportMusicRequest {
+  string search_text = 1;
+  string sort_column = 2;
+  string sort_direction = 3;
+  uint32 per_page = 4;
+  uint32 current_page = 5;
+  repeated string fields =  7;
+}
+
+message DeleteImportMusicIdsRequest {
+  repeated int64 ids =  1;
+}
+
+message ImportMusicIntoMusicTypeRequest {
+  int64 music_type_id =  1;
+}
+
+
+service ImportMusicService {
+
+  rpc SearchImportMusic(SearchImportMusicRequest) returns (SearchImportMusicResponse) {
+    
+  }
+
+  rpc ImportMusicDeleteIds(DeleteImportMusicIdsRequest) returns (google.protobuf.Any) {
+    
+  }
+
+  rpc ImportToMusicType(ImportMusicIntoMusicTypeRequest) returns (google.protobuf.Any) {
+    
+  }
+}

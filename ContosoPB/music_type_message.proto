@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+message MusicType  {
+  uint64 id = 1;
+  string name = 2;
+  string image_url = 3;
+  uint64 file_count = 4;
+  int64  size = 5;
+  int64  total_duration = 6;
+}
