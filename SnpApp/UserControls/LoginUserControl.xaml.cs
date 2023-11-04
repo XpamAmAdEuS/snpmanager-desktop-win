@@ -16,10 +16,8 @@ namespace Snp.App.UserControls
         SignInCancel,
         Nothing
     }
-    public sealed partial class LoginUserControl : UserControl
+    public sealed partial class LoginUserControl
     {
-        
-        const string StoredAccountIdKey = "accountid";
         
         private static IAuthRepository AuthRepository => App.AuthRepository;
         
@@ -51,7 +49,7 @@ namespace Snp.App.UserControls
             {
                 // If the user name is saved, get it and populate the user name field.
                 var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                if (localSettings.Values.TryGetValue(StoredAccountIdKey, value: out var value))
+                if (localSettings.Values.TryGetValue(Constants.StoredAccountIdKey, value: out var value))
                 {
                     userNameTextBox.Text = value.ToString();
                     saveUserNameCheckBox.IsChecked = true;
@@ -67,13 +65,7 @@ namespace Snp.App.UserControls
                     // }
                 
                 }
-
-                IsEnabled = IsValid();
             }
-            Result = SignInResult.Nothing;
-
-           
-
         }
 
         private void LoginUserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -84,13 +76,13 @@ namespace Snp.App.UserControls
         private void SaveUserName()
         {
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            localSettings.Values[StoredAccountIdKey] = userNameTextBox.Text;
+            localSettings.Values[Constants.StoredAccountIdKey] = userNameTextBox.Text;
         }
 
         private void ClearUserName()
         {
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            localSettings.Values[StoredAccountIdKey] = null;
+            localSettings.Values[Constants.StoredAccountIdKey] = null;
             userNameTextBox.Text = string.Empty;
         }
 
@@ -168,7 +160,7 @@ namespace Snp.App.UserControls
 
             if (!string.IsNullOrEmpty(token))
             {
-                UserLoggedIn?.Invoke(this, EventArgs.Empty);
+                UserLoggedIn?.Invoke(this, new TokenChangedEventArgs(token));
                 return true;
             }
 

@@ -44,12 +44,12 @@
                     Visibility="{x:Bind vm:Converters.CollapsedIf(ViewModel.IsNewCustomer), Mode=OneWay}"
                     Label="Edit" />
             <!-- <AppBarButton -->
-            <!--         Click="AddOrder_Click" -->
+            <!--         Click="AddSite_Click" -->
             <!--         Icon="Shop" -->
             <!--         Label="Add order" -->
             <!--         Visibility="{x:Bind vm:Converters.CollapsedIf(ViewModel.IsNewCustomer), Mode=OneWay}"/> -->
             <!-- <AppBarButton -->
-            <!--         Click="{x:Bind ViewModel.RefreshOrders}" -->
+            <!--         Click="{x:Bind ViewModel.RefreshSites}" -->
             <!--         Icon="Refresh" -->
             <!--         Label="Refresh orders" -->
             <!--         Visibility="{x:Bind vm:Converters.CollapsedIf(ViewModel.IsNewCustomer), Mode=OneWay}"/> -->
@@ -168,117 +168,117 @@
 
                 </muxc:Expander>
 
-                <muxc:Expander x:Name="OrdersExpander"
+                <muxc:Expander x:Name="SitesExpander"
                         IsExpanded="True">
 
                     <muxc:Expander.Header>
                         <TextBlock
-                                Text="Orders"
+                                Text="Sites"
                                 Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </muxc:Expander.Header>
 
-                    <!-- <Grid -->
-                    <!--         Margin="0,4,0,0"> -->
-                    <!-- -->
-                    <!--     <toolkit:DataGrid -->
-                    <!--             BorderThickness="0" -->
-                    <!--             CanUserReorderColumns="False" -->
-                    <!--             CanUserResizeColumns="False" -->
-                    <!--             GridLinesVisibility="None" -->
-                    <!--             IsReadOnly="True" -->
-                    <!--             AutoGenerateColumns="False" -->
-                    <!--             ItemsSource="{x:Bind ViewModel.Orders, Mode=OneWay}" -->
-                    <!--             SelectedItem="{x:Bind ViewModel.SelectedOrder, Mode=TwoWay}" -->
-                    <!--             Sorting="DataGrid_Sorting"> -->
-                    <!--         <toolkit:DataGrid.Columns> -->
-                    <!--             <toolkit:DataGridTemplateColumn -->
-                    <!--                     Header="Invoice" -->
-                    <!--                     Tag="InvoiceNumber"> -->
-                    <!--                 <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--                     <DataTemplate x:DataType="models:Order"> -->
-                    <!--                         <HyperlinkButton -->
-                    <!--                                 Content="{x:Bind InvoiceNumber}" -->
-                    <!--                                 Margin="12,0" -->
-                    <!--                                 Click="ViewOrderButton_Click"/> -->
-                    <!--                     </DataTemplate> -->
-                    <!--                 </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--             </toolkit:DataGridTemplateColumn> -->
-                    <!--             <toolkit:DataGridTemplateColumn -->
-                    <!--                     Header="Placed" -->
-                    <!--                     Tag="DatePlaced"> -->
-                    <!--                 <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--                     <DataTemplate x:DataType="models:Order"> -->
-                    <!--                         <TextBlock -->
-                    <!--                                 VerticalAlignment="Center" -->
-                    <!--                                 Margin="12,0" -->
-                    <!--                                 Text="{x:Bind sys:String.Format('\{0:d\}', DatePlaced)}"/> -->
-                    <!--                     </DataTemplate> -->
-                    <!--                 </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--             </toolkit:DataGridTemplateColumn> -->
-                    <!--             <toolkit:DataGridTemplateColumn -->
-                    <!--                     Header="Filled" -->
-                    <!--                     Tag="DateFilled"> -->
-                    <!--                 <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--                     <DataTemplate x:DataType="models:Order"> -->
-                    <!--                         <TextBlock -->
-                    <!--                                 VerticalAlignment="Center" -->
-                    <!--                                 Margin="12,0" -->
-                    <!--                                 Text="{x:Bind sys:String.Format('\{0:d\}', DateFilled)}"/> -->
-                    <!--                     </DataTemplate> -->
-                    <!--                 </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--             </toolkit:DataGridTemplateColumn> -->
-                    <!--             <toolkit:DataGridTemplateColumn -->
-                    <!--                     Header="Subtotal"> -->
-                    <!--                 <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--                     <DataTemplate x:DataType="models:Order"> -->
-                    <!--                         <TextBlock  -->
-                    <!--                                 VerticalAlignment="Center" -->
-                    <!--                                 Margin="12,0" -->
-                    <!--                                 Text="{x:Bind sys:String.Format('\{0:c\}', Subtotal)}"/> -->
-                    <!--                     </DataTemplate> -->
-                    <!--                 </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--             </toolkit:DataGridTemplateColumn> -->
-                    <!--             <toolkit:DataGridTemplateColumn -->
-                    <!--                     Header="Tax"> -->
-                    <!--                 <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--                     <DataTemplate x:DataType="models:Order"> -->
-                    <!--                         <TextBlock  -->
-                    <!--                                 VerticalAlignment="Center" -->
-                    <!--                                 Margin="12,0" -->
-                    <!--                                 Text="{x:Bind sys:String.Format('\{0:c\}', Tax)}"/> -->
-                    <!--                     </DataTemplate> -->
-                    <!--                 </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--             </toolkit:DataGridTemplateColumn> -->
-                    <!--             <toolkit:DataGridTemplateColumn -->
-                    <!--                     Header="Total" -->
-                    <!--                     Tag="GrandTotal"> -->
-                    <!--                 <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--                     <DataTemplate x:DataType="models:Order"> -->
-                    <!--                         <TextBlock  -->
-                    <!--                                 VerticalAlignment="Center" -->
-                    <!--                                 Margin="12,0" -->
-                    <!--                                 Text="{x:Bind sys:String.Format('\{0:c\}', GrandTotal)}"/> -->
-                    <!--                     </DataTemplate> -->
-                    <!--                 </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                    <!--             </toolkit:DataGridTemplateColumn> -->
-                    <!--             <toolkit:DataGridTextColumn -->
-                    <!--                     Header="Status" -->
-                    <!--                     Tag="PaymentStatus" -->
-                    <!--                     Binding="{Binding PaymentStatus}"/> -->
-                    <!--             <toolkit:DataGridTextColumn -->
-                    <!--                     Header="Term" -->
-                    <!--                     Binding="{Binding Term}"/> -->
-                    <!--         </toolkit:DataGrid.Columns> -->
-                    <!--     </toolkit:DataGrid> -->
-                    <!-- -->
-                    <!--     <muxc:ProgressBar -->
-                    <!--             Margin="0,48,0,0" -->
-                    <!--             HorizontalAlignment="Stretch" -->
-                    <!--             VerticalAlignment="Top" -->
-                    <!--             IsIndeterminate="True" -->
-                    <!--             Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" /> -->
-                    <!-- -->
-                    <!-- </Grid> -->
+                    <Grid
+                            Margin="0,4,0,0">
+                    
+                        <toolkit:DataGrid
+                                BorderThickness="0"
+                                CanUserReorderColumns="False"
+                                CanUserResizeColumns="False"
+                                GridLinesVisibility="None"
+                                IsReadOnly="True"
+                                AutoGenerateColumns="False"
+                                ItemsSource="{x:Bind ViewModel.Sites, Mode=OneWay}"
+                                SelectedItem="{x:Bind ViewModel.SelectedSite, Mode=TwoWay}"
+                                Sorting="DataGrid_Sorting">
+                            <toolkit:DataGrid.Columns>
+                                <!-- <toolkit:DataGridTemplateColumn -->
+                                <!--         Header="Invoice" -->
+                                <!--         Tag="InvoiceNumber"> -->
+                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!--         <DataTemplate x:DataType="models:Site"> -->
+                                <!--             <HyperlinkButton -->
+                                <!--                     Content="{x:Bind InvoiceNumber}" -->
+                                <!--                     Margin="12,0" -->
+                                <!--                     Click="ViewSiteButton_Click"/> -->
+                                <!--         </DataTemplate> -->
+                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!-- </toolkit:DataGridTemplateColumn> -->
+                                <!-- <toolkit:DataGridTemplateColumn -->
+                                <!--         Header="Placed" -->
+                                <!--         Tag="DatePlaced"> -->
+                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!--         <DataTemplate x:DataType="models:Site"> -->
+                                <!--             <TextBlock -->
+                                <!--                     VerticalAlignment="Center" -->
+                                <!--                     Margin="12,0" -->
+                                <!--                     Text="{x:Bind sys:String.Format('\{0:d\}', DatePlaced)}"/> -->
+                                <!--         </DataTemplate> -->
+                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!-- </toolkit:DataGridTemplateColumn> -->
+                                <!-- <toolkit:DataGridTemplateColumn -->
+                                <!--         Header="Filled" -->
+                                <!--         Tag="DateFilled"> -->
+                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!--         <DataTemplate x:DataType="models:Site"> -->
+                                <!--             <TextBlock -->
+                                <!--                     VerticalAlignment="Center" -->
+                                <!--                     Margin="12,0" -->
+                                <!--                     Text="{x:Bind sys:String.Format('\{0:d\}', DateFilled)}"/> -->
+                                <!--         </DataTemplate> -->
+                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!-- </toolkit:DataGridTemplateColumn> -->
+                                <!-- <toolkit:DataGridTemplateColumn -->
+                                <!--         Header="Subtotal"> -->
+                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!--         <DataTemplate x:DataType="models:Site"> -->
+                                <!--             <TextBlock -->
+                                <!--                     VerticalAlignment="Center" -->
+                                <!--                     Margin="12,0" -->
+                                <!--                     Text="{x:Bind sys:String.Format('\{0:c\}', Subtotal)}"/> -->
+                                <!--         </DataTemplate> -->
+                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!-- </toolkit:DataGridTemplateColumn> -->
+                                <!-- <toolkit:DataGridTemplateColumn -->
+                                <!--         Header="Tax"> -->
+                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!--         <DataTemplate x:DataType="models:Site"> -->
+                                <!--             <TextBlock -->
+                                <!--                     VerticalAlignment="Center" -->
+                                <!--                     Margin="12,0" -->
+                                <!--                     Text="{x:Bind sys:String.Format('\{0:c\}', Tax)}"/> -->
+                                <!--         </DataTemplate> -->
+                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!-- </toolkit:DataGridTemplateColumn> -->
+                                <!-- <toolkit:DataGridTemplateColumn -->
+                                <!--         Header="Total" -->
+                                <!--         Tag="GrandTotal"> -->
+                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!--         <DataTemplate x:DataType="models:Site"> -->
+                                <!--             <TextBlock -->
+                                <!--                     VerticalAlignment="Center" -->
+                                <!--                     Margin="12,0" -->
+                                <!--                     Text="{x:Bind sys:String.Format('\{0:c\}', GrandTotal)}"/> -->
+                                <!--         </DataTemplate> -->
+                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
+                                <!-- </toolkit:DataGridTemplateColumn> -->
+                                <toolkit:DataGridTextColumn
+                                        Header="Status"
+                                        Tag="PaymentStatus"
+                                        Binding="{Binding PaymentStatus}"/>
+                                <toolkit:DataGridTextColumn
+                                        Header="Term"
+                                        Binding="{Binding Term}"/>
+                            </toolkit:DataGrid.Columns>
+                        </toolkit:DataGrid>
+                    
+                        <muxc:ProgressBar
+                                Margin="0,48,0,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                IsIndeterminate="True"
+                                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+                    
+                    </Grid>
                 </muxc:Expander>
             </StackPanel>
         </ScrollViewer>
@@ -312,7 +312,7 @@
                     <VisualState.Setters>
                         <Setter Target="GeneralExpander.IsExpanded" Value="True"/>
                         <Setter Target="AddressExpander.IsExpanded" Value="True"/>
-                        <Setter Target="OrdersExpander.IsExpanded" Value="False"/>
+                        <Setter Target="SitesExpander.IsExpanded" Value="False"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

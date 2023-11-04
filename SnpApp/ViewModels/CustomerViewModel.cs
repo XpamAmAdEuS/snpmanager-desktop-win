@@ -34,7 +34,7 @@ namespace Snp.App.ViewModels
                 if (_model != value)
                 {
                     _model = value;
-                    RefreshSites();
+                    //RefreshSites();
 
                     // Raise the PropertyChanged event for all properties.
                     OnPropertyChanged(string.Empty);

@@ -105,7 +105,7 @@ namespace Snp.App
 
         public readonly string CustomerListLabel = "Customer list";
 
-        public readonly string OrderListLabel = "Order list";
+        public readonly string SiteListLabel = "Site list";
 
         /// <summary>
         /// Navigates to the page corresponding to the tapped item.
@@ -116,7 +116,7 @@ namespace Snp.App
             var pageType =
                 args.IsSettingsInvoked ? typeof(SettingsPage) :
                 label == CustomerListLabel ? typeof(CustomerListPage) : null;
-               // label == OrderListLabel ? typeof(OrderListPage) : null;
+               //label == SiteListLabel ? typeof(SiteListPage) : null;
             if (pageType != null && pageType != AppFrame.CurrentSourcePageType)
             {
                 AppFrame.Navigate(pageType);

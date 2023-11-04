@@ -21,8 +21,7 @@ namespace Snp.App.ViewModels
         /// <summary>
         /// The collection of customers in the list. 
         /// </summary>
-        public ObservableCollection<CustomerViewModel> Customers { get; }
-            = new ObservableCollection<CustomerViewModel>();
+        public ObservableCollection<CustomerViewModel> Customers { get; } = new ();
 
         private CustomerViewModel _selectedCustomer;
 
@@ -35,7 +34,7 @@ namespace Snp.App.ViewModels
             set => Set(ref _selectedCustomer, value);
         }
 
-        private bool _isLoading = false;
+        private bool _isLoading;
 
         /// <summary>
         /// Gets or sets a value indicating whether the Customers list is currently being updated. 

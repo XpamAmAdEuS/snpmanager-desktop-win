@@ -16,6 +16,8 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml.Media.Animation;
+using Snp.App.Views;
 
 
 namespace Snp.App
@@ -199,6 +201,16 @@ namespace Snp.App
             ViewModel = new();
             
             ThemeHelper.Initialize();
+            
+            
+            if (shell.AppFrame.Content == null)
+            {
+                // When the navigation stack isn't restored, navigate to the first page
+                // suppressing the initial entrance animation.
+                shell.AppFrame.Navigate(typeof(CustomerListPage), null,
+                    new SuppressNavigationTransitionInfo());
+            }
+            
             
             // Ensure the current window is active
             _mWindow.Activate();

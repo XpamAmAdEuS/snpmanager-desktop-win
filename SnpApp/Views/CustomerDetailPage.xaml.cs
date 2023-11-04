@@ -2,9 +2,11 @@ using System;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Snp.Models;
 using Snp.App.ViewModels;
+using CommunityToolkit.WinUI.UI.Controls;
 
 namespace Snp.App.Views
 {
@@ -164,12 +166,21 @@ namespace Snp.App.Views
 
       
         
+        private void ViewSiteButton_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(SiteDetailPage), ((sender as FrameworkElement).DataContext as Site).Id,
+                new DrillInNavigationTransitionInfo());
+
+        /// <summary>
+        /// Adds a new order for the customer.
+        /// </summary>
+        private void AddSite_Click(object sender, RoutedEventArgs e) =>
+            Frame.Navigate(typeof(SiteDetailPage), ViewModel.Model.Id);
         
 
-        // /// <summary>
-        // /// Sorts the data in the DataGrid.
-        // /// </summary>
-        // private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e) =>
-        //     (sender as DataGrid).Sort(e.Column, ViewModel.Orders.Sort);
+        /// <summary>
+        /// Sorts the data in the DataGrid.
+        /// </summary>
+        private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e) =>
+            (sender as DataGrid).Sort(e.Column, ViewModel.Sites.Sort);
     }
 }
