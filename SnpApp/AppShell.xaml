@@ -53,6 +53,11 @@
                     ToolTipService.ToolTip="{x:Bind CustomerListLabel}"
                     Icon="ContactInfo"/>
                 <muxc:NavigationViewItem
+                    x:Name="MusicUploadMenuItem"
+                    Content="{x:Bind MusicUploadLabel}" 
+                    ToolTipService.ToolTip="{x:Bind MusicUploadLabel}"
+                    Icon="ContactInfo"/>
+                <muxc:NavigationViewItem
                     x:Name="OrderListMenuItem"
                     Content="{x:Bind SiteListLabel}" 
                     ToolTipService.ToolTip="{x:Bind SiteListLabel}"

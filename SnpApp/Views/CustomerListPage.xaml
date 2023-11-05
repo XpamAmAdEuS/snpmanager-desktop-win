@@ -20,7 +20,7 @@
             </MenuFlyoutItem>
             <MenuFlyoutItem
                 Click="AddSite_Click"
-                Text="Add siter"
+                Text="Add site"
                 Icon="Shop">
             </MenuFlyoutItem>
         </MenuFlyout>

@@ -202,8 +202,14 @@ namespace Snp.App.Views
             ViewModel.SelectedCustomer = (e.OriginalSource as FrameworkElement)?.DataContext as CustomerViewModel;
         
         
-        private void AddSite_Click(object sender, RoutedEventArgs e) =>
-            Frame.Navigate(typeof(SiteDetailPage), ViewModel.SelectedCustomer.Model.Id);
+        private void AddSite_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedCustomer != null)
+            {
+                Frame.Navigate(typeof(SiteDetailPage), ViewModel.SelectedCustomer.Model.Id,
+                    new DrillInNavigationTransitionInfo());
+            }
+        }
 
         /// <summary>
         /// Sorts the data in the DataGrid.

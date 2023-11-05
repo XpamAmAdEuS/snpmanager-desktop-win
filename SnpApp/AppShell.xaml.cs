@@ -104,6 +104,8 @@ namespace Snp.App
         }
 
         public readonly string CustomerListLabel = "Customer list";
+        
+        public readonly string MusicUploadLabel = "Upload Music";
 
         public readonly string SiteListLabel = "Site list";
 
@@ -135,10 +137,10 @@ namespace Snp.App
                 {
                     NavView.SelectedItem = CustomerListMenuItem;
                 }
-                // else if (e.SourcePageType == typeof(OrderListPage))
-                // {
-                //     NavView.SelectedItem = OrderListMenuItem;
-                // }
+                else if (e.SourcePageType == typeof(MusicUploadPage))
+                {
+                    NavView.SelectedItem = MusicUploadMenuItem;
+                }
                 else if (e.SourcePageType == typeof(SettingsPage))
                 {
                     NavView.SelectedItem = NavView.SettingsItem;

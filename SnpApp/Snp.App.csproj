@@ -132,5 +132,8 @@
     <Page Update="UserControls\LoginUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\MusicUploadPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 </Project>
