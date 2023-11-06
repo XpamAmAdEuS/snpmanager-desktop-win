@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
+using Snp.App.Models;
 
 
 namespace Snp.App.ViewModels
@@ -14,17 +19,16 @@ namespace Snp.App.ViewModels
         
         private DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         
-        public MusicUploadViewModel(){}
-        
-        public async Task Add(Item item)
+        public async Task Add(UploadItemModel item)
         {
             await _dispatcherQueue.EnqueueAsync(() =>
             {
-                if (!Files.Any(p =>p.Name==item.Name && p.Path == item.Path))
+                if (!_myModel.Any(p =>p.Name==item.Name && p.Path == item.Path))
                 {
 
-                    // Add new object to the collection
-                    Files.Add(item);
+                    _myModel.Add(item);
+                    
+                    OnPropertyChanged("Model");
                 }
             });
         }
@@ -33,9 +37,9 @@ namespace Snp.App.ViewModels
         {
             await _dispatcherQueue.EnqueueAsync(() =>
             {
-                if (Files.Count > 0)
+                if (_myModel.Count > 0)
                 {
-                    foreach (var file in Files)
+                    foreach (var file in _myModel)
                     {
                         App.Repository.MusicUploads.Upload(file.Path,file.Name); 
                     }
@@ -43,15 +47,26 @@ namespace Snp.App.ViewModels
             });
         }
         
-        public ObservableCollection<Item> Files { get; } = new ();
-        
-        public List<Item> Selected { get; set; } = new();
-        
-    }
+        private ObservableCollection<UploadItemModel> _myModel;
 
-    public class Item
-    {
-        public string Name { get; set; }
-        public string Path { get; set; }
+        public ObservableCollection<UploadItemModel> Model { get { return _myModel; } }
+
+        private IList _selectedModels = new ArrayList ();
+
+        public IList TestSelected
+        {
+            get { return _selectedModels; }
+            set
+            {
+                _selectedModels = value;
+                OnPropertyChanged("TestSelected");
+            }
+        }
+
+        public MusicUploadViewModel ()
+        {
+            _myModel = new ObservableCollection<UploadItemModel> ();
+            OnPropertyChanged("Model");
+        }
     }
 }

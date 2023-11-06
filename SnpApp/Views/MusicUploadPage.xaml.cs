@@ -1,14 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Navigation;
+using Snp.App.Models;
 using Snp.App.ViewModels;
+using WinRT.Interop;
 
 namespace Snp.App.Views
 {
@@ -50,9 +54,49 @@ namespace Snp.App.Views
            
         }
         
-        private void AddMusic_Click(object sender, RoutedEventArgs e)
+        private void StartUpload_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Upload();
+        }
+        
+        private async void AddMusicFiles_Click(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker fileOpenPicker = new()
+            {
+                ViewMode = PickerViewMode.Thumbnail,
+                FileTypeFilter = { ".mp3" },
+            };
+
+            nint windowHandle = WindowNative.GetWindowHandle(App.Window);
+            InitializeWithWindow.Initialize(fileOpenPicker, windowHandle);
+
+            IReadOnlyList<StorageFile> items = await fileOpenPicker.PickMultipleFilesAsync();
+
+            if (items.Count > 0)
+            {
+                foreach (var item in items)
+                {
+                    AddFileToModel(item);
+                }
+            }
+        }
+        
+        private async void AddMusicFolder_Click(object sender, RoutedEventArgs e)
+        {
+            FolderPicker folderOpenPicker = new()
+            {
+                ViewMode = PickerViewMode.Thumbnail,
+            };
+
+            nint windowHandle = WindowNative.GetWindowHandle(App.Window);
+            InitializeWithWindow.Initialize(folderOpenPicker, windowHandle);
+
+            StorageFolder folder = await folderOpenPicker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                AddFolderToModel(folder);
+            }
+            
         }
         
         private void Grid_DragOver(object sender, DragEventArgs e)
@@ -97,10 +141,13 @@ namespace Snp.App.Views
         
         private async void AddFileToModel(StorageFile item)
         {
-            var t = new Item
+            var t = new UploadItemModel
             {
                 Name = item.Name,
-                Path = item.Path
+                Path = item.Path,
+                ShowError = false,
+                ShowPaused = true,
+                Progress = 0
             };
             await ViewModel.Add(t);
         }
