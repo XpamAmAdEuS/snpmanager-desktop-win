@@ -41,6 +41,9 @@ namespace Snp.App
         public static MainViewModel ViewModel { get; set; }
         
         
+        public static MusicUploadViewModel MusicUploadViewModel { get; set; }
+        
+        
 
         /// <summary>
         /// Pipeline for interacting with backend service or database.
@@ -199,6 +202,8 @@ namespace Snp.App
             //UseGrpc();
             
             ViewModel = new();
+            
+            MusicUploadViewModel = new();
             
             ThemeHelper.Initialize();
             

@@ -15,5 +15,7 @@ namespace Snp.Repository
         ISiteRepository Sites { get; }
         
         IUserRepository Users  { get; }
+        
+        IMusicUploadRepository MusicUploads { get; }
     }
 }

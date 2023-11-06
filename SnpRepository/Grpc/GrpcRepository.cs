@@ -20,5 +20,6 @@ namespace Snp.Repository.Grpc
         public ISiteRepository Sites => new GrpcSiteRepository(_invoker);
 
         public IUserRepository Users => new GrpcUserRepository(_invoker);
+        public IMusicUploadRepository MusicUploads => new GrpcMusicUploadRepository(_invoker);
     }
 }

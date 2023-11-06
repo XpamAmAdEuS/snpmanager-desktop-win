@@ -117,8 +117,8 @@ namespace Snp.App
             var label = args.InvokedItem as string;
             var pageType =
                 args.IsSettingsInvoked ? typeof(SettingsPage) :
-                label == CustomerListLabel ? typeof(CustomerListPage) : null;
-               //label == SiteListLabel ? typeof(SiteListPage) : null;
+                label == CustomerListLabel ? typeof(CustomerListPage) : 
+               label == MusicUploadLabel ? typeof(MusicUploadPage) : null;
             if (pageType != null && pageType != AppFrame.CurrentSourcePageType)
             {
                 AppFrame.Navigate(pageType);
