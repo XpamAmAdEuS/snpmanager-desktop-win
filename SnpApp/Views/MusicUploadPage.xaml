@@ -7,6 +7,7 @@
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:local="using:Snp.App.Views"
     xmlns:models="using:Snp.App.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     NavigationCacheMode="Required"
     AllowDrop="True" DragOver="Grid_DragOver" Drop="Grid_Drop"
     mc:Ignorable="d">
@@ -131,11 +132,11 @@
                             <DataTemplate x:DataType="models:UploadItemModel">
                                 <Grid Background="Transparent"
                                       ToolTipService.ToolTip="Upload progress">
-                                    <ProgressBar Width="130" 
-                                                 Value="{x:Bind Progress}"
-                                                 ShowPaused="{x:Bind ShowPaused}"
-                                                 ShowError="{x:Bind ShowError}"
-                                                 />
+                                    <muxc:ProgressBar Width="130" 
+                                                      Value="{x:Bind Progress}"
+                                                      ShowPaused="{x:Bind ShowPaused}"
+                                                      ShowError="{x:Bind ShowError}"
+                                    />
                                 </Grid>
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
@@ -143,12 +144,12 @@
                 </toolkit:DataGrid.Columns>
             </local:CustomDataGrid>
             
-            <!-- <muxc:ProgressBar -->
-            <!--         Margin="0,50,0,0" -->
-            <!--         HorizontalAlignment="Stretch" -->
-            <!--         VerticalAlignment="Top" -->
-            <!--         IsIndeterminate="True" -->
-            <!--         Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" /> -->
+            <muxc:ProgressBar
+                    Margin="0,50,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    IsIndeterminate="True"
+                    Visibility="{x:Bind ViewModel.IsUpLoading, Mode=OneWay}" />
         </Grid>
 
 

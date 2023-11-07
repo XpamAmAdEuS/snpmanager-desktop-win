@@ -1,6 +1,8 @@
 using Snp.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Grpc.Core;
 using Snp.V1;
 using Customer = Snp.Models.Customer;
@@ -15,76 +17,60 @@ namespace Snp.Repository.Grpc
     {
         
         private readonly CustomerService.CustomerServiceClient _client;
+        private readonly Mapper _mapper;
 
-        public GrpcCustomerRepository(CallInvoker invoker)
+        public GrpcCustomerRepository(CallInvoker invoker,Mapper mapper)
         {
-            
             _client = new CustomerService.CustomerServiceClient(invoker);
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Customer>> GetAsync()
         {
-            var request = new  SearchCustomerRequest();
-            var result =  await _client.SearchCustomerAsync(request);
-
-            var customers = new List<Customer>();
-
-            foreach (var cus in result.Data)
-            {
-                var c = new Customer();
-                c.FromPb(cus);
-                customers.Add(c);
-            }
-            
-            return Task.FromResult(customers).GetAwaiter().GetResult();
+           
+            var result =  await _client.SearchCustomerAsync(new  SearchCustomerRequest());
+            return result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
         }
         
         public async Task<IEnumerable<Customer>> SearchByTitleAsync(string search)
         {
-            var request = new  SearchCustomerRequest();
-            var result =  await _client.SearchCustomerAsync(request);
-
-            var customers = new List<Customer>();
-
-            foreach (var cus in result.Data)
-            {
-                var c = new Customer();
-                c.FromPb(result.Data[0]);
-                customers.Add(c);
-            }
-            
-            return Task.FromResult(customers).GetAwaiter().GetResult();
+            var result =  await _client.SearchCustomerAsync(new  SearchCustomerRequest());
+            return result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
         }
         
         public async Task<Customer> GetOneById(uint id)
         {
-            var request = new  GetCustomerRequest
+            var result =  await _client.GetCustomerAsync(new  GetCustomerRequest
             {
                 Id = id
-            };
-            var result =  await _client.GetCustomerAsync(request);
+            });
             
-
-            var c = new Customer();
-            c.FromPb(result.Customer);
-            
-            return Task.FromResult(c).GetAwaiter().GetResult();
+            return _mapper.Map<Customer>(result.Customer);
         }
         
         public async Task<Customer> UpsertAsync(Customer customer)
         {
-            var request = new  SearchCustomerRequest();
-            var result = await  _client.SearchCustomerAsync(request);
+            var result = await  _client.UpdateCustomerAsync(
+                new UpdateCustomerRequest
+                {
+                    Id = customer.Id,
+                    Title = customer.Title,
+                    Address = customer.Address,
+                    Email = customer.Address,
+                    Muted = customer.Muted,
+                    Person = customer.Person,
+                    Phone = customer.Phone,
+                    SizeLimit = customer.SizeLimit
+                }
+                );
 
-            var c = new Customer();
-            c.FromPb(result.Data[0]);
-            
-            return Task.FromResult(c).GetAwaiter().GetResult();
+            return _mapper.Map<Customer>(result.Customer);
         }
 
 
 
-        public async Task DeleteAsync(uint customerId)
+        public 
+            async Task DeleteAsync(uint customerId)
         {
             
         } 

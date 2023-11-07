@@ -1,8 +1,8 @@
-using System;
 using Snp.Models;
 using System.Collections.Generic;
-using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Grpc.Core;
 using Snp.V1;
 using Site = Snp.Models.Site;
@@ -17,31 +17,21 @@ namespace Snp.Repository.Grpc
     {
         
         private readonly SiteService.SiteServiceClient _client;
+        private readonly Mapper _mapper;
 
-        public GrpcSiteRepository(CallInvoker invoker)
+        public GrpcSiteRepository(CallInvoker invoker,Mapper mapper)
         {
             _client = new SiteService.SiteServiceClient(invoker);
+            _mapper = mapper;
         }
 
 
         public async Task<IEnumerable<Site>> GetByCustomerId(uint customerId)
         {
-            var request = new  GetCustomerSitesRequest();
-            var cts = new CancellationTokenSource(); 
-            cts.CancelAfter(TimeSpan.FromSeconds(10)); 
-            var reply = await _client.GetSitesAsync(request, cancellationToken: cts.Token);
-
-            var sites = new List<Site>();
-
-            foreach (var s in reply.Sites)
-            {
-                var site = new Site();
-                site.FromPb(s);
-                sites.Add(site);
-            }
-            
-            
-            return Task.FromResult(sites).GetAwaiter().GetResult();
+         
+            var response = await _client.GetSitesAsync(new  GetCustomerSitesRequest{Id = customerId});
+            var sites = response.Sites.Select(s => _mapper.Map<Site>(s)).ToList();
+            return sites;
         }
 
         public Task<Site> GetOneById(uint id)

@@ -122,6 +122,9 @@ namespace Snp.App
         public static bool UseGrpc()
         {
             
+            
+            var mapper = MapperConfig.InitializeAutomapper();
+            
             try
             {
                 
@@ -129,7 +132,7 @@ namespace Snp.App
                     .Intercept(new AuthorizationHeaderInterceptor(LogFactory.CreateLogger<AuthorizationHeaderInterceptor>(),ApplicationData.Current.LocalSettings))
                     .Intercept(new ErrorHandlerInterceptor());
                 
-                Repository = new GrpcSnpRepository(_invoker);
+                Repository = new GrpcSnpRepository(_invoker,mapper);
             }
             catch (System.Exception ex)
             {

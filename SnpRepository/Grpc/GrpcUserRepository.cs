@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Snp.Models;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Grpc.Core;
 using Snp.V1;
 using User = Snp.Models.User;
@@ -17,22 +19,25 @@ namespace Snp.Repository.Grpc
         
         private readonly UserService.UserServiceClient _client;
 
-        public GrpcUserRepository(CallInvoker invoker)
+        private readonly Mapper _mapper;
+
+        public GrpcUserRepository(CallInvoker invoker,Mapper mapper)
         {
             _client = new UserService.UserServiceClient(invoker);
+            _mapper = mapper;
         }
         
 
         public async Task<User> GetById(string id)
         {
-            var request = new  GetUserRequest();
-            var cts = new CancellationTokenSource(); 
-            cts.CancelAfter(TimeSpan.FromSeconds(10)); 
-            var reply = await _client.GetUserAsync(request, cancellationToken: cts.Token);
+            var request = new  GetUserRequest
+            {
+                Id = id
+            };
 
-            var user = new User().FromPb(reply.User);
+            var response = await _client.GetUserAsync(request);
             
-            return Task.FromResult(user).Result;
+            return _mapper.Map<User>(response.User);;
         }
     }
 }

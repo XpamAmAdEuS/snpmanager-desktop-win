@@ -23,8 +23,9 @@ namespace Snp.App.ViewModels
         {
             await _dispatcherQueue.EnqueueAsync(() =>
             {
-                if (!_myModel.Any(p =>p.Name==item.Name && p.Path == item.Path))
-                {
+                if (!_myModel.Any(p =>
+                        p.Name==item.Name && 
+                        p.Path == item.Path)) {
 
                     _myModel.Add(item);
                     
@@ -33,18 +34,64 @@ namespace Snp.App.ViewModels
             });
         }
         
+        private bool _isUpLoading;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the Customers list is currently being updated. 
+        /// </summary>
+        public bool IsUpLoading
+        {
+            get => _isUpLoading; 
+            set => Set(ref _isUpLoading, value);
+        }
+        
         public async Task Upload()
         {
-            await _dispatcherQueue.EnqueueAsync(() =>
+            await _dispatcherQueue.EnqueueAsync(() => IsUpLoading = true);
+            
+            
+            if (_myModel.Count > 0)
             {
-                if (_myModel.Count > 0)
+                foreach (var t in _myModel)
                 {
-                    foreach (var file in _myModel)
+                    await _dispatcherQueue.EnqueueAsync(() =>
                     {
-                        App.Repository.MusicUploads.Upload(file.Path,file.Name); 
-                    }
+                        App.Repository.MusicUploads.Upload(t.Path,t.Name);
+                        t.Progress = 100;
+                        t.ShowPaused = false;
+                        OnPropertyChanged(nameof(Model));
+                    });
+                    
+                   // await App.Repository.MusicUploads.Upload(t.Path,t.Name);
+                   //  t.Progress = 100;
+                   //  t.ShowPaused = false;
                 }
-            });
+
+                IsUpLoading = false;
+            }
+            
+            
+            // await _dispatcherQueue.EnqueueAsync(() =>
+            // {
+            //     if (_myModel.Count > 0)
+            //     {
+            //         foreach (var file in _myModel)
+            //         {
+            //             
+            //          App.Repository.MusicUploads.Upload(file.Path,file.Name);
+            //
+            //          
+            //          
+            //              var found = _myModel.FirstOrDefault(p=>p.Name==file.Name && 
+            //                                                     p.Path == file.Path);
+            //              found.Progress = 100;
+            //              found.ShowPaused = false;
+            //             
+            //           
+            //         }
+            //         IsUpLoading = false;
+            //     }
+            // });
         }
         
         private ObservableCollection<UploadItemModel> _myModel;
