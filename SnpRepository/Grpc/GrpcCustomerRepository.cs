@@ -1,4 +1,3 @@
-using System;
 using Snp.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,16 +26,16 @@ namespace Snp.Repository.Grpc
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Customer>> SearchCustomerAsync()
+        public async Task<IEnumerable<Customer>> SearchCustomerAsync(SearchRequestModel searchRequestModel)
         {
            
-            var result =  await _client.SearchCustomerAsync(new ProtoCustomerRepo.Types.SearchRequest());
+            var result =  await _client.SearchCustomerAsync(_mapper.Map<SearchRequest>(searchRequestModel));
             return result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
         }
         
         public async Task<IEnumerable<Customer>> SearchByTitleAsync(string search)
         {
-            var result =  await _client.SearchCustomerAsync(new  ProtoCustomerRepo.Types.SearchRequest());
+            var result =  await _client.SearchCustomerAsync(new  SearchRequest());
             return result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
         }
         

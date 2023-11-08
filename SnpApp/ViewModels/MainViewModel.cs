@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Dispatching;
 using CommunityToolkit.WinUI;
+using Snp.Models;
 
 namespace Snp.App.ViewModels
 {
@@ -19,6 +20,8 @@ namespace Snp.App.ViewModels
         private int _pageSize = 10;
         private int _pageNumber;
         private int _pageCount;
+
+        private SearchRequestModel _searchRequestModel = new();
 
         /// <summary>
         /// Creates a new MainViewModel.
@@ -93,7 +96,7 @@ namespace Snp.App.ViewModels
             
             await dispatcherQueue.EnqueueAsync(() => IsLoading = true);
 
-            var customers = await App.Repository.Customers.SearchCustomerAsync();
+            var customers = await App.Repository.Customers.SearchCustomerAsync(_searchRequestModel);
             if (customers == null)
             {
                 return;
@@ -141,7 +144,9 @@ namespace Snp.App.ViewModels
         {
             await dispatcherQueue.EnqueueAsync(() => IsLoading = true);
 
-            var customers = await App.Repository.Customers.SearchCustomerAsync();
+            _searchRequestModel.PerPage = (uint)pageSize;
+
+            var customers = await App.Repository.Customers.SearchCustomerAsync(_searchRequestModel);
             if (customers == null)
             {
                 return;

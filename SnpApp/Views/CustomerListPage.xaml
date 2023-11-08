@@ -39,14 +39,14 @@
                         RelativePanel.LeftOf="CustomerSearchBox"
                         RelativePanel.Below="MainCommandBar"
                         RelativePanel.RightOf="PageTitle">
-                <!-- <AppBarButton ToolTipService.ToolTip="First" -->
-                <!--               Icon="Previous" -->
-                <!--               Command="{x:Bind ViewModel.FirstAsyncCommand, Mode=OneWay}" -->
-                <!--               Foreground="{ThemeResource SystemAccentColor}" /> -->
-                <!-- <AppBarButton ToolTipService.ToolTip="Previous" -->
-                <!--               Icon="Back" -->
-                <!--               Command="{x:Bind ViewModel.PreviousAsyncCommand, Mode=OneWay}" -->
-                <!--               Foreground="{ThemeResource SystemAccentColor}" /> -->
+                <AppBarButton ToolTipService.ToolTip="First"
+                              Icon="Previous"
+                              Command="{x:Bind ViewModel.FirstAsyncCommand, Mode=OneWay}"
+                              Foreground="{ThemeResource SystemAccentColor}" />
+                <AppBarButton ToolTipService.ToolTip="Previous"
+                              Icon="Back"
+                              Command="{x:Bind ViewModel.PreviousAsyncCommand, Mode=OneWay}"
+                              Foreground="{ThemeResource SystemAccentColor}" />
                 <AppBarElementContainer VerticalContentAlignment="Center">
                     <TextBlock Text="Page"
                                Margin="12 0 8 0" />
@@ -62,14 +62,14 @@
                     <TextBlock Text="{x:Bind ViewModel.PageCount, Mode=OneWay}"
                                Margin="0 0 12 0" />
                 </AppBarElementContainer>
-                <!-- <AppBarButton ToolTipService.ToolTip="Next" -->
-                <!--               Icon="Forward" -->
-                <!--               Command="{x:Bind ViewModel.NextAsyncCommand, Mode=OneWay}" -->
-                <!--               Foreground="{ThemeResource SystemAccentColor}" /> -->
-                <!-- <AppBarButton ToolTipService.ToolTip="Last" -->
-                <!--               Icon="Next" -->
-                <!--               Command="{x:Bind ViewModel.LastAsyncCommand, Mode=OneWay}" -->
-                <!--               Foreground="{ThemeResource SystemAccentColor}" /> -->
+                <AppBarButton ToolTipService.ToolTip="Next"
+                              Icon="Forward"
+                              Command="{x:Bind ViewModel.NextAsyncCommand, Mode=OneWay}"
+                              Foreground="{ThemeResource SystemAccentColor}" />
+                <AppBarButton ToolTipService.ToolTip="Last"
+                              Icon="Next"
+                              Command="{x:Bind ViewModel.LastAsyncCommand, Mode=OneWay}"
+                              Foreground="{ThemeResource SystemAccentColor}" />
                 <AppBarSeparator />
                 <AppBarElementContainer VerticalContentAlignment="Center">
                     <ComboBox ItemsSource="{x:Bind ViewModel.PageSizes}"

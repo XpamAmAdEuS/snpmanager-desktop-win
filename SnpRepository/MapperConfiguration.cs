@@ -1,6 +1,6 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Snp.Models;
+using Snp.V1;
 
 namespace Snp.Repository;
 
@@ -12,6 +12,7 @@ public class MapperConfig
         var config = new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<V1.ProtoCustomerRepo.Types.ProtoCustomer, Customer>().ReverseMap();
+            cfg.CreateMap<SearchRequest, SearchRequestModel>().ReverseMap();
             cfg.CreateMap<V1.ProtoSiteRepo.Types.ProtoSite, Site>()
                 // //Monday
                 // .ForMember(dest => dest.OpenMon, 
