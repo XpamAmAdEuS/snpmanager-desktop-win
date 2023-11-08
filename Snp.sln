@@ -10,7 +10,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Snp.App", "SnpApp\Snp.App.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snp.Pb", "SnpPb\Snp.Pb.csproj", "{FF27D6DC-7BB9-4204-970E-A1156932E2DB}"
 EndProject
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{061E8524-0025-4C32-A021-9C354F9E8DDA}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
