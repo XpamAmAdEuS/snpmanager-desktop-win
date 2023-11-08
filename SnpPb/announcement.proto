@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "google/protobuf/wrappers.proto";
+import "common.proto";
+
+
+message ProtoAnnouncementRepo {
+  message ProtoAnnouncement {
+    uint64   id = 1;
+    uint64   customer_id= 2;
+    string   file_name= 3;
+    int64    file_size= 4;
+    string   hash= 5;
+    string   title= 6;
+    int32    duration= 7;
+    bool     enabled= 8;
+  }
+  repeated ProtoAnnouncement announcements = 1;
+
+  message SearchResponse {
+    repeated ProtoAnnouncement data = 1;
+    uint32 total_records = 2;
+  }
+
+  message UpdateRequest {
+    google.protobuf.UInt64Value id = 1;
+    ProtoAnnouncement announcement = 2;
+  }
+}
+
+service AnnouncementCrud {
+  rpc CreateAnnouncement(ProtoAnnouncementRepo.ProtoAnnouncement) returns (ProtoAnnouncementRepo.ProtoAnnouncement);
+  rpc GetListAnnouncement(google.protobuf.UInt64Value) returns (stream ProtoAnnouncementRepo.ProtoAnnouncement);
+  rpc GetOneAnnouncement(google.protobuf.UInt64Value) returns (ProtoAnnouncementRepo.ProtoAnnouncement);
+  rpc UpdateAnnouncement(ProtoAnnouncementRepo.UpdateRequest) returns (ProtoAnnouncementRepo.ProtoAnnouncement);
+  rpc DeleteAnnouncement(google.protobuf.UInt64Value) returns (google.protobuf.BoolValue);
+  rpc SearchAnnouncement(SearchRequest) returns (ProtoAnnouncementRepo.SearchResponse);
+}

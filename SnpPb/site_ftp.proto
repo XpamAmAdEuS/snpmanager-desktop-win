@@ -6,7 +6,7 @@ option go_package = ".;pb";
 import "google/protobuf/timestamp.proto";
 
 
-message SiteFTP {
+message ProtoSiteFTP {
   string  password =1;
   string  home_dir =2;
   string  shell            =3;

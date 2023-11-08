@@ -5,11 +5,8 @@ option go_package = ".;pb";
 
 import "google/protobuf/empty.proto";
 
-
 service HealthService {
-
-  // Health checking that determines whether backend instance responds properly.
-  rpc Healthcheck (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc Healthcheck (google.protobuf.Empty) returns (google.protobuf.Empty);
 }
 
 // Data returned in the Error Details.

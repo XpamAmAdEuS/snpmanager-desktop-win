@@ -6,7 +6,7 @@ option go_package = ".;pb";
 import "google/protobuf/timestamp.proto";
 
 
-message SitePlayer {
+message ProtoSitePlayer {
   string                      player_card_type           =1;
   string                      player_audio_connector_type =2;
   string                      player_sound_card_type      =3;

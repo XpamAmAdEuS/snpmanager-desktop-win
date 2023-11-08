@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "google/protobuf/wrappers.proto";
+
+message Ids { repeated int64 ids = 1; }
+
+enum FilterEnabled {
+  Enabled = 0;
+  Disabled = 1;
+  All = 2;
+}
+
+message SearchRequest {
+  string search_text = 1;
+  string sort_column = 2;
+  string sort_direction = 3;
+  uint32 per_page = 4;
+  uint32 current_page = 5;
+  repeated string fields =  6;
+  FilterEnabled enabled = 7;
+  google.protobuf.UInt64Value customer_id = 8;
+  google.protobuf.UInt64Value music_type_id = 9;
+}

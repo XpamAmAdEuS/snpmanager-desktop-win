@@ -1,13 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>11.0</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Google.Protobuf" Version="3.24.4" />
+        <PackageReference Include="Google.Api.CommonProtos" Version="2.12.0" />
+        <PackageReference Include="Google.Api.Gax.Grpc" Version="4.4.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.25.0" />
         <PackageReference Include="Grpc.Net.Client" Version="2.58.0" />
         <PackageReference Include="Grpc.Tools" Version="2.59.0">
             <PrivateAssets>all</PrivateAssets>
@@ -17,37 +20,28 @@
 
     <ItemGroup>
         <SupportedPlatform Include="browser" />
-        <Protobuf Include="announcement_message.proto" GrpcServices="None" />
-        <Protobuf Include="announcement_service.proto" GrpcServices="Client" />
-        <Protobuf Include="auth_service.proto" GrpcServices="Client" />
-        <Protobuf Include="customer_message.proto" GrpcServices="None" />
-        <Protobuf Include="customer_music_message.proto" GrpcServices="None" />
-        <Protobuf Include="customer_music_service.proto" GrpcServices="Client" />
-        <Protobuf Include="customer_music_type_message.proto" GrpcServices="None" />
-        <Protobuf Include="customers_service.proto" GrpcServices="Client" />
-        <Protobuf Include="enabled_filter_message.proto" GrpcServices="None" />
+        <Protobuf Include="announcement.proto" GrpcServices="Client" />
+        <Protobuf Include="auth.proto" GrpcServices="Client" />
+        <Protobuf Include="common.proto" />
+        <Protobuf Include="customer.proto" GrpcServices="Client" />
+        <Protobuf Include="customer_music.proto" GrpcServices="Client" />
+        <Protobuf Include="customer_music_type.proto" GrpcServices="None" />
         <Protobuf Include="health_service.proto" GrpcServices="Client" />
-        <Protobuf Include="import_music_message.proto" GrpcServices="None" />
-        <Protobuf Include="import_music_service.proto" GrpcServices="Client" />
-        <Protobuf Include="music_message.proto" GrpcServices="None" />
-        <Protobuf Include="music_preference_message.proto" GrpcServices="None" />
-        <Protobuf Include="music_service.proto" GrpcServices="Client" />
-        <Protobuf Include="music_type_message.proto" GrpcServices="None" />
-        <Protobuf Include="music_type_service.proto" GrpcServices="Client" />
-        <Protobuf Include="music_upload_service.proto" GrpcServices="Client" />
-        <Protobuf Include="playlist.proto" GrpcServices="None" />
-        <Protobuf Include="promotion_message.proto" GrpcServices="None" />
-        <Protobuf Include="promotion_service.proto" GrpcServices="Client" />
-        <Protobuf Include="site_announcement_message.proto" GrpcServices="None" />
-        <Protobuf Include="site_ftp_message.proto" GrpcServices="None" />
-        <Protobuf Include="site_message.proto" GrpcServices="None" />
-        <Protobuf Include="site_player_message.proto" GrpcServices="None" />
-        <Protobuf Include="site_pos_message.proto" GrpcServices="None" />
-        <Protobuf Include="site_service.proto" GrpcServices="Client" />
-        <Protobuf Include="user_message.proto" GrpcServices="None" />
-        <Protobuf Include="user_service.proto" GrpcServices="Client" />
+        <Protobuf Include="import_music.proto" GrpcServices="Client" />
+        <Protobuf Include="music.proto" GrpcServices="Client" />
+        <Protobuf Include="music_preference.proto" />
+        <Protobuf Include="music_type.proto" GrpcServices="Client" />
+        <Protobuf Include="music_upload.proto" GrpcServices="Client" />
+        <Protobuf Include="playlist.proto" />
+        <Protobuf Include="promotion.proto" GrpcServices="Client" />
+        <Protobuf Include="site.proto" GrpcServices="Client" />
+        <Protobuf Include="site_announcement.proto" />
+        <Protobuf Include="site_ftp.proto" />
+        <Protobuf Include="site_player.proto" />
+        <Protobuf Include="site_pos.proto" />
+        <Protobuf Include="user.proto" GrpcServices="Client" />
     </ItemGroup>
-
+    
 <!--    <ItemGroup>-->
 <!--        <Content Include="*.proto">-->
 <!--            <Pack>true</Pack>-->

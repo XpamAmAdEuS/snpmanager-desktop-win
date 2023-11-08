@@ -3,83 +3,83 @@ syntax = "proto3";
 package snp.v1;
 option go_package = ".;pb";
 
-import "announcement_message.proto";
+import "announcement.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
-message SiteAnnouncement {
+message ProtoSiteAnnouncement {
   //Monday
   google.protobuf.Duration  AfterOpenAnnouncementMonTime   =1;
   uint64  AfterOpenAnnouncementMonID    =2;
-  Announcement  AfterOpenAnnouncementMon        =3;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterOpenAnnouncementMon        =3;
   google.protobuf.Duration  BeforeCloseAnnouncementMonTime =4;
   uint64  BeforeCloseAnnouncementMonID   =5;
-  Announcement  BeforeCloseAnnouncementMon     =6;
+  ProtoAnnouncementRepo.ProtoAnnouncement BeforeCloseAnnouncementMon     =6;
   uint64  AfterCloseAnnouncementMonID    =7;
-  Announcement  AfterCloseAnnouncementMon   =8;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterCloseAnnouncementMon   =8;
 
   //Tuesday
   google.protobuf.Duration  AfterOpenAnnouncementTueTime   =9;
   uint64  AfterOpenAnnouncementTueID     =10;
-  Announcement  AfterOpenAnnouncementTue       =11;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterOpenAnnouncementTue       =11;
   google.protobuf.Timestamp  BeforeCloseAnnouncementTueTime =12;
   uint64  BeforeCloseAnnouncementTueID   =13;
-  Announcement  BeforeCloseAnnouncementTue     =14;
+  ProtoAnnouncementRepo.ProtoAnnouncement BeforeCloseAnnouncementTue     =14;
   uint64  AfterCloseAnnouncementTueID    =15;
-  Announcement  AfterCloseAnnouncementTue      =16;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterCloseAnnouncementTue      =16;
 
 
   //Wednesday
   google.protobuf.Duration  AfterOpenAnnouncementWedTime  =17;
   uint64  AfterOpenAnnouncementWedID     =18;
-  Announcement  AfterOpenAnnouncementWed  =19;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterOpenAnnouncementWed  =19;
   google.protobuf.Duration  BeforeCloseAnnouncementWedTime  =20;
   uint64  BeforeCloseAnnouncementWedID   =21;
-  Announcement  BeforeCloseAnnouncementWed =22;
+  ProtoAnnouncementRepo.ProtoAnnouncement BeforeCloseAnnouncementWed =22;
   uint64  AfterCloseAnnouncementWedID    =23;
-  Announcement  AfterCloseAnnouncementWed =24;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterCloseAnnouncementWed =24;
 
 
   //Thursday
   google.protobuf.Duration AfterOpenAnnouncementThuTime   =25;
   uint64  AfterOpenAnnouncementThuID     =26;
-  Announcement  AfterOpenAnnouncementThu =27;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterOpenAnnouncementThu =27;
   google.protobuf.Duration  BeforeCloseAnnouncementThuTime =28;
   uint64  BeforeCloseAnnouncementThuID   =29;
-  Announcement  BeforeCloseAnnouncementThu   =30;
+  ProtoAnnouncementRepo.ProtoAnnouncement BeforeCloseAnnouncementThu   =30;
   uint64  AfterCloseAnnouncementThuID    =31;
-  Announcement  AfterCloseAnnouncementThu  =32;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterCloseAnnouncementThu  =32;
 
 
   //Friday
   google.protobuf.Duration  AfterOpenAnnouncementFriTime   =33;
   uint64  AfterOpenAnnouncementFriID     =34;
-  Announcement  AfterOpenAnnouncementFri       =35;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterOpenAnnouncementFri       =35;
   google.protobuf.Duration  BeforeCloseAnnouncementFriTime =36;
   uint64  BeforeCloseAnnouncementFriID   =37;
-  Announcement  BeforeCloseAnnouncementFri     =38;
+  ProtoAnnouncementRepo.ProtoAnnouncement BeforeCloseAnnouncementFri     =38;
   uint64  AfterCloseAnnouncementFriID    =39;
-  Announcement  AfterCloseAnnouncementFri      =40;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterCloseAnnouncementFri      =40;
 
 
   //Saturday
   google.protobuf.Duration  AfterOpenAnnouncementSatTime    =41;
   uint64  AfterOpenAnnouncementSatID      =42;
-  Announcement  AfterOpenAnnouncementSat        =43;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterOpenAnnouncementSat        =43;
   google.protobuf.Duration  BeforeCloseAnnouncementSatTime  =44;
   uint64  BeforeCloseAnnouncementSatID    =45;
-  Announcement  BeforeCloseAnnouncementSat      =46;
+  ProtoAnnouncementRepo.ProtoAnnouncement BeforeCloseAnnouncementSat      =46;
   uint64  AfterCloseAnnouncementSatID     =47;
-  Announcement  AfterCloseAnnouncementSat       =48;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterCloseAnnouncementSat       =48;
 
 
   //Sunday
   google.protobuf.Duration  AfterOpenAnnouncementSunTime    =49;
   uint64  AfterOpenAnnouncementSunID      =50;
-  Announcement  AfterOpenAnnouncementSun        =51;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterOpenAnnouncementSun        =51;
   google.protobuf.Duration  BeforeCloseAnnouncementSunTime  =52;
   uint64  BeforeCloseAnnouncementSunID    =53;
-  Announcement  BeforeCloseAnnouncementSun      =54;
+  ProtoAnnouncementRepo.ProtoAnnouncement BeforeCloseAnnouncementSun      =54;
   uint64  AfterCloseAnnouncementSunID     =55;
-  Announcement  AfterCloseAnnouncementSun       =56;
+  ProtoAnnouncementRepo.ProtoAnnouncement AfterCloseAnnouncementSun       =56;
 }
