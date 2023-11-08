@@ -17,7 +17,6 @@ namespace Snp.App.ViewModels
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         
-        private int _pageSize = 10;
         private int _pageNumber;
         private int _pageCount;
 
@@ -30,20 +29,19 @@ namespace Snp.App.ViewModels
         public MainViewModel()
         {
             FirstAsyncCommand = new AsyncRelayCommand(
-                async () => await GetCustomerListAsync(1, _pageSize),
-                // async () => await GetMountains(1000, _pageSize), // Test for out of range.
+                async () => await GetCustomerListAsync(1),
                 () => _pageNumber != 1
             );
             PreviousAsyncCommand = new AsyncRelayCommand(
-                async () => await GetCustomerListAsync(_pageNumber - 1, _pageSize),
+                async () => await GetCustomerListAsync(_pageNumber - 1),
                 () => _pageNumber > 1
             );
             NextAsyncCommand = new AsyncRelayCommand(
-                async () => await GetCustomerListAsync(_pageNumber + 1, _pageSize),
+                async () => await GetCustomerListAsync(_pageNumber + 1),
                 () => _pageNumber < _pageCount
             );
             LastAsyncCommand = new AsyncRelayCommand(
-                async () => await GetCustomerListAsync(_pageCount, _pageSize),
+                async () => await GetCustomerListAsync(_pageCount),
                 () => _pageNumber != _pageCount
             );
 
@@ -57,7 +55,7 @@ namespace Snp.App.ViewModels
         /// </summary>
         public ObservableCollection<CustomerViewModel> Customers { get; } = new ();
 
-        private CustomerViewModel _selectedCustomer;
+        private CustomerViewModel? _selectedCustomer;
         
         
 
@@ -79,6 +77,11 @@ namespace Snp.App.ViewModels
         {
             get => _isLoading; 
             set => SetProperty(ref _isLoading, value);
+        }
+        
+        public bool IsReady
+        {
+            get => !_isLoading; 
         }
         
         public IAsyncRelayCommand FirstAsyncCommand { get; }
@@ -120,17 +123,19 @@ namespace Snp.App.ViewModels
             // });
         }
         
-        public List<int> PageSizes => new() { 5, 10, 20, 50, 100 };
+        public List<uint> PageSizes => new() { 5, 10, 20, 50, 100 };
 
-        public int PageSize
+        public uint PageSize
         {
-            get => _pageSize;
+            get => _searchRequestModel.PerPage;
             set
             {
-                SetProperty(ref _pageSize, value);
+                _searchRequestModel.PerPage = value;
                 Refresh();
             }
         }
+        
+        public SearchRequestModel SearchRequestModel => _searchRequestModel;
 
         public int PageNumber
         {
@@ -147,11 +152,10 @@ namespace Snp.App.ViewModels
         /// <summary>
         /// Gets the complete list of customers from the database.
         /// </summary>
-        public async Task GetCustomerListAsync(int pageIndex, int pageSize)
+        public async Task GetCustomerListAsync(int pageIndex)
         {
             await dispatcherQueue.EnqueueAsync(() => IsLoading = true);
-
-            _searchRequestModel.PerPage = (uint)pageSize;
+            
             _searchRequestModel.CurrentPage = (uint)pageIndex;
 
             var customers = await App.Repository.Customers.SearchCustomerAsync(_searchRequestModel);
@@ -198,7 +202,7 @@ namespace Snp.App.ViewModels
         
         private void Refresh()
         {
-            _pageNumber = 0;
+            _searchRequestModel.CurrentPage = 0;
             FirstAsyncCommand.Execute(null);
         }
     }
