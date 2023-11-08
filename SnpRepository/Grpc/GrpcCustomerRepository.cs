@@ -26,11 +26,17 @@ namespace Snp.Repository.Grpc
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Customer>> SearchCustomerAsync(SearchRequestModel searchRequestModel)
+        public async Task<PaginatedList<Customer>> SearchCustomerAsync(SearchRequestModel searchRequestModel)
         {
            
             var result =  await _client.SearchCustomerAsync(_mapper.Map<SearchRequest>(searchRequestModel));
-            return result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
+            var items = result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
+            int count = (int)result.TotalRecords;
+            int pageSize = (int)searchRequestModel.PerPage;
+            int pageIndex = (int)searchRequestModel.CurrentPage;
+            return new PaginatedList<Customer>(items, count, pageIndex, pageSize);
+            
+            //return result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
         }
         
         public async Task<IEnumerable<Customer>> SearchByTitleAsync(string search)

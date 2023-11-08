@@ -94,23 +94,30 @@ namespace Snp.App.ViewModels
         {
             
             
-            await dispatcherQueue.EnqueueAsync(() => IsLoading = true);
-
-            var customers = await App.Repository.Customers.SearchCustomerAsync(_searchRequestModel);
-            if (customers == null)
-            {
-                return;
-            }
-            
-            await dispatcherQueue.EnqueueAsync(() =>
-            {
-                Customers.Clear();
-                foreach (var c in customers)
-                {
-                    Customers.Add(new CustomerViewModel(c));
-                }
-                IsLoading = false;
-            });
+            // await dispatcherQueue.EnqueueAsync(() => IsLoading = true);
+            //
+            // var customers = await App.Repository.Customers.SearchCustomerAsync(_searchRequestModel);
+            // if (customers.Items == null)
+            // {
+            //     return;
+            // }
+            //
+            // PageNumber = customers.PageIndex;
+            // PageCount = customers.PageCount;
+            // FirstAsyncCommand.NotifyCanExecuteChanged();
+            // PreviousAsyncCommand.NotifyCanExecuteChanged();
+            // NextAsyncCommand.NotifyCanExecuteChanged();
+            // LastAsyncCommand.NotifyCanExecuteChanged();
+            //
+            // await dispatcherQueue.EnqueueAsync(() =>
+            // {
+            //     Customers.Clear();
+            //     foreach (var c in customers.Items)
+            //     {
+            //         Customers.Add(new CustomerViewModel(c));
+            //     }
+            //     IsLoading = false;
+            // });
         }
         
         public List<int> PageSizes => new() { 5, 10, 20, 50, 100 };
@@ -145,17 +152,25 @@ namespace Snp.App.ViewModels
             await dispatcherQueue.EnqueueAsync(() => IsLoading = true);
 
             _searchRequestModel.PerPage = (uint)pageSize;
+            _searchRequestModel.CurrentPage = (uint)pageIndex;
 
             var customers = await App.Repository.Customers.SearchCustomerAsync(_searchRequestModel);
-            if (customers == null)
+            if (customers.Items == null)
             {
                 return;
             }
+            
+            PageNumber = customers.PageIndex;
+            PageCount = customers.PageCount;
+            FirstAsyncCommand.NotifyCanExecuteChanged();
+            PreviousAsyncCommand.NotifyCanExecuteChanged();
+            NextAsyncCommand.NotifyCanExecuteChanged();
+            LastAsyncCommand.NotifyCanExecuteChanged();
 
             await dispatcherQueue.EnqueueAsync(() =>
             {
                 Customers.Clear();
-                foreach (var c in customers)
+                foreach (var c in customers.Items)
                 {
                     Customers.Add(new CustomerViewModel(c));
                 }
