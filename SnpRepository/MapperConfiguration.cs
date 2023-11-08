@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Snp.Models;
 
 namespace Snp.Repository;
@@ -10,9 +11,66 @@ public class MapperConfig
         //Provide all the Mapping Configuration
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<Snp.V1.Customer, Customer>().ReverseMap();
-            cfg.CreateMap<Snp.V1.Site, Site>().ReverseMap();
-            cfg.CreateMap<Snp.V1.User, User>().ReverseMap();
+            cfg.CreateMap<V1.ProtoCustomerRepo.Types.ProtoCustomer, Customer>().ReverseMap();
+            cfg.CreateMap<V1.ProtoSiteRepo.Types.ProtoSite, Site>()
+                // //Monday
+                // .ForMember(dest => dest.OpenMon, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.OpenMon) ))
+                //
+                // .ForMember(dest => dest.CloseMon, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.CloseMon)))
+                // //Tuesday
+                // .ForMember(dest => dest.OpenTue, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.OpenTue)))
+                //
+                // .ForMember(dest => dest.CloseTue, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.CloseTue)))
+                //
+                // //wednesday
+                // .ForMember(dest => dest.OpenWed, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.OpenWed)))
+                // .ForMember(dest => dest.CloseWed, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.CloseWed)))
+                //
+                // .ForMember(dest => dest.OpenThu, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.OpenThu)))
+                // .ForMember(dest => dest.CloseThu, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.CloseThu)))
+                //
+                //
+                // .ForMember(dest => dest.OpenFri, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.OpenFri)))
+                // .ForMember(dest => dest.CloseFri, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.CloseFri)))
+                //
+                // .ForMember(dest => dest.OpenSat, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.OpenSat)))
+                // .ForMember(dest => dest.CloseSat, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.CloseSat)))
+                //
+                // .ForMember(dest => dest.OpenSun, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.OpenSun)))
+                // .ForMember(dest => dest.CloseSun, 
+                //     act => act.MapFrom(
+                //         src => TimeOnly.Parse(src.CloseSun)))
+               
+                
+                
+                .ReverseMap();
+            cfg.CreateMap<V1.ProtoUserRepo.Types.ProtoUser, User>().ReverseMap();
             
             // //Configuring Employee and EmployeeDTO
             // cfg.CreateMap<Employee, EmployeeDTO>()

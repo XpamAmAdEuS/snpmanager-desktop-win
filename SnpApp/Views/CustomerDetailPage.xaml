@@ -177,97 +177,137 @@
                                 Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </muxc:Expander.Header>
 
-                    <Grid
-                            Margin="0,4,0,0">
+                    <Grid Margin="0,4,0,0">
                     
                         <toolkit:DataGrid
                                 BorderThickness="0"
                                 CanUserReorderColumns="False"
                                 CanUserResizeColumns="False"
-                                GridLinesVisibility="None"
+                                GridLinesVisibility="All"
                                 IsReadOnly="True"
                                 AutoGenerateColumns="False"
                                 ItemsSource="{x:Bind ViewModel.Sites, Mode=OneWay}"
                                 SelectedItem="{x:Bind ViewModel.SelectedSite, Mode=TwoWay}"
                                 Sorting="DataGrid_Sorting">
                             <toolkit:DataGrid.Columns>
-                                <!-- <toolkit:DataGridTemplateColumn -->
-                                <!--         Header="Invoice" -->
-                                <!--         Tag="InvoiceNumber"> -->
-                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!--         <DataTemplate x:DataType="models:Site"> -->
-                                <!--             <HyperlinkButton -->
-                                <!--                     Content="{x:Bind InvoiceNumber}" -->
-                                <!--                     Margin="12,0" -->
-                                <!--                     Click="ViewSiteButton_Click"/> -->
-                                <!--         </DataTemplate> -->
-                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!-- </toolkit:DataGridTemplateColumn> -->
-                                <!-- <toolkit:DataGridTemplateColumn -->
-                                <!--         Header="Placed" -->
-                                <!--         Tag="DatePlaced"> -->
-                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!--         <DataTemplate x:DataType="models:Site"> -->
-                                <!--             <TextBlock -->
-                                <!--                     VerticalAlignment="Center" -->
-                                <!--                     Margin="12,0" -->
-                                <!--                     Text="{x:Bind sys:String.Format('\{0:d\}', DatePlaced)}"/> -->
-                                <!--         </DataTemplate> -->
-                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!-- </toolkit:DataGridTemplateColumn> -->
-                                <!-- <toolkit:DataGridTemplateColumn -->
-                                <!--         Header="Filled" -->
-                                <!--         Tag="DateFilled"> -->
-                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!--         <DataTemplate x:DataType="models:Site"> -->
-                                <!--             <TextBlock -->
-                                <!--                     VerticalAlignment="Center" -->
-                                <!--                     Margin="12,0" -->
-                                <!--                     Text="{x:Bind sys:String.Format('\{0:d\}', DateFilled)}"/> -->
-                                <!--         </DataTemplate> -->
-                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!-- </toolkit:DataGridTemplateColumn> -->
-                                <!-- <toolkit:DataGridTemplateColumn -->
-                                <!--         Header="Subtotal"> -->
-                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!--         <DataTemplate x:DataType="models:Site"> -->
-                                <!--             <TextBlock -->
-                                <!--                     VerticalAlignment="Center" -->
-                                <!--                     Margin="12,0" -->
-                                <!--                     Text="{x:Bind sys:String.Format('\{0:c\}', Subtotal)}"/> -->
-                                <!--         </DataTemplate> -->
-                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!-- </toolkit:DataGridTemplateColumn> -->
-                                <!-- <toolkit:DataGridTemplateColumn -->
-                                <!--         Header="Tax"> -->
-                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!--         <DataTemplate x:DataType="models:Site"> -->
-                                <!--             <TextBlock -->
-                                <!--                     VerticalAlignment="Center" -->
-                                <!--                     Margin="12,0" -->
-                                <!--                     Text="{x:Bind sys:String.Format('\{0:c\}', Tax)}"/> -->
-                                <!--         </DataTemplate> -->
-                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!-- </toolkit:DataGridTemplateColumn> -->
-                                <!-- <toolkit:DataGridTemplateColumn -->
-                                <!--         Header="Total" -->
-                                <!--         Tag="GrandTotal"> -->
-                                <!--     <toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!--         <DataTemplate x:DataType="models:Site"> -->
-                                <!--             <TextBlock -->
-                                <!--                     VerticalAlignment="Center" -->
-                                <!--                     Margin="12,0" -->
-                                <!--                     Text="{x:Bind sys:String.Format('\{0:c\}', GrandTotal)}"/> -->
-                                <!--         </DataTemplate> -->
-                                <!--     </toolkit:DataGridTemplateColumn.CellTemplate> -->
-                                <!-- </toolkit:DataGridTemplateColumn> -->
-                                <toolkit:DataGridTextColumn
-                                        Header="Status"
-                                        Tag="PaymentStatus"
-                                        Binding="{Binding PaymentStatus}"/>
-                                <toolkit:DataGridTextColumn
-                                        Header="Term"
-                                        Binding="{Binding Term}"/>
+                                <!-- <toolkit:DataGridTextColumn -->
+                                <!--         Header="Monday Opening" -->
+                                <!--         Binding="{Binding OpenMon}"/> -->
+                                <!-- <toolkit:DataGridTextColumn -->
+                                <!--     Header="Monday Close" -->
+                                <!--     Binding="{Binding CloseMon}"/> -->
+                                <toolkit:DataGridTemplateColumn Header="Monday"
+                                                                Tag="Mon">
+                                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate x:DataType="models:Site">
+                                            <Grid Background="Transparent"
+                                                  ColumnDefinitions="50, Auto, *"
+                                                  RowDefinitions ="20, Auto, *"
+                                                  ToolTipService.ToolTip="Monday hours">
+                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Open" />
+                                                <TextBlock Grid.Column="1" Text="Close" />
+                                                <TextBlock Grid.Row="1" Text="{Binding OpenMon}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CloseMon}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                                </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridTemplateColumn Header="Tuesday"
+                                                                Tag="Tue">
+                                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate x:DataType="models:Site">
+                                            <Grid Background="Transparent"
+                                                  ColumnDefinitions="50, Auto, *"
+                                                  RowDefinitions ="20, Auto, *"
+                                                  ToolTipService.ToolTip="Monday hours">
+                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Open" />
+                                                <TextBlock Grid.Column="1" Text="Close" />
+                                                <TextBlock Grid.Row="1" Text="{Binding OpenTue}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CloseTue}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                                </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridTemplateColumn Header="Monday"
+                                                                Tag="Mon">
+                                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate x:DataType="models:Site">
+                                            <Grid Background="Transparent"
+                                                  ColumnDefinitions="50, Auto, *"
+                                                  RowDefinitions ="20, Auto, *"
+                                                  ToolTipService.ToolTip="Monday hours">
+                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Open" />
+                                                <TextBlock Grid.Column="1" Text="Close" />
+                                                <TextBlock Grid.Row="1" Text="{Binding OpenMon}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CloseMon}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                                </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridTemplateColumn Header="Monday"
+                                                                Tag="Mon">
+                                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate x:DataType="models:Site">
+                                            <Grid Background="Transparent"
+                                                  ColumnDefinitions="50, Auto, *"
+                                                  RowDefinitions ="20, Auto, *"
+                                                  ToolTipService.ToolTip="Monday hours">
+                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Open" />
+                                                <TextBlock Grid.Column="1" Text="Close" />
+                                                <TextBlock Grid.Row="1" Text="{Binding OpenMon}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CloseMon}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                                </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridTemplateColumn Header="Monday"
+                                                                Tag="Mon">
+                                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate x:DataType="models:Site">
+                                            <Grid Background="Transparent"
+                                                  ColumnDefinitions="50, Auto, *"
+                                                  RowDefinitions ="20, Auto, *"
+                                                  ToolTipService.ToolTip="Monday hours">
+                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Open" />
+                                                <TextBlock Grid.Column="1" Text="Close" />
+                                                <TextBlock Grid.Row="1" Text="{Binding OpenMon}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CloseMon}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                                </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridTemplateColumn Header="Monday"
+                                                                Tag="Mon">
+                                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate x:DataType="models:Site">
+                                            <Grid Background="Transparent"
+                                                  ColumnDefinitions="50, Auto, *"
+                                                  RowDefinitions ="20, Auto, *"
+                                                  ToolTipService.ToolTip="Monday hours">
+                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Open" />
+                                                <TextBlock Grid.Column="1" Text="Close" />
+                                                <TextBlock Grid.Row="1" Text="{Binding OpenMon}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CloseMon}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                                </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridTemplateColumn Header="Monday"
+                                                                Tag="Mon">
+                                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate x:DataType="models:Site">
+                                            <Grid Background="Transparent"
+                                                  ColumnDefinitions="50, Auto, *"
+                                                  RowDefinitions ="20, Auto, *"
+                                                  ToolTipService.ToolTip="Monday hours">
+                                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Open" />
+                                                <TextBlock Grid.Column="1" Text="Close" />
+                                                <TextBlock Grid.Row="1" Text="{Binding OpenMon}" />
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CloseMon}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                                </toolkit:DataGridTemplateColumn>
                             </toolkit:DataGrid.Columns>
                         </toolkit:DataGrid>
                     

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Snp.Models
 {
@@ -35,6 +36,8 @@ namespace Snp.Models
         public bool Muted { get; set; }
         
         public uint SizeLimit { get; set; }
+        
+        public List<Site> Sites  { get; set; }
 
         /// <summary>
         /// Returns the customer's title.
@@ -48,20 +51,6 @@ namespace Snp.Models
             Email == other.Email &&
             Phone == other.Phone &&
             Address == other.Address;
-
-        public Customer FromPb(Snp.V1.Customer pb)
-        {
-            Id = pb.Id;
-            Title = pb.Title;
-            Person = pb.Person;
-            Email = pb.Email;
-            Phone = pb.Phone;
-            Address = pb.Address;
-            Muted = pb.Muted;
-            SizeLimit = pb.SizeLimit;
-            return this;
-
-        }
             
     }
 }

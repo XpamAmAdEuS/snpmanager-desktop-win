@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Snp.Models
 {
@@ -16,7 +15,7 @@ namespace Snp.Models
         public User()
         { }
         
-        public Guid Id  { get; set; }
+        public string Id  { get; set; }
         
         public User(List<string> authorities) : this()
         {
@@ -61,20 +60,6 @@ namespace Snp.Models
             LangKey == other.LangKey &&
             ImageUrl == other.ImageUrl &&
             Authorities == other.Authorities;
-
-        public User FromPb(Snp.V1.User pb)
-        {
-            Id =  new Guid(pb.Id);
-            FirstName = pb.FirstName;
-            LastName = pb.LastName;
-            FullName = pb.FullName;
-            Email = pb.Email;
-            LangKey = pb.LangKey;
-            ImageUrl = pb.ImageUrl;
-            Authorities = pb.Authorities.ToList();
-            return this;
-
-        }
             
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -13,7 +14,7 @@ using Snp.App.Models;
 
 namespace Snp.App.ViewModels
 {
-    public class MusicUploadViewModel : BindableBase
+    public class MusicUploadViewModel : ObservableObject
     {
         
         
@@ -42,7 +43,7 @@ namespace Snp.App.ViewModels
         public bool IsUpLoading
         {
             get => _isUpLoading; 
-            set => Set(ref _isUpLoading, value);
+            set => SetProperty(ref _isUpLoading, value);
         }
         
         public async Task Upload()

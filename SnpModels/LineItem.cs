@@ -1,5 +1,4 @@
 using System;
-using System.Text.Json.Serialization;
 
 namespace Snp.Models
 {
@@ -16,7 +15,6 @@ namespace Snp.Models
         /// <summary>
         /// Gets or sets the order the line item is associated with.
         /// </summary>
-        [JsonIgnore]
         public Site Site { get; set; }
 
         /// <summary>

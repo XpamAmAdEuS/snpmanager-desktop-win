@@ -18,11 +18,11 @@ namespace Snp.Repository.Grpc
     public class GrpcMusicUploadRepository : IMusicUploadRepository
     {
         
-        private readonly MusicUploadService.MusicUploadServiceClient _client;
+        private readonly MusicUploadCrud.MusicUploadCrudClient _client;
 
         public GrpcMusicUploadRepository(CallInvoker invoker)
         {
-            _client = new MusicUploadService.MusicUploadServiceClient(invoker);
+            _client = new MusicUploadCrud.MusicUploadCrudClient(invoker);
         }
         
 
@@ -48,7 +48,7 @@ namespace Snp.Repository.Grpc
                 int chunkLength = Math.Min(chunkSize, fileData.Length - startIndex);
                 byte[] chunk = new byte[chunkLength];
                 Array.Copy(fileData, startIndex, chunk, 0, chunkLength);
-              await requestStream.RequestStream.WriteAsync(new UploadMusicRequest { FileName = name,ChunkData = ByteString.CopyFrom(chunk) });
+              await requestStream.RequestStream.WriteAsync(new UploadRequest { FileName = name,ChunkData = ByteString.CopyFrom(chunk) });
             }
 
             await requestStream.RequestStream.CompleteAsync();

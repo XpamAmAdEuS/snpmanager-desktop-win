@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Snp.Models;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Snp.V1;
 using User = Snp.Models.User;
@@ -17,27 +15,21 @@ namespace Snp.Repository.Grpc
     public class GrpcUserRepository : IUserRepository
     {
         
-        private readonly UserService.UserServiceClient _client;
+        private readonly UserCrud.UserCrudClient _client;
 
         private readonly Mapper _mapper;
 
         public GrpcUserRepository(CallInvoker invoker,Mapper mapper)
         {
-            _client = new UserService.UserServiceClient(invoker);
+            _client = new UserCrud.UserCrudClient(invoker);
             _mapper = mapper;
         }
         
 
         public async Task<User> GetById(string id)
         {
-            var request = new  GetUserRequest
-            {
-                Id = id
-            };
-
-            var response = await _client.GetUserAsync(request);
-            
-            return _mapper.Map<User>(response.User);;
+            var response = await _client.GetOneUserAsync(new StringValue{Value = id});
+            return _mapper.Map<User>(response);;
         }
     }
 }

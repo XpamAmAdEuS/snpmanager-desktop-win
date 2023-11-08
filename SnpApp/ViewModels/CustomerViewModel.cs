@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
 using Snp.Models;
@@ -12,7 +14,7 @@ namespace Snp.App.ViewModels
     /// <summary>
     /// Provides a bindable wrapper for the Customer model class, encapsulating various services for access by the UI.
     /// </summary>
-    public class CustomerViewModel : BindableBase, IEditableObject
+    public class CustomerViewModel : ObservableObject, IEditableObject
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
@@ -148,6 +150,12 @@ namespace Snp.App.ViewModels
             }
         }
         
+        
+        public ObservableCollection<Site> Sites
+        {
+            get =>  new (Model.Sites);
+        }
+        
         /// <summary>
         /// Gets or sets the customer's email. 
         /// </summary>
@@ -174,14 +182,14 @@ namespace Snp.App.ViewModels
         public bool IsModified { get; set; }
         
         
-        public ObservableCollection<Site> Sites { get; } = new ();
+        public ObservableCollection<Site> Sites2 { get; } = new ();
         
         private Site _selectedSite;
         
         public Site SelectedSite
         {
             get => _selectedSite;
-            set => Set(ref _selectedSite, value);
+            set => SetProperty(ref _selectedSite, value);
         }
 
         private bool _isLoading;
@@ -192,7 +200,7 @@ namespace Snp.App.ViewModels
         public bool IsLoading
         {
             get => _isLoading;
-            set => Set(ref _isLoading, value);
+            set => SetProperty(ref _isLoading, value);
         }
 
         private bool _isNewCustomer;
@@ -203,7 +211,7 @@ namespace Snp.App.ViewModels
         public bool IsNewCustomer
         {
             get => _isNewCustomer;
-            set => Set(ref _isNewCustomer, value);
+            set => SetProperty(ref _isNewCustomer, value);
         }
 
         private bool _isInEdit;
@@ -214,7 +222,7 @@ namespace Snp.App.ViewModels
         public bool IsInEdit
         {
             get => _isInEdit;
-            set => Set(ref _isInEdit, value);
+            set => SetProperty(ref _isInEdit, value);
         }
 
         /// <summary>

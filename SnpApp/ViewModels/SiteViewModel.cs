@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Dispatching;
 using CommunityToolkit.WinUI;
 using Snp.Models;
@@ -14,7 +15,7 @@ namespace Snp.App.ViewModels
     /// <summary>
     /// Provides a bindable wrapper for the Site model class, encapsulating various services for access by the UI.
     /// </summary>
-    public class SiteViewModel : BindableBase
+    public class SiteViewModel : ObservableObject
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 

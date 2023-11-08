@@ -11,7 +11,7 @@ namespace Snp.Models
         /// <summary>
         /// Returns all customers. 
         /// </summary>
-        Task<IEnumerable<Customer>> GetAsync();
+        Task<IEnumerable<Customer>> SearchCustomerAsync();
 
         /// <summary>
         /// Returns all customers with a data field matching the start of the given string. 

@@ -1,11 +1,12 @@
-﻿using Snp.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Snp.Models;
 
 namespace Snp.App.ViewModels
 {
     /// <summary>
     /// Provides a bindable wrapper for the LineItem model class.
     /// </summary>
-    public class LineItemViewModel : BindableBase
+    public class LineItemViewModel : ObservableObject
     {
         /// <summary>
         /// Initializes a new instance of the LineItemWrapper class that wraps a LineItem object.

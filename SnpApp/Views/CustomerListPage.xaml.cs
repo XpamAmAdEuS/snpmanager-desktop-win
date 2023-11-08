@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.UI.Dispatching;
@@ -26,6 +27,12 @@ namespace Snp.App.Views
         public CustomerListPage()
         {
             InitializeComponent();
+            Loaded += PaginationPage_Loaded;
+        }
+        
+        private async void PaginationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.InitializeAsync();
         }
 
         /// <summary>
@@ -60,8 +67,8 @@ namespace Snp.App.Views
                 // If no search query is entered, refresh the complete list.
                 if (string.IsNullOrEmpty(sender.Text))
                 {
-                    await _dispatcherQueue.EnqueueAsync(async () =>
-                        await ViewModel.GetCustomerListAsync());
+                    // await _dispatcherQueue.EnqueueAsync(async () =>
+                    //     await ViewModel.GetCustomerListAsync());
                     sender.ItemsSource = null;
                 }
                 else
@@ -105,8 +112,8 @@ namespace Snp.App.Views
         /// </summary>
         private async Task ResetCustomerList()
         {
-            await _dispatcherQueue.EnqueueAsync(async () =>
-                await ViewModel.GetCustomerListAsync());
+            // await _dispatcherQueue.EnqueueAsync(async () =>
+            //     await ViewModel.GetCustomerListAsync());
         }
 
         /// <summary>
@@ -216,5 +223,7 @@ namespace Snp.App.Views
         /// </summary>
         private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e) =>
             (sender as DataGrid).Sort(e.Column, ViewModel.Customers.Sort);
+        
+        
     }
 }

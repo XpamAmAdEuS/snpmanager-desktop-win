@@ -50,20 +50,22 @@ namespace Snp.Models
       public string PlaylistType { get; set; }
       // public SitePlayer SitePlayer { get; set; }
       // public SiteAnnouncement SiteAnnouncement { get; set; }
-      public TimeOnly OpenMon { get; set; }
-      public TimeOnly CloseMon { get; set; }
-      public TimeOnly OpenTue { get; set; } 
-      public TimeOnly CloseTue { get; set; }
-      public TimeOnly OpenWed { get; set; }
-      public TimeOnly CloseWed { get; set; }
-      public TimeOnly OpenThu { get; set; }
-      public TimeOnly CloseThu { get; set; }
-      public TimeOnly OpenFri { get; set; }
-      public TimeOnly CloseFri { get; set; }
-      public TimeOnly OpenSat { get; set; }
-      public TimeOnly CloseSat { get; set; }
-      public TimeOnly OpenSun { get; set; }
-      public TimeOnly CloseSun { get; set; }
+      
+      // public string OpenMonShort => OpenMon.ToString("t");
+      public string OpenMon { get; set; }
+      public string CloseMon { get; set; }
+      public string OpenTue { get; set; } 
+      public string CloseTue { get; set; }
+      public string OpenWed { get; set; }
+      public string CloseWed { get; set; }
+      public string OpenThu { get; set; }
+      public string CloseThu { get; set; }
+      public string OpenFri { get; set; }
+      public string CloseFri { get; set; }
+      public string OpenSat { get; set; }
+      public string CloseSat { get; set; }
+      public string OpenSun { get; set; }
+      public string CloseSun { get; set; }
         
         
         /// <summary>
@@ -107,20 +109,6 @@ namespace Snp.Models
             Email == other.Email &&
             Phone == other.Phone &&
             Address == other.Address;
-
-        public Site FromPb(Snp.V1.Site pb)
-        {
-            Id = pb.Id;
-            Title = pb.Title;
-            Person = pb.Person;
-            Email = pb.Email;
-            Phone = pb.Phone;
-            Address = pb.Address;
-            Muted = pb.Muted;
-            SizeLimit = pb.SizeLimit;
-            return this;
-
-        }
             
     }
 }
