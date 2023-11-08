@@ -1,15 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI;
+using Google.Protobuf;
+using Grpc.Core;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Snp.App.Models;
+using Snp.V1;
 
 
 namespace Snp.App.ViewModels
@@ -19,6 +24,8 @@ namespace Snp.App.ViewModels
         
         
         private DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+
+        private readonly MusicUploadCrud.MusicUploadCrudClient _client;
         
         public async Task Add(UploadItemModel item)
         {
@@ -46,7 +53,7 @@ namespace Snp.App.ViewModels
             set => SetProperty(ref _isUpLoading, value);
         }
         
-        public async Task Upload()
+        public async void Upload()
         {
             await _dispatcherQueue.EnqueueAsync(() => IsUpLoading = true);
             
@@ -55,13 +62,37 @@ namespace Snp.App.ViewModels
             {
                 foreach (var t in _myModel)
                 {
-                    await _dispatcherQueue.EnqueueAsync(() =>
-                    {
-                        App.Repository.MusicUploads.Upload(t.Path,t.Name);
+                    
+                        using var requestStream = _client.UploadMusic();
+                        const int chunkSize = 512000;
+                        byte[] fileData;
+                        Task<int> readAmount;
+                        await using (var stream = File.Open(t.Path, FileMode.Open))
+                        {
+                            fileData = new byte[stream.Length];
+                            readAmount = stream.ReadAsync(fileData, 0, (int)stream.Length);
+                            await readAmount;
+                        }
+            
+                        // byte[] fileData = File.ReadAllBytes(path);
+                        int totalChunks = (int)Math.Ceiling((double)fileData.Length / chunkSize);
+
+                        for (int chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++)
+                        {
+                            int startIndex = chunkIndex * chunkSize;
+                            int chunkLength = Math.Min(chunkSize, fileData.Length - startIndex);
+                            byte[] chunk = new byte[chunkLength];
+                            Array.Copy(fileData, startIndex, chunk, 0, chunkLength);
+                            await requestStream.RequestStream.WriteAsync(new UploadRequest { FileName = t.Name,ChunkData = ByteString.CopyFrom(chunk) });
+                        }
+
+                        await requestStream.RequestStream.CompleteAsync();
+
+                        var finalResponse = await requestStream.ResponseAsync;
+                        
                         t.Progress = 100;
                         t.ShowPaused = false;
-                        OnPropertyChanged(nameof(Model));
-                    });
+                  
                     
                    // await App.Repository.MusicUploads.Upload(t.Path,t.Name);
                    //  t.Progress = 100;
@@ -114,6 +145,11 @@ namespace Snp.App.ViewModels
         public MusicUploadViewModel ()
         {
             _myModel = new ObservableCollection<UploadItemModel> ();
+
+            CallInvoker invoker = App.Invoker;
+            
+            _client  = new MusicUploadCrud.MusicUploadCrudClient(invoker);
+            
             OnPropertyChanged("Model");
         }
     }

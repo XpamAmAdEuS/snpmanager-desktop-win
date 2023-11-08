@@ -71,6 +71,8 @@ namespace Snp.App
 
         private static CallInvoker _invoker;
         
+        public static CallInvoker Invoker => _invoker;
+
         // private static readonly CallInvoker Invoker = Channel
         //     .Intercept(new AuthorizationHeaderInterceptor(LogFactory.CreateLogger<AuthorizationHeaderInterceptor>(),ApplicationData.Current.LocalSettings))
         //     .Intercept(new ErrorHandlerInterceptor())
