@@ -11,6 +11,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Page.Resources>
+        <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
+
+        <!--  Spacing between cards  -->
+        <x:Double x:Key="SettingsCardSpacing">3</x:Double>
+
+        <!--  Style (inc. the correct spacing) of a section header  -->
+        <Style
+            BasedOn="{StaticResource BodyTextBlockStyle}"
+            TargetType="TextBlock"
+            x:Key="SettingsSectionHeaderTextBlockStyle">
+            <Style.Setters>
+                <Setter Property="Margin" Value="1,29,0,5" />
+            </Style.Setters>
+        </Style>
         <MenuFlyout x:Key="DataGridContextMenu">
             <MenuFlyoutItem
                 Click="ViewDetails_Click"
@@ -23,7 +37,7 @@
         </MenuFlyout>
     </Page.Resources>
 
-    <RelativePanel x:Name="LayoutRoot">
+    <RelativePanel Padding="36,0,36,0" x:Name="LayoutRoot">
         <TextBlock
             Style="{StaticResource PageTitleTextBlockStyle}"
             Text="Customers"

@@ -11,19 +11,32 @@ namespace Snp.App
     {
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)
         {
-            SetCurrentNavigationViewItem(GetNavigationViewItems(typeof(AboutPage)).First());
+            SetCurrentNavigationViewItem(GetNavigationViewItems(typeof(CustomerListPage)).First());
         }
 
-        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        private void OnNavigationViewSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            SetCurrentNavigationViewItem(args.SelectedItemContainer as NavigationViewItem);
+            
+            if (args.IsSettingsSelected)
+            {
+                if (AppFrame.CurrentSourcePageType != typeof(SettingsPage))
+                {
+                    AppFrame.Navigate(typeof(SettingsPage));
+                }
+            }
+            else
+            {
+                SetCurrentNavigationViewItem(args.SelectedItemContainer as NavigationViewItem);
+            }
+            
+            
         }
 
         public List<NavigationViewItem> GetNavigationViewItems()
         {
             List<NavigationViewItem> result = new();
-            var items = NavigationView.MenuItems.Select(i => (NavigationViewItem)i).ToList();
-            items.AddRange(NavigationView.FooterMenuItems.Select(i => (NavigationViewItem)i));
+            var items =NavigationViewControl.MenuItems.Select(i => (NavigationViewItem)i).ToList();
+            items.AddRange(NavigationViewControl.FooterMenuItems.Select(i => (NavigationViewItem)i));
             result.AddRange(items);
 
             foreach (NavigationViewItem mainItem in items)
@@ -56,14 +69,25 @@ namespace Snp.App
                 return;
             }
 
-            ContentFrame.Navigate(Type.GetType(item.Tag.ToString()), item.Content);
-            NavigationView.Header = item.Content;
-            NavigationView.SelectedItem = item;
+            AppFrame.Navigate(Type.GetType(item.Tag.ToString()), item.Content);
+            // NavigationView.Header = item.Content;
+            NavigationViewControl.SelectedItem = item;
         }
 
         public NavigationViewItem GetCurrentNavigationViewItem()
         {
-            return NavigationView.SelectedItem as NavigationViewItem;
+            return NavigationViewControl.SelectedItem as NavigationViewItem;
+        }
+        
+        /// <summary>
+        /// Navigates the frame to the previous page.
+        /// </summary>
+        private void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            if (AppFrame.CanGoBack)
+            {
+                AppFrame.GoBack();
+            }
         }
     }
 }

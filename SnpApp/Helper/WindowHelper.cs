@@ -20,7 +20,7 @@ namespace Snp.App.Helper
         public static Window CreateWindow()
         {
             
-            Window newWindow = new MainWindow
+            Window newWindow = new Window
             {
                 SystemBackdrop = new MicaBackdrop()
             };

@@ -65,6 +65,11 @@
 
             <x:String x:Key="AppTitleName">Snp Manager</x:String>
 
+            <!--  Breakpoints  -->
+            <x:Double x:Key="Breakpoint640Plus">641</x:Double>
+            <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
+            <Thickness x:Key="ControlElementScreenshotModePadding">67</Thickness>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

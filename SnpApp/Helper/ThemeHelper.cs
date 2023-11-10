@@ -14,24 +14,24 @@ namespace Snp.App.Helper
         /// Gets the current actual theme of the app based on the requested theme of the
         /// root element, or if that value is Default, the requested theme of the Application.
         /// </summary>
-        // public static ElementTheme ActualTheme
-        // {
-        //     get
-        //     {
-        //         foreach (Window window in WindowHelper.ActiveWindows)
-        //         {
-        //             if (window.Content is FrameworkElement rootElement)
-        //             {
-        //                 if (rootElement.RequestedTheme != ElementTheme.Default)
-        //                 {
-        //                     return rootElement.RequestedTheme;
-        //                 }
-        //             }
-        //         }
-        //
-        //         return App.GetEnum<ElementTheme>(App.Current.RequestedTheme.ToString());
-        //     }
-        // }
+        public static ElementTheme ActualTheme
+        {
+            get
+            {
+                foreach (Window window in WindowHelper.ActiveWindows)
+                {
+                    if (window.Content is FrameworkElement rootElement)
+                    {
+                        if (rootElement.RequestedTheme != ElementTheme.Default)
+                        {
+                            return rootElement.RequestedTheme;
+                        }
+                    }
+                }
+
+                return App.GetEnum<ElementTheme>(App.Current.RequestedTheme.ToString());
+            }
+        }
 
         /// <summary>
         /// Gets or sets (with LocalSettings persistence) the RequestedTheme of the root element.
@@ -40,45 +40,45 @@ namespace Snp.App.Helper
         {
             get
             {
-                // foreach (Window window in WindowHelper.ActiveWindows)
-                // {
-                //     if (window.Content is FrameworkElement rootElement)
-                //     {
-                //         return rootElement.RequestedTheme;
-                //     }
-                // }
+                foreach (Window window in WindowHelper.ActiveWindows)
+                {
+                    if (window.Content is FrameworkElement rootElement)
+                    {
+                        return rootElement.RequestedTheme;
+                    }
+                }
 
                 return ElementTheme.Default;
             }
             set
             {
-                // foreach (Window window in WindowHelper.ActiveWindows)
-                // {
-                //     if (window.Content is FrameworkElement rootElement)
-                //     {
-                //         rootElement.RequestedTheme = value;
-                //     }
-                // }
+                foreach (Window window in WindowHelper.ActiveWindows)
+                {
+                    if (window.Content is FrameworkElement rootElement)
+                    {
+                        rootElement.RequestedTheme = value;
+                    }
+                }
 
-                // if (NativeHelper.IsAppPackaged)
-                // {
-                //     ApplicationData.Current.LocalSettings.Values[SelectedAppThemeKey] = value.ToString();
-                // }
+                if (NativeHelper.IsAppPackaged)
+                {
+                    ApplicationData.Current.LocalSettings.Values[SelectedAppThemeKey] = value.ToString();
+                }
             }
         }
 
-        // public static void Initialize()
-        // {
-        //     if (NativeHelper.IsAppPackaged)
-        //     {
-        //         string savedTheme = ApplicationData.Current.LocalSettings.Values[SelectedAppThemeKey]?.ToString();
-        //
-        //         if (savedTheme != null)
-        //         {
-        //             RootTheme = App.GetEnum<ElementTheme>(savedTheme);
-        //         }
-        //     }
-        // }
+        public static void Initialize()
+        {
+            if (NativeHelper.IsAppPackaged)
+            {
+                string savedTheme = ApplicationData.Current.LocalSettings.Values[SelectedAppThemeKey]?.ToString();
+
+                if (savedTheme != null)
+                {
+                    RootTheme = App.GetEnum<ElementTheme>(savedTheme);
+                }
+            }
+        }
 
         public static bool IsDarkTheme()
         {

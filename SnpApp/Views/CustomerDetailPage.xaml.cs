@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -15,7 +18,7 @@ namespace Snp.App.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CustomerDetailPage
+    public sealed partial class CustomerDetailPage: INotifyPropertyChanged
     {
         /// <summary>
         /// Initializes the page.
@@ -24,11 +27,24 @@ namespace Snp.App.Views
         {
             InitializeComponent();
         }
+        
+        private CustomerViewModel _viewModel;
 
         /// <summary>
         /// Used to bind the UI to the data.
         /// </summary>
-        public CustomerViewModel ViewModel { get; set; }
+        public CustomerViewModel ViewModel
+        {
+            get => _viewModel;
+            set
+            {
+                if (_viewModel != value)
+                {
+                    _viewModel = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// Navigate to the previous page when the user cancels the creation of a new customer record.
@@ -38,8 +54,9 @@ namespace Snp.App.Views
         /// <summary>
         /// Displays the selected customer data.
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            
             if (e.Parameter == null)
             {
                 ViewModel = new CustomerViewModel
@@ -49,10 +66,13 @@ namespace Snp.App.Views
                 };
                 VisualStateManager.GoToState(this, "NewCustomer", false);
             }
-            // else
-            // {
-            //     ViewModel = new CustomerListViewModel.Customers.First(customer => customer.Model.Id == (uint)e.Parameter);
-            // }
+            else
+            {
+                var c = await Ioc.Default.GetRequiredService<ISnpRepository>().Customers.GetOneById((uint)e.Parameter);
+
+                ViewModel = new CustomerViewModel(c);
+
+            }
 
             ViewModel.AddNewCustomerCanceled += AddNewCustomerCanceled;
             base.OnNavigatedTo(e);
@@ -181,5 +201,20 @@ namespace Snp.App.Views
         /// </summary>
         private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e) =>
             (sender as DataGrid).Sort(e.Column, ViewModel.Sites.Sort);
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
     }
 }
