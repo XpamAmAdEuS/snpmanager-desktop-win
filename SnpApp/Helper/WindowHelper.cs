@@ -19,10 +19,12 @@ namespace Snp.App.Helper
     {
         public static Window CreateWindow()
         {
+            
             Window newWindow = new MainWindow
             {
                 SystemBackdrop = new MicaBackdrop()
             };
+            
             TrackWindow(newWindow);
             return newWindow;
         }
@@ -79,14 +81,14 @@ namespace Snp.App.Helper
         public static StorageFolder GetAppLocalFolder()
         {
             StorageFolder localFolder;
-            if (!NativeHelper.IsAppPackaged)
-            {
-                localFolder = Task.Run(async () => await StorageFolder.GetFolderFromPathAsync(AppContext.BaseDirectory)).Result;
-            }
-            else
-            {
+            // if (!NativeHelper.IsAppPackaged)
+            // {
+            //     localFolder = Task.Run(async () => await StorageFolder.GetFolderFromPathAsync(AppContext.BaseDirectory)).Result;
+            // }
+            // else
+            // {
                 localFolder = ApplicationData.Current.LocalFolder;
-            }
+            //}
             return localFolder;
         }
     }

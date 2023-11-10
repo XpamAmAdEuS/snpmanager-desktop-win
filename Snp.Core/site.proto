@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "site_announcement.proto";
+import "site_ftp.proto";
+import "site_player.proto";
+import "common.proto";
+
+
+message ProtoSiteRepo {
+  message ProtoSite {
+    uint64 id = 1;
+    uint64 customer_id = 2;
+    string title = 4;
+    string  code             =5;
+    string person = 6;
+    string address = 7;
+    string phone = 8;
+    string email = 9;
+    bool muted = 10;
+    uint32 size_limit = 11;
+    bool  ftp_stats_enabled  =12;
+    bool  seek_into_enabled    =13;
+    string  notes            =14;
+    int32  cross_fade   =15;
+    bool  ftp_stats_disabled   =16;
+    google.protobuf.Timestamp  expiration   =17;
+    int32  disabled =18;
+    int64  reconnection_period  =19;
+    string  status               =20;
+    string  description         =21;
+    int64  volume               =22;
+    string  playlist_type         =23;
+    ProtoSiteFTP  site_ftp =24;
+    ProtoSitePlayer site_player =25;
+    ProtoSiteAnnouncement site_announcement =26;
+//    google.protobuf.Timestamp  open_mon    =27;
+//    google.protobuf.Timestamp  close_mon   =28;
+//    google.protobuf.Timestamp  open_tue    =29;
+//    google.protobuf.Timestamp  close_tue   =30;
+//    google.protobuf.Timestamp  open_wed    =31;
+//    google.protobuf.Timestamp  close_wed   =32;
+//    google.protobuf.Timestamp  open_thu    =33;
+//    google.protobuf.Timestamp  close_thu   =34;
+//    google.protobuf.Timestamp  open_fri    =35;
+//    google.protobuf.Timestamp  close_fri   =36;
+//    google.protobuf.Timestamp  open_sat    =37;
+//    google.protobuf.Timestamp  close_sat   =38;
+//    google.protobuf.Timestamp  open_sun    =39;
+//    google.protobuf.Timestamp  close_sun   =40;
+    string  open_mon    =27;
+    string  close_mon   =28;
+    string  open_tue    =29;
+    string  close_tue   =30;
+    string  open_wed    =31;
+    string  close_wed   =32;
+    string  open_thu    =33;
+    string  close_thu   =34;
+    string  open_fri    =35;
+    string  close_fri   =36;
+    string  open_sat    =37;
+    string  close_sat   =38;
+    string  open_sun    =39;
+    string  close_sun   =40;
+  }
+  repeated ProtoSite sites = 1;
+  message SearchResponse {
+    repeated ProtoSiteRepo.ProtoSite data = 1;
+    uint32 total_records = 3;
+  }
+
+  message UpdateRequest {
+    google.protobuf.UInt64Value id = 1;
+    ProtoSiteRepo.ProtoSite site = 2;
+  }
+}
+
+
+service SiteCrud {
+  rpc CreateSite(ProtoSiteRepo.ProtoSite) returns (ProtoSiteRepo.ProtoSite);
+  rpc GetListSite(google.protobuf.UInt64Value) returns (stream ProtoSiteRepo.ProtoSite);
+  rpc GetOneSite(google.protobuf.UInt64Value) returns (ProtoSiteRepo.ProtoSite);
+  rpc UpdateSite(ProtoSiteRepo.UpdateRequest) returns (ProtoSiteRepo.ProtoSite);
+  rpc DeleteSite(google.protobuf.UInt64Value) returns (google.protobuf.BoolValue);
+  rpc SearchSites(SearchRequest) returns (ProtoSiteRepo.SearchResponse);
+}
+
+
+
+

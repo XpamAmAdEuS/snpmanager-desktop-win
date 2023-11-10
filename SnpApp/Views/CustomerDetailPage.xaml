@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:Snp.Models"
-    xmlns:vm="using:Snp.App.ViewModels"
+    xmlns:models="using:Snp.Core.Models"
+    xmlns:vm="using:Snp.App.Converters"
     xmlns:sys="using:System"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:uc="using:Snp.App.UserControls"
@@ -54,15 +54,7 @@
             <!--         Label="Refresh orders" -->
             <!--         Visibility="{x:Bind vm:Converters.CollapsedIf(ViewModel.IsNewCustomer), Mode=OneWay}"/> -->
         </CommandBar>
-
-        <uc:CollapsibleSearchBox
-                x:Name="CustomerSearchBox"
-                Width="240"
-                Margin="12,8,12,0"
-                CollapseWidth="{StaticResource LargeWindowSnapPoint}"
-                Loaded="CustomerSearchBox_Loaded"
-                RelativePanel.AlignRightWithPanel="True" />
-
+        
         <ScrollViewer
                 x:Name="DetailPanel"
                 RelativePanel.AlignLeftWithPanel="True"

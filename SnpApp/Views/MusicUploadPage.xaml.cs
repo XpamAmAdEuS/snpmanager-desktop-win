@@ -4,14 +4,16 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Microsoft.Extensions.DependencyInjection;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.App.Models;
-using Snp.App.ViewModels;
+using Snp.Core.Models;
+using Snp.Core.ViewModels;
 using WinRT.Interop;
 
 namespace Snp.App.Views
@@ -31,12 +33,10 @@ namespace Snp.App.Views
         public MusicUploadPage()
         {
             InitializeComponent();
+            this.DataContext = Ioc.Default.GetService<MusicUploadViewModel>();
         }
-
-        /// <summary>
-        /// Gets the app-wide ViewModel instance.
-        /// </summary>
-        public MusicUploadViewModel ViewModel  => App.MusicUploadViewModel;
+        
+        public MusicUploadViewModel ViewModel => (MusicUploadViewModel)DataContext;
 
         /// <summary>
         /// Resets the customer list when leaving the page.
@@ -66,8 +66,9 @@ namespace Snp.App.Views
                 ViewMode = PickerViewMode.Thumbnail,
                 FileTypeFilter = { ".mp3" },
             };
-
-            nint windowHandle = WindowNative.GetWindowHandle(App.Window);
+            
+            
+            nint windowHandle = WindowNative.GetWindowHandle(this);
             InitializeWithWindow.Initialize(fileOpenPicker, windowHandle);
 
             IReadOnlyList<StorageFile> items = await fileOpenPicker.PickMultipleFilesAsync();
@@ -88,7 +89,7 @@ namespace Snp.App.Views
                 ViewMode = PickerViewMode.Thumbnail,
             };
 
-            nint windowHandle = WindowNative.GetWindowHandle(App.Window);
+            nint windowHandle = WindowNative.GetWindowHandle(this);
             InitializeWithWindow.Initialize(folderOpenPicker, windowHandle);
 
             StorageFolder folder = await folderOpenPicker.PickSingleFolderAsync();
@@ -141,7 +142,7 @@ namespace Snp.App.Views
         
         private async void AddFileToModel(StorageFile item)
         {
-            var t = new UploadItemModel
+            var t = new UploadItem
             {
                 Name = item.Name,
                 Path = item.Path,

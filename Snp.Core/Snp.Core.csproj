@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
+        <UserSecretsId>4e66f7b4-01a8-4f00-8733-4ae6a08c741f</UserSecretsId>
+        <LangVersion>11.0</LangVersion>
+        <EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.0.230907" />
+        <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.0.230907" />
+        <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.0.230907" />
+        <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.230907" />
+        <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+        <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.1.2" />
+        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="Grpc.Core" Version="2.46.6" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.59.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000" />
+        <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
+    </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Api.CommonProtos" Version="2.12.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.25.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.59.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="announcement.proto" GrpcServices="Client" />
+    <Protobuf Include="auth.proto" GrpcServices="Client" />
+    <Protobuf Include="common.proto" />
+    <Protobuf Include="customer.proto" GrpcServices="Client" />
+    <Protobuf Include="customer_music.proto" GrpcServices="Client" />
+    <Protobuf Include="customer_music_type.proto" GrpcServices="None" />
+    <Protobuf Include="health_service.proto" GrpcServices="Client" />
+    <Protobuf Include="import_music.proto" GrpcServices="Client" />
+    <Protobuf Include="music.proto" GrpcServices="Client" />
+    <Protobuf Include="music_preference.proto" />
+    <Protobuf Include="music_type.proto" GrpcServices="Client" />
+    <Protobuf Include="music_upload.proto" GrpcServices="Client" />
+    <Protobuf Include="playlist.proto" />
+    <Protobuf Include="promotion.proto" GrpcServices="Client" />
+    <Protobuf Include="site.proto" GrpcServices="Client" />
+    <Protobuf Include="site_announcement.proto" />
+    <Protobuf Include="site_ftp.proto" />
+    <Protobuf Include="site_player.proto" />
+    <Protobuf Include="site_pos.proto" />
+    <Protobuf Include="user.proto" GrpcServices="Client" />
+  </ItemGroup>
+  
+</Project>

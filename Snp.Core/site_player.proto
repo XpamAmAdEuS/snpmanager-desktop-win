@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "google/protobuf/timestamp.proto";
+
+
+message ProtoSitePlayer {
+  string                      player_card_type           =1;
+  string                      player_audio_connector_type =2;
+  string                      player_sound_card_type      =3;
+  string                      player_baseboard          =4;
+  bool                        player_audio_priority     =5;
+  bool                        player_ext_wifi_antenna     =6;
+  string                      player_network_type        =7;
+  string                      player_network_Protocol   =8;
+  string                      player_wifi_ssid          =9;
+  string                      player_wifi_password       =10;
+  google.protobuf.Timestamp   player_last_changed_date  =11;
+  string                      player_power_adapter_type  =12;
+  google.protobuf.Timestamp   player_power_adapter_date  =13;
+  string                      player_vpn_ip              =14;
+  string                      player_lan_mac             =15;
+  string                      player_wlan_mac          =16;
+}

@@ -35,40 +35,41 @@ namespace Snp.App.Views
 
         private void OnSettingsPageLoaded(object sender, RoutedEventArgs e)
         {
-            var currentTheme = ThemeHelper.RootTheme;
-            switch (currentTheme)
-            {
-                case ElementTheme.Light:
-                    themeMode.SelectedIndex = 0;
-                    break;
-                case ElementTheme.Dark:
-                    themeMode.SelectedIndex = 1;
-                    break;
-                case ElementTheme.Default:
-                    themeMode.SelectedIndex = 2;
-                    break;
-            }
-
-            var navigationRootPage = AppShell.GetForElement(this);
-            if (navigationRootPage == null) return;
-            navigationLocation.SelectedIndex = navigationRootPage.NavigationView.PaneDisplayMode == NavigationViewPaneDisplayMode.Auto ? 0 : 1;
+            
+            // var currentTheme = ThemeHelper.RootTheme;
+            // switch (currentTheme)
+            // {
+            //     case ElementTheme.Light:
+            //         themeMode.SelectedIndex = 0;
+            //         break;
+            //     case ElementTheme.Dark:
+            //         themeMode.SelectedIndex = 1;
+            //         break;
+            //     case ElementTheme.Default:
+            //         themeMode.SelectedIndex = 2;
+            //         break;
+            // }
+            //
+            // var navigationRootPage = Shell.GetForElement(this);
+            // if (navigationRootPage == null) return;
+            // navigationLocation.SelectedIndex = navigationRootPage.NavigationView.PaneDisplayMode == NavigationViewPaneDisplayMode.Auto ? 0 : 1;
         }
 
         private void themeMode_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            var selectedTheme = ((ComboBoxItem)themeMode.SelectedItem)?.Tag?.ToString();
-            var window = WindowHelper.GetWindowForElement(this);
-            if (selectedTheme == null) return;
-            ThemeHelper.RootTheme = App.GetEnum<ElementTheme>(selectedTheme);
-            switch (selectedTheme)
-            {
-                case "Dark":
-                    TitleBarHelper.SetCaptionButtonColors(window, Colors.White);
-                    break;
-                case "Light":
-                    TitleBarHelper.SetCaptionButtonColors(window, Colors.Black);
-                    break;
-            }
+            // var selectedTheme = ((ComboBoxItem)themeMode.SelectedItem)?.Tag?.ToString();
+            // var window = WindowHelper.GetWindowForElement(this);
+            // if (selectedTheme == null) return;
+            // ThemeHelper.RootTheme = App.GetEnum<ElementTheme>(selectedTheme);
+            // switch (selectedTheme)
+            // {
+            //     case "Dark":
+            //         TitleBarHelper.SetCaptionButtonColors(window, Colors.White);
+            //         break;
+            //     case "Light":
+            //         TitleBarHelper.SetCaptionButtonColors(window, Colors.Black);
+            //         break;
+            // }
         }
 
         private void soundToggle_Toggled(object sender, RoutedEventArgs e)
@@ -91,7 +92,7 @@ namespace Snp.App.Views
 
         private void navigationLocation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            NavigationOrientationHelper.IsLeftModeForElement(navigationLocation.SelectedIndex == 0, this);
+            // NavigationOrientationHelper.IsLeftModeForElement(navigationLocation.SelectedIndex == 0, this);
         }
 
         private void spatialSoundBox_Toggled(object sender, RoutedEventArgs e)

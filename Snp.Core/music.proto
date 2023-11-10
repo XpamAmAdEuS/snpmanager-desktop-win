@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+import "music_type.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "common.proto";
+
+message ProtoMusicRepo {
+  message ProtoMusic  {
+    uint64   id        = 1;
+    string   file_name  = 2;
+    string   hash      = 3;
+    string   artist     = 4;
+    string   title     = 5;
+    string  album    = 6;
+    string  genre      = 7;
+    uint64  duration     = 8;
+    bool  enabled     = 9;
+    uint64   file_size   = 10;
+    uint64  music_type_id = 11;
+    ProtoMusicTypeRepo.ProtoMusicType   music_type = 12;
+    google.protobuf.Timestamp  imported    = 13;
+  }
+
+  repeated ProtoMusic musics = 1;
+
+  message SearchResponse {
+    repeated ProtoMusic data = 1;
+    uint32 total_records = 2;
+  }
+}
+
+service MusicCrud {
+  rpc SearchMusic(SearchRequest) returns (ProtoMusicRepo.SearchResponse);
+  rpc CreateMusic(ProtoMusicRepo.ProtoMusic) returns (ProtoMusicRepo.ProtoMusic);
+  rpc GetOneMusic(google.protobuf.UInt64Value) returns (ProtoMusicRepo.ProtoMusic);
+}
+

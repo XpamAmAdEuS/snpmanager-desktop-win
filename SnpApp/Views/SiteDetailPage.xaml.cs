@@ -1,13 +1,15 @@
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Email;
-using Snp.Models;
-using Snp.App.ViewModels;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Snp.Core.Models;
+using Snp.Core.Services;
+using Snp.Core.ViewModels;
 
 namespace Snp.App.Views
 {
@@ -16,27 +18,34 @@ namespace Snp.App.Views
     /// </summary>
     public sealed partial class SiteDetailPage : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Initializes the page.
-        /// </summary>
-        public SiteDetailPage() => InitializeComponent();
+        
+        private readonly IDialogService DialogService;
+        
+        public SiteDetailPage(IDialogService dialogService)
+        {
+            this.InitializeComponent();
+            this.DataContext = Ioc.Default.GetService<SiteViewModel>();
+            DialogService = dialogService;
+        }
+        
+        // public SiteViewModel ViewModel => (SiteViewModel)DataContext;
 
-        /// <summary>
-        /// Stores the view model. 
-        /// </summary>
-        private SiteViewModel _viewModel;
-
-        /// <summary>
-        /// We use this object to bind the UI to our data.
-        /// </summary>
+        // /// <summary>
+        // /// Stores the view model. 
+        // /// </summary>
+        // private SiteViewModel _viewModel;
+        //
+        // /// <summary>
+        // /// We use this object to bind the UI to our data.
+        // /// </summary>
         public SiteViewModel ViewModel
         {
-            get => _viewModel;
+            get => (SiteViewModel)DataContext;
             set
             {
-                if (_viewModel != value)
+                if ((SiteViewModel)DataContext != value)
                 {
-                    _viewModel = value;
+                    DataContext = value;
                     OnPropertyChanged();
                 }
             }
@@ -49,19 +58,19 @@ namespace Snp.App.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var id = (uint)e.Parameter;
-            var customer = App.ViewModel.Customers.Where(customer => customer.Model.Id == id).FirstOrDefault();
-
-            if (customer != null)
-            {
-                // Site is a new order
-                ViewModel = new SiteViewModel(new Site(customer.Model));
-            }
-            else
-            {
-                // Site is an existing order.
-                var site = await App.Repository.Sites.GetOneById(id);
-                ViewModel = new SiteViewModel(site);
-            }
+            // var customer = App.ViewModel.Customers.Where(customer => customer.Model.Id == id).FirstOrDefault();
+            //
+            // if (customer != null)
+            // {
+            //     // Site is a new site
+            //     ViewModel = new SiteViewModel(new Site(customer.Model));
+            // }
+            // else
+            // {
+            //     // Site is an existing site.
+            //     var site = await App.Repository.Sites.GetOneById(id);
+            //     ViewModel = new SiteViewModel(site);
+            // }
 
             base.OnNavigatedTo(e);
         }
@@ -178,74 +187,11 @@ namespace Snp.App.Views
             }
             catch (SiteSavingException ex)
             {
-                var dialog = new ContentDialog()
-                {
-                    Title = "Unable to save",
-                    Content = $"There was an error saving your order:\n{ex.Message}", 
-                    PrimaryButtonText = "OK"                 
-                };
-                dialog.XamlRoot = App.Window.Content.XamlRoot;
-                await dialog.ShowAsync();
+                
+                _ = DialogService.ShowMessageDialogAsync("Unable to save", $"There was an error saving your order:\n{ex.Message}");
             }
         }
-
-        /// <summary>
-        /// Queries for products.
-        /// </summary>
-        private void ProductSearchBox_TextChanged(AutoSuggestBox sender, 
-            AutoSuggestBoxTextChangedEventArgs args)
-        {
-            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-            {
-                ViewModel.UpdateProductSuggestions(sender.Text);
-            }
-        }
-
-        /// <summary>
-        /// Notifies the page that a new item was chosen.
-        /// </summary>
-        private void ProductSearchBox_SuggestionChosen(AutoSuggestBox sender, 
-            AutoSuggestBoxSuggestionChosenEventArgs args)
-        {
-            if (args.SelectedItem != null)
-            {
-                var selectedProduct = args.SelectedItem as Product;
-                ViewModel.NewLineItem.Product = selectedProduct;
-            }
-        }
-
-        /// <summary>
-        /// Adds the new line item to the list of line items.
-        /// </summary>
-        private void AddProductButton_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.LineItems.Add(ViewModel.NewLineItem.Model);
-            ClearCandidateProduct();
-        }
-
-        /// <summary>
-        /// Clears the new line item without adding it to the list of line items.
-        /// </summary>
-        private void CancelProductButton_Click(object sender, RoutedEventArgs e)
-        {
-            ClearCandidateProduct();
-        }
-
-        /// <summary>
-        /// Cleears the new line item entry area.
-        /// </summary>
-        private void ClearCandidateProduct()
-        {
-            ProductSearchBox.Text = string.Empty;
-            ViewModel.NewLineItem = new LineItemViewModel();
-        }
-
-        /// <summary>
-        /// Removes a line item from the order.
-        /// </summary>
-        private void RemoveProduct_Click(object sender, RoutedEventArgs e) =>
-            ViewModel.LineItems.Remove((sender as FrameworkElement).DataContext as LineItem);
-
+        
         /// <summary>
         /// Fired when a property value changes. 
         /// </summary>

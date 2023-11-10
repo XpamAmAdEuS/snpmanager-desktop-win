@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:local="using:Snp.App.Views"
-    xmlns:models="using:Snp.App.Models"
+    xmlns:models="using:Snp.Core.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     NavigationCacheMode="Required"
     AllowDrop="True" DragOver="Grid_DragOver" Drop="Grid_Drop"
@@ -110,10 +110,7 @@
                     ItemsSource="{x:Bind ViewModel.Model}"
                     ContextFlyout="{StaticResource DataGridContextMenu}"
                 SelectionMode="Extended"
-                IsReadOnly="True"
-                SelectedItemsList="{x:Bind ViewModel.TestSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                
-                >
+                IsReadOnly="True">
                 <toolkit:DataGrid.Columns>
                     <toolkit:DataGridTextColumn
                             Header="Name"
@@ -129,7 +126,7 @@
                     <toolkit:DataGridTemplateColumn Header="Progress"
                                                     Tag="Progress">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate x:DataType="models:UploadItemModel">
+                            <DataTemplate x:DataType="models:UploadItem">
                                 <Grid Background="Transparent"
                                       ToolTipService.ToolTip="Upload progress">
                                     <muxc:ProgressBar Width="130" 
@@ -143,13 +140,6 @@
                     </toolkit:DataGridTemplateColumn>
                 </toolkit:DataGrid.Columns>
             </local:CustomDataGrid>
-            
-            <muxc:ProgressBar
-                    Margin="0,50,0,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    IsIndeterminate="True"
-                    Visibility="{x:Bind ViewModel.IsUpLoading, Mode=OneWay}" />
         </Grid>
 
 

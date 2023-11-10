@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package snp.v1;
+option go_package = ".;pb";
+
+message UploadRequest {
+  string file_name = 1;
+  int64 file_size = 2;
+  bytes chunk_data = 3;
+}
+
+message UploadMusicResponse {
+  string id = 1;
+  uint32 size = 2;
+}
+
+message CommunicateResponse {
+  int64 writtenSize = 1;
+  double progress =2;
+}
+
+service MusicUploadCrud {
+  rpc UploadMusic(stream UploadRequest) returns (UploadMusicResponse);
+  rpc Communicate (stream UploadRequest) returns (stream CommunicateResponse);
+}

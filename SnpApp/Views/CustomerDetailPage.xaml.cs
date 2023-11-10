@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.Models;
-using Snp.App.ViewModels;
+using Snp.Core.Models;
+using Snp.Core.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
+using Snp.Core.Repository;
 
 namespace Snp.App.Views
 {
@@ -47,10 +49,10 @@ namespace Snp.App.Views
                 };
                 VisualStateManager.GoToState(this, "NewCustomer", false);
             }
-            else
-            {
-                ViewModel = App.ViewModel.Customers.First(customer => customer.Model.Id == (uint)e.Parameter);
-            }
+            // else
+            // {
+            //     ViewModel = new CustomerListViewModel.Customers.First(customer => customer.Model.Id == (uint)e.Parameter);
+            // }
 
             ViewModel.AddNewCustomerCanceled += AddNewCustomerCanceled;
             base.OnNavigatedTo(e);
@@ -121,12 +123,7 @@ namespace Snp.App.Views
         /// </summary>
         private void CustomerSearchBox_Loaded(object sender, RoutedEventArgs e)
         {
-            if (sender is UserControls.CollapsibleSearchBox searchBox)
-            {
-                searchBox.AutoSuggestBox.QuerySubmitted += CustomerSearchBox_QuerySubmitted;
-                searchBox.AutoSuggestBox.TextChanged += CustomerSearchBox_TextChanged;
-                searchBox.AutoSuggestBox.PlaceholderText = "Search customers...";
-            }
+            
         }
 
         /// <summary>
@@ -147,7 +144,9 @@ namespace Snp.App.Views
                 }
                 else
                 {
-                    sender.ItemsSource = await App.Repository.Customers.SearchByTitleAsync(sender.Text);
+                    var repo = Ioc.Default.GetService<ISnpRepository>();
+                    if (repo?.Customers != null)
+                        sender.ItemsSource = await repo.Customers.SearchByTitleAsync(sender.Text);
                 }
             }
         }
