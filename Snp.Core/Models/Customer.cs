@@ -38,7 +38,7 @@ namespace Snp.Core.Models
         
         public bool Muted { get; set; }
         
-        public uint SizeLimit { get; set; }
+        public ulong SizeLimit { get; set; }
         
         public List<Site> Sites  { get; set; }
 

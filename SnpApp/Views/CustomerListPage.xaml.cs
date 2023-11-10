@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Windows.System;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -11,7 +10,6 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Snp.Core.ViewModels;
 using DispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue;
-using ctWinUI = CommunityToolkit.WinUI.UI.Controls;
 
 namespace Snp.App.Views;
 
@@ -37,10 +35,9 @@ public sealed partial class CustomerListPage
     private async void PaginationPage_Loaded(object sender, RoutedEventArgs e)
     {
         await ViewModel.GetCustomerListAsync(1);
-        
+
         DataGrid.ItemsSource = ViewModel.Customers;
         DataGrid.Columns[0].SortDirection = DataGridSortDirection.Ascending;
-        
     }
 
     /// <summary>
@@ -163,27 +160,21 @@ public sealed partial class CustomerListPage
     /// </summary>
     private async void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
-        
-            ViewModel.SearchRequestModel.SortColumn = e.Column.Tag.ToString();
-            bool isAscending = e.Column.SortDirection is null or DataGridSortDirection.Descending;
-            
-            foreach (var column in (sender as DataGrid).Columns)
-            {
-                column.SortDirection = null;
-            }
-        
-            var direction = isAscending
-                ? DataGridSortDirection.Ascending
-                : DataGridSortDirection.Descending;
-        
-            ViewModel.SearchRequestModel.SortDirection = direction;
-        
-            await _dispatcherQueue.EnqueueAsync(async () =>
-                await ViewModel.GetCustomerListAsync(0));
-        
-            DataGrid.ItemsSource = ViewModel.Customers;
-            e.Column.SortDirection = direction;
-        
-        
+        ViewModel.SearchRequestModel.SortColumn = e.Column.Tag.ToString();
+        var isAscending = e.Column.SortDirection is null or DataGridSortDirection.Descending;
+
+        foreach (var column in (sender as DataGrid).Columns) column.SortDirection = null;
+
+        var direction = isAscending
+            ? DataGridSortDirection.Ascending
+            : DataGridSortDirection.Descending;
+
+        ViewModel.SearchRequestModel.SortDirection = direction;
+
+        await _dispatcherQueue.EnqueueAsync(() =>
+            ViewModel.GetCustomerListAsync(0));
+
+        DataGrid.ItemsSource = ViewModel.Customers;
+        e.Column.SortDirection = direction;
     }
 }

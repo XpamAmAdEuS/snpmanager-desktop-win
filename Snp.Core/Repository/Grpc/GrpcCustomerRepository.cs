@@ -53,22 +53,25 @@ namespace Snp.Core.Repository.Grpc
         
         public async Task<Customer> UpsertAsync(Customer customer)
         {
-            var result = await  _client.UpdateCustomerAsync(
-                new ProtoCustomerRepo.Types.UpdateRequest
-                {
-                    ID = customer.Id,
-                    Customer =
-                    {
-                        Title = customer.Title,
-                        Address = customer.Address,
-                        Email = customer.Address,
-                        Muted = customer.Muted,
-                        Person = customer.Person,
-                        Phone = customer.Phone,
-                        SizeLimit = customer.SizeLimit
-                    }
-                }
-                );
+
+            var request = new ProtoCustomerRepo.Types.UpdateRequest();
+            
+            var reqCustomer = new ProtoCustomerRepo.Types.ProtoCustomer();
+
+            request.ID = customer.Id;
+            reqCustomer.Id = customer.Id;
+            reqCustomer.Title = customer.Title;
+            reqCustomer.Address = customer.Address;
+            reqCustomer.Email = customer.Email;
+            reqCustomer.Muted = customer.Muted;
+            reqCustomer.Person = customer.Person;
+            reqCustomer.Phone = customer.Phone;
+            reqCustomer.SizeLimit = customer.SizeLimit;
+
+            request.Customer = reqCustomer;
+            
+            
+            var result = await  _client.UpdateCustomerAsync(request);
 
             return _mapper.Map<Customer>(result);
         }
