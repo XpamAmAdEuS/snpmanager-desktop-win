@@ -11,6 +11,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Snp.Core.Models;
 using Snp.Core.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
+using Snp.App.Navigation;
 using Snp.Core.Repository;
 
 namespace Snp.App.Views
@@ -57,6 +58,8 @@ namespace Snp.App.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             
+            
+            
             if (e.Parameter == null)
             {
                 ViewModel = new CustomerViewModel
@@ -68,8 +71,10 @@ namespace Snp.App.Views
             }
             else
             {
-                var c = await Ioc.Default.GetRequiredService<ISnpRepository>().Customers.GetOneById((uint)e.Parameter);
-
+                
+                NavigationRootPageArgs args = (NavigationRootPageArgs)e.Parameter;
+                uint id = (uint)args.Parameter;
+                var c = await Ioc.Default.GetRequiredService<ISnpRepository>().Customers.GetOneById(id);
                 ViewModel = new CustomerViewModel(c);
 
             }

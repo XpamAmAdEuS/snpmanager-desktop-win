@@ -77,7 +77,7 @@ namespace Snp.App
                 Item = item;
 
                 // Load control page into frame.
-                Type pageType = Type.GetType("AppUIBasics.ControlPages." + item.UniqueId + "Page");
+                Type pageType = Type.GetType("Snp.App.Views." + item.UniqueId + "Page");
 
                 if (pageType != null)
                 {

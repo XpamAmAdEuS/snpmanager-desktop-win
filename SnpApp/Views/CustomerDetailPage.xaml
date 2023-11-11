@@ -15,7 +15,7 @@
 
     <RelativePanel Padding="36,0,36,0">
         <TextBlock
-            Style="{StaticResource PageTitleTextBlockStyle}"
+            Style="{StaticResource TitleTextBlockStyle}"
             Text="{x:Bind ViewModel.Title, Mode=OneWay}"
             x:Name="PageTitle" />
 

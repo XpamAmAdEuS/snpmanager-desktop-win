@@ -19,23 +19,10 @@
     xmlns:local="using:Snp.App"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Page.Resources>
-        <CollectionViewSource IsSourceGrouped="true" x:Name="itemsCVS" />
-    </Page.Resources>
-
     <!--  This grid acts as a root panel for the page.  -->
     <Grid>
         <GridView
-            AutomationProperties.AutomationId="ItemGridView"
-            AutomationProperties.Name="Items In Group"
-            ContainerContentChanging="OnItemGridViewContainerContentChanging"
-            IsItemClickEnabled="True"
             IsSwipeEnabled="False"
-            ItemClick="OnItemGridViewItemClick"
-            ItemContainerStyle="{StaticResource IndentedGridViewItemStyle}"
-            ItemTemplate="{StaticResource ControlItemTemplate}"
-            ItemsSource="{x:Bind itemsCVS.View, Mode=OneWay}"
-            Loaded="OnItemGridViewLoaded"
             Padding="24,0,24,0"
             SelectionMode="None"
             x:Name="itemGridView">
@@ -57,7 +44,7 @@
                         VerticalAlignment="Center">
                         <TextBlock
                             FontSize="18"
-                            Text="{x:Bind WinAppSdkDetails}"
+                            Text="1.0"
                             x:Name="smallHeaderSubtitleText" />
                         <TextBlock
                             Style="{StaticResource TitleLargeTextBlockStyle}"
@@ -70,16 +57,7 @@
 
             <GridView.GroupStyle>
                 <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate x:DataType="local:GroupInfoList">
-                            <TextBlock
-                                AutomationProperties.HeadingLevel="Level1"
-                                Margin="4,32,0,0"
-                                Style="{StaticResource SubtitleTextBlockStyle}"
-                                Text="{x:Bind Title}"
-                                x:Name="pageSubtitle" />
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
+                    <GroupStyle.HeaderTemplate />
                 </GroupStyle>
             </GridView.GroupStyle>
         </GridView>

@@ -47,7 +47,7 @@
 
     <RelativePanel x:Name="LayoutRoot">
         <TextBlock
-            Style="{StaticResource PageTitleTextBlockStyle}"
+            Style="{StaticResource TitleTextBlockStyle}"
             Text="Music upload"
             x:Name="PageTitle" />
 

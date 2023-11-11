@@ -33,8 +33,7 @@ namespace Snp.App
                 return string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
             }
         }
-
-        public string WinAppSdkRuntimeDetails => "1.0";
+        
         private int lastNavigationSelectionMode = 0;
 
         public SettingsPage()

@@ -82,6 +82,8 @@ namespace Snp.App
         {
             
             IdleSynchronizer.Init();
+            
+            JwtTokenHelper.Initialize();
 
             startupWindow = WindowHelper.CreateWindow();
             startupWindow.ExtendsContentIntoTitleBar = true;
@@ -91,6 +93,41 @@ namespace Snp.App
                 this.DebugSettings.BindingFailed += DebugSettings_BindingFailed;
             }
 #endif
+            
+            
+            var mapper = MapperConfig.InitializeAutomapper();
+            
+            ChannelBase channel = GrpcChannel.ForAddress(
+                Constants.GrpcUrl,
+                new GrpcChannelOptions
+                {
+                    Credentials = ChannelCredentials.Insecure,
+                    LoggerFactory = LoggerFactory.Create(logging =>
+                    {
+                        logging.AddConsole();
+                        logging.AddDebug();
+                        logging.SetMinimumLevel(LogLevel.Debug);
+                    })
+                });
+
+            var token = JwtTokenHelper.JwtToken;
+            
+            CallInvoker invoker = channel
+                .Intercept(new AuthorizationHeaderInterceptor(token))
+                .Intercept(new ErrorHandlerInterceptor());
+            
+            Ioc.Default.ConfigureServices
+            (new ServiceCollection()
+                .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
+                .AddSingleton<IFilePickManager>(FilePickerManager.Default)
+                .AddSingleton<ISnpRepository>(new GrpcSnpRepository(invoker,mapper))
+                .AddSingleton<IConnection>(Connection.Default)
+                .AddTransient<CustomerListViewModel>()
+                .AddTransient<CustomerViewModel>()
+                .AddTransient<MusicUploadViewModel>()
+                .AddTransient<SiteViewModel>()
+                .BuildServiceProvider()
+            );
             
             
             EnsureWindow();
@@ -185,7 +222,7 @@ namespace Snp.App
             {
                 ((Microsoft.UI.Xaml.Controls.NavigationViewItem)((NavigationRootPage)App.StartupWindow.Content).NavigationView.MenuItems[0]).IsSelected = true;
             }
-
+            
             // Ensure the current window is active
             StartupWindow.Activate();
         }

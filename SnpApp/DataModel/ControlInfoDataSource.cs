@@ -214,7 +214,7 @@ namespace Snp.App.DataModel
 
             lock (_lock)
             {
-                string pageRoot = "AppUIBasics.ControlPages.";
+                string pageRoot = "Snp.App.Views.";
 
                 controlInfoDataGroup.Groups.SelectMany(g => g.Items).ToList().ForEach(item =>
                 {

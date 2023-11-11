@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
+using Snp.App.Navigation;
 using Snp.Core.ViewModels;
 using DispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue;
 
@@ -109,8 +110,14 @@ public sealed partial class CustomerListPage
     private void ViewDetails_Click(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedCustomer != null)
-            Frame.Navigate(typeof(CustomerDetailPage), ViewModel.SelectedCustomer.Model.Id,
-                new DrillInNavigationTransitionInfo());
+        {
+            NavigationRootPage.GetForElement(this).Navigate(typeof(CustomerDetailPage), ViewModel.SelectedCustomer.Model.Id, new DrillInNavigationTransitionInfo());
+            
+            // Frame.Navigate(typeof(CustomerDetailPage), ViewModel.SelectedCustomer.Model.Id,
+            //     new DrillInNavigationTransitionInfo());
+            
+        }
+            
     }
 
     private void DataGrid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
