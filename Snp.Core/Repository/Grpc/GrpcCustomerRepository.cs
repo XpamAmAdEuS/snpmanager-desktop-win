@@ -66,7 +66,7 @@ namespace Snp.Core.Repository.Grpc
             reqCustomer.Muted = customer.Muted;
             reqCustomer.Person = customer.Person;
             reqCustomer.Phone = customer.Phone;
-            reqCustomer.SizeLimit = customer.SizeLimit;
+            reqCustomer.SizeLimit = customer.SizeLimit.Value;
 
             request.Customer = reqCustomer;
             

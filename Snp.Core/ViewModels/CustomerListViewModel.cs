@@ -83,7 +83,15 @@ public class CustomerListViewModel : ObservableObject
     public IAsyncRelayCommand LastAsyncCommand { get; }
 
     public List<uint> PageSizes => new() { 5, 10, 20, 50, 100 };
-
+    
+    public List<SizeLimitModel> LimitSizeOptions => new()
+    {
+        new SizeLimitModel{Value =8000000000,Name = "8GB"},
+        new SizeLimitModel{Value =16000000000,Name = "16GB"},
+        new SizeLimitModel{Value =24000000000,Name = "24GB"},
+        new SizeLimitModel{Value =32000000000,Name = "32GB"},
+    };
+    
     public uint PageSize
     {
         get => SearchRequestModel.PerPage;

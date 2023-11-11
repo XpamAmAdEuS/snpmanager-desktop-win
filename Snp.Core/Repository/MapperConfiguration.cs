@@ -10,10 +10,10 @@ public class MapperConfig
     
     public class DirectionFormatter : IValueConverter<DataGridSortDirection, string> {
         
-        string convertToDirection(DataGridSortDirection value)
+        public string Convert(DataGridSortDirection source, ResolutionContext context)
         {
             string result ="ASC";
-            switch (value)
+            switch (source)
             {
                 case DataGridSortDirection.Ascending:
                     result=  "ASC";
@@ -24,22 +24,61 @@ public class MapperConfig
             }
             return result;
         }
-        
-        public string Convert(DataGridSortDirection source, ResolutionContext context)
+    }
+    
+    public class SizeLimitModelFormatter : IValueConverter<SizeLimitModel, ulong> {
+        public ulong Convert(SizeLimitModel source, ResolutionContext context)
         {
-            return convertToDirection(source);
+            return source.Value;
+        }
+    }
+    
+    public class SizeLimitModelFormatterInvert : IValueConverter<ulong, SizeLimitModel> {
+        
+        public SizeLimitModel Convert(ulong source, ResolutionContext context)
+        {
+            
+            SizeLimitModel result = new SizeLimitModel();
+            switch (source)
+            {
+                case 8000000000:
+                    result.Name = "8Gb";
+                    result.Value = 8000000000;
+                    break;
+                case 16000000000:
+                    result.Name = "16Gb";
+                    result.Value = 16000000000;
+                    break;
+                case 24000000000:
+                    result.Name = "24Gb";
+                    result.Value = 24000000000;
+                    break;
+                case 32000000000:
+                    result.Name = "32Gb";
+                    result.Value = 32000000000;
+                    break;
+                
+            }
+
+            return result;
         }
     }
     
     public static Mapper InitializeAutomapper()
     {
-
-        
         
         //Provide all the Mapping Configuration
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<V1.ProtoCustomerRepo.Types.ProtoCustomer, Customer>().ReverseMap();
+            cfg.CreateMap<ProtoCustomerRepo.Types.ProtoCustomer, Customer>().ForMember(d => d.SizeLimit,
+                opt =>
+                    opt.ConvertUsing(new SizeLimitModelFormatterInvert(), src => src.SizeLimit)).ForMember(
+                dest => dest.SizeLimitValue,
+                act => act.MapFrom(
+                    src => src.SizeLimit));
+            cfg.CreateMap<Customer,ProtoCustomerRepo.Types.ProtoCustomer>().ForMember(d => d.SizeLimit, 
+                opt => 
+                    opt.ConvertUsing(new SizeLimitModelFormatter(), src => src.SizeLimit));
             cfg.CreateMap<SearchRequestModel,SearchRequest>()
                 .ForMember(d => d.SortDirection, 
                     opt => 

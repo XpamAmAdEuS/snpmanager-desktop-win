@@ -103,7 +103,7 @@ namespace Snp.Core.ViewModels
         /// <summary>
         /// Gets or sets the customer's SizeLimit.
         /// </summary>
-        public ulong SizeLimit
+        public SizeLimitModel SizeLimit
         {
             get => Model.SizeLimit;
             set

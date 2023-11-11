@@ -3,6 +3,7 @@
     x:Class="Snp.App.Views.CustomerListPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Snp.Core.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
@@ -123,10 +124,26 @@
                         Header="Muted"
                         Tag="muted" />
                     <toolkit:DataGridComboBoxColumn
-                        Binding="{Binding SizeLimit}"
+                        Binding="{Binding SizeLimit.Value}"
                         CanUserSort="True"
+                        DisplayMemberPath="Name"
                         Header="SizeLimit"
+                        ItemsSource="{x:Bind ViewModel.LimitSizeOptions}"
                         Tag="size_limit" />
+
+                    <!-- <toolkit:DataGridComboBoxColumn Header="Student List" DisplayMemberPath="Name" SelectedValuePath="Id"> -->
+                    <!--     <toolkit:DataGridComboBoxColumn.ElementStyle> -->
+                    <!--         <Style TargetType="{x:StyleTargetType ComboBox}"> -->
+                    <!--             <Setter Property="ItemsSource" Value="{Binding StudentsList}" /> -->
+                    <!--         </Style> -->
+                    <!--     </toolkit:DataGridComboBoxColumn.ElementStyle> -->
+                    <!--     <toolkit:DataGridComboBoxColumn.EditingElementStyle> -->
+                    <!--         <Style TargetType="{x:Type ComboBox}"> -->
+                    <!--             <Setter Property="ItemsSource" Value="{Binding StudentsList}" /> -->
+                    <!--         </Style> -->
+                    <!--     </toolkit:DataGridComboBoxColumn.EditingElementStyle> -->
+                    <!-- </toolkit:DataGridComboBoxColumn> -->
+
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
 
