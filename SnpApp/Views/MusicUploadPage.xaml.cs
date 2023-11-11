@@ -1,18 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Microsoft.Extensions.DependencyInjection;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Navigation;
 using Snp.Core.Models;
+using Snp.Core.Services;
 using Snp.Core.ViewModels;
 using WinRT.Interop;
 
@@ -61,42 +56,39 @@ namespace Snp.App.Views
         
         private async void AddMusicFiles_Click(object sender, RoutedEventArgs e)
         {
-            FileOpenPicker fileOpenPicker = new()
-            {
-                ViewMode = PickerViewMode.Thumbnail,
-                FileTypeFilter = { ".mp3" },
-            };
             
-            
-            nint windowHandle = WindowNative.GetWindowHandle(this);
-            InitializeWithWindow.Initialize(fileOpenPicker, windowHandle);
+            var files = await Ioc.Default.GetRequiredService<IFilePickManager>().PickMultipleFilesAsync();
 
-            IReadOnlyList<StorageFile> items = await fileOpenPicker.PickMultipleFilesAsync();
-
-            if (items.Count > 0)
+            if (files is not { Count: > 0 }) return;
+            foreach (var item in files)
             {
-                foreach (var item in items)
-                {
-                    AddFileToModel(item);
-                }
+                AddFileToModel(item);
             }
         }
         
         private async void AddMusicFolder_Click(object sender, RoutedEventArgs e)
         {
+            
             FolderPicker folderOpenPicker = new()
             {
                 ViewMode = PickerViewMode.Thumbnail,
             };
 
-            nint windowHandle = WindowNative.GetWindowHandle(this);
+            nint windowHandle = WindowNative.GetWindowHandle(App.StartupWindow);
             InitializeWithWindow.Initialize(folderOpenPicker, windowHandle);
 
             StorageFolder folder = await folderOpenPicker.PickSingleFolderAsync();
+
             if (folder != null)
             {
                 AddFolderToModel(folder);
             }
+
+        }
+        
+        private async void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.Clear();
             
         }
         
@@ -147,8 +139,7 @@ namespace Snp.App.Views
                 Name = item.Name,
                 Path = item.Path,
                 ShowError = false,
-                ShowPaused = true,
-                Progress = 0
+                ShowPaused = true
             };
             await ViewModel.Add(t);
         }

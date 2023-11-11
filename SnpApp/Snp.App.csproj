@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
+    <TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <RootNamespace>Snp.App</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;arm64</Platforms>
-    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
@@ -84,6 +84,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.230907" />
     <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.0.230907" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+    <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.1.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
 
@@ -113,9 +114,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Page Update="Shell.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\CustomerDetailPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -125,14 +123,18 @@
     <Page Update="Views\SaveChangesDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\SettingsPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\MusicUploadPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Widgets\LoginUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataModel\ControlInfoData.json" />
+    <Content Include="DataModel\IconsData.json" />
   </ItemGroup>
 </Project>

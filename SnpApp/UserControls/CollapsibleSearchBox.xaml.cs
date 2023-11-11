@@ -12,7 +12,7 @@ namespace Snp.App.UserControls
             InitializeComponent();
             Loaded += CollapsableSearchBox_Loaded;
             Unloaded += CollapsibleSearchBox_Unloaded;
-            App.Window.SizeChanged+= Current_SizeChanged;
+            App.StartupWindow.SizeChanged+= Current_SizeChanged;
             myAutoSuggestBox = SearchBox;
         }
 
@@ -40,7 +40,7 @@ namespace Snp.App.UserControls
             SearchButton.AddHandler(UIElement.PointerReleasedEvent,
                 new PointerEventHandler(ToggleButton_PointerReleased), true);
 
-            SetState(App.Window.Bounds.Width);
+            SetState(App.StartupWindow.Bounds.Width);
         }
 
         private void CollapsibleSearchBox_Unloaded(object sender, RoutedEventArgs e)
@@ -58,7 +58,7 @@ namespace Snp.App.UserControls
 
         private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            SetState(App.Window.Bounds.Width);
+            SetState(App.StartupWindow.Bounds.Width);
             SearchButton.IsChecked = false;
         }
 

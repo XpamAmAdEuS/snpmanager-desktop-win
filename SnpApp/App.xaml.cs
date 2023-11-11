@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
@@ -14,13 +15,17 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Windows.AppLifecycle;
 using Snp.App.Common;
+using Snp.App.DataModel;
 using Snp.App.Helper;
+using Snp.App.Navigation;
+using Snp.App.Services;
 using Snp.App.Views;
 using Snp.App.Views.Widgets;
 using Snp.Core.ViewModels;
 using Snp.Core.Repository;
 using Snp.Core.Repository.Grpc;
 using Snp.Core.Repository.Grpc.Interceptors;
+using Snp.Core.Services;
 using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
 
 
@@ -29,84 +34,38 @@ namespace Snp.App
     public sealed partial class App : Application
     {
         
-        /// <summary>
-        /// Gets main App Window
-        /// </summary>
-        public static Window Window => _mWindow;
-
-        private static Window _mWindow;
+        private static Window startupWindow;
         
         public static Window StartupWindow
         {
             get
             {
-                return _mWindow;
+                return startupWindow;
             }
         }
         
-        private Shell shell;
         
         public static string Title => "Snp Manager";
 
         public App()
         {
             InitializeComponent();
-        }
-        
-        public new static App Current => (App)Application.Current;
-        
-        
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
-        {
             
-            IdleSynchronizer.Init();
-            
-            // Create LoginUserControl and attach event handlers
-            LoginUserControl loginUserControl = new LoginUserControl();
-            loginUserControl.UserLoggedIn += LoginUserControl_UserLoggedIn;
-            loginUserControl.UserAbortedLogIn += LoginUserControl_UserAbortedLogIn;
-
-
-            _mWindow = WindowHelper.CreateWindow();
-            _mWindow.Content = loginUserControl;
-            _mWindow.Activate();
+#if WINUI_PRERELEASE
+            this.Suspending += OnSuspending;
+            this.Resuming += App_Resuming;
+            this.RequiresPointerMode = ApplicationRequiresPointerMode.WhenRequested;
+#endif
         }
         
-        
-        
-        /// <summary>
-        /// Login was aborted.
-        /// </summary>
-        private void LoginUserControl_UserAbortedLogIn(object sender, EventArgs e)
+        public void EnableSound(bool withSpatial = false)
         {
-            // RemoveAccountData();
-            // _mWindow.Close();
-        }
-        
-        public Frame GetRootFrame()
-        {
-            Frame rootFrame;
-            Shell rootPage = StartupWindow.Content as Shell;
-            if (rootPage == null)
-            {
-                rootPage = new Shell();
-                rootFrame = (Frame)rootPage.FindName("rootFrame");
-                if (rootFrame == null)
-                {
-                    throw new Exception("Root frame not found");
-                }
-                SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
-                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
-                rootFrame.NavigationFailed += OnNavigationFailed;
+            ElementSoundPlayer.State = ElementSoundPlayerState.On;
 
-                StartupWindow.Content = rootPage;
-            }
+            if (!withSpatial)
+                ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.Off;
             else
-            {
-                rootFrame = (Frame)rootPage.FindName("rootFrame");
-            }
-
-            return rootFrame;
+                ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.On;
         }
         
         public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
@@ -118,18 +77,58 @@ namespace Snp.App
             return (TEnum)Enum.Parse(typeof(TEnum), text);
         }
         
-         private async void EnsureWindow(IActivatedEventArgs args = null)
+        
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            
+            IdleSynchronizer.Init();
+
+            startupWindow = WindowHelper.CreateWindow();
+            startupWindow.ExtendsContentIntoTitleBar = true;
+#if DEBUG
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                this.DebugSettings.BindingFailed += DebugSettings_BindingFailed;
+            }
+#endif
+            
+            
+            EnsureWindow();
+            
+            
+            // Create LoginUserControl and attach event handlers
+            // LoginUserControl loginUserControl = new LoginUserControl();
+            // loginUserControl.UserLoggedIn += LoginUserControl_UserLoggedIn;
+            // loginUserControl.UserAbortedLogIn += LoginUserControl_UserAbortedLogIn;
+            
+        }
+        
+        
+        private void DebugSettings_BindingFailed(object sender, BindingFailedEventArgs e)
+        {
+
+        }
+
+#if WINUI_PRERELEASE
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            EnsureWindow(args);
+        }
+#endif
+        
+        
+        private async void EnsureWindow(IActivatedEventArgs args = null)
         {
             // No matter what our destination is, we're going to need control data loaded - let's knock that out now.
             // We'll never need to do this again.
-            // await ControlInfoDataSource.Instance.GetGroupsAsync();
-            // await IconsDataSource.Instance.LoadIcons();
+            await ControlInfoDataSource.Instance.GetGroupsAsync();
+            await IconsDataSource.Instance.LoadIcons();
 
             Frame rootFrame = GetRootFrame();
 
             ThemeHelper.Initialize();
 
-            Type targetPageType = typeof(CustomerListPage);
+            Type targetPageType = typeof(HomePage);
             string targetPageArguments = string.Empty;
 
             if (args != null)
@@ -161,44 +160,75 @@ namespace Snp.App
                 targetPageArguments = uri;
                 string targetId = string.Empty;
 
-                // if (uri == "AllControls")
-                // {
-                //     targetPageType = typeof(AllControlsPage);
-                // }
-                // else if (uri == "NewControls")
-                // {
-                //     targetPageType = typeof(HomePage);
-                // }
-                // else if (ControlInfoDataSource.Instance.Groups.Any(g => g.UniqueId == uri))
-                // {
-                //     targetPageType = typeof(SectionPage);
-                // }
-                // else if (ControlInfoDataSource.Instance.Groups.Any(g => g.Items.Any(i => i.UniqueId == uri)))
-                // {
-                //     targetPageType = typeof(ItemPage);
-                // }
+                if (uri == "AllControls")
+                {
+                    targetPageType = typeof(AllControlsPage);
+                }
+                else if (uri == "NewControls")
+                {
+                    targetPageType = typeof(HomePage);
+                }
+                else if (ControlInfoDataSource.Instance.Groups.Any(g => g.UniqueId == uri))
+                {
+                    targetPageType = typeof(SectionPage);
+                }
+                else if (ControlInfoDataSource.Instance.Groups.Any(g => g.Items.Any(i => i.UniqueId == uri)))
+                {
+                    targetPageType = typeof(ItemPage);
+                }
             }
 
-            Shell rootPage = StartupWindow.Content as Shell;
+            NavigationRootPage rootPage = StartupWindow.Content as NavigationRootPage;
             rootPage.Navigate(targetPageType, targetPageArguments);
 
-            if (targetPageType == typeof(CustomerListPage))
+            if (targetPageType == typeof(HomePage))
             {
-                ((NavigationViewItem)((Shell)StartupWindow.Content).NavigationView.MenuItems[0]).IsSelected = true;
+                ((Microsoft.UI.Xaml.Controls.NavigationViewItem)((NavigationRootPage)App.StartupWindow.Content).NavigationView.MenuItems[0]).IsSelected = true;
             }
 
             // Ensure the current window is active
             StartupWindow.Activate();
         }
+
+        public Frame GetRootFrame()
+        {
+            Frame rootFrame;
+            NavigationRootPage rootPage = StartupWindow.Content as NavigationRootPage;
+            if (rootPage == null)
+            {
+                rootPage = new NavigationRootPage();
+                rootFrame = (Frame)rootPage.FindName("rootFrame");
+                if (rootFrame == null)
+                {
+                    throw new Exception("Root frame not found");
+                }
+                SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
+                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                StartupWindow.Content = rootPage;
+            }
+            else
+            {
+                rootFrame = (Frame)rootPage.FindName("rootFrame");
+            }
+
+            return rootFrame;
+        }
+        
         
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
         
-        /// <summary>
-        /// Login was successful.
-        /// </summary>
+        
+        private void LoginUserControl_UserAbortedLogIn(object sender, EventArgs e)
+        {
+            // RemoveAccountData();
+            // _mWindow.Close();
+        }
+        
         private void LoginUserControl_UserLoggedIn(object sender, EventArgs e)
         {
 
@@ -233,6 +263,7 @@ namespace Snp.App
                 Ioc.Default.ConfigureServices
                 (new ServiceCollection()
                     .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
+                    .AddSingleton<IFilePickManager>(FilePickerManager.Default)
                     .AddSingleton<ISnpRepository>(new GrpcSnpRepository(invoker,mapper))
                     .AddSingleton<IConnection>(Connection.Default)
                     .AddTransient<CustomerListViewModel>()
@@ -243,10 +274,10 @@ namespace Snp.App
                 );
             }
             
-            _mWindow.ExtendsContentIntoTitleBar = true;
-            
-            shell = _mWindow.Content as Shell ?? new Shell();
-            _mWindow.Content = shell;
+            // _mWindow.ExtendsContentIntoTitleBar = true;
+            //
+            // shell = _mWindow.Content as Shell ?? new Shell();
+            // _mWindow.Content = shell;
             
             EnsureWindow();
             
