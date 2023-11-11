@@ -176,6 +176,12 @@
                     x:Name="Home" />
 
                 <NavigationViewItem
+                    AutomationProperties.AutomationId="Customer2"
+                    Content="Customer2"
+                    Icon="Home"
+                    x:Name="Customer2" />
+
+                <NavigationViewItem
                     AutomationProperties.AutomationId="Design_Guidance"
                     Content="Design guidance"
                     Tag="Design Guidance"

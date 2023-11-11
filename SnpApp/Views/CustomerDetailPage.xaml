@@ -13,7 +13,7 @@
     xmlns:vm="using:Snp.App.Converters"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <RelativePanel Padding="36,0,36,0">
+    <RelativePanel Padding="36,4,36,0" x:Name="PanelRoot">
         <TextBlock
             Style="{StaticResource TitleTextBlockStyle}"
             Text="{x:Bind ViewModel.Title, Mode=OneWay}"
@@ -379,6 +379,7 @@
                         <Setter Target="EmailText.(RelativePanel.AlignLeftWithPanel)" Value="True" />
                         <Setter Target="EmailText.(RelativePanel.Below)" Value="CompanyText" />
                         <Setter Target="DetailPanel.Margin" Value="12,0,0,0" />
+                        <Setter Target="PanelRoot.Padding" Value="8,48,8,0" />
                         <Setter Target="MainCommandBar.DefaultLabelPosition" Value="Bottom" />
                     </VisualState.Setters>
                 </VisualState>

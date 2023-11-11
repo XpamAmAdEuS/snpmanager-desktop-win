@@ -321,6 +321,13 @@ namespace Snp.App.Navigation
                         Navigate(typeof(HomePage));
                     }
                 }
+                else if (selectedItem == Customer2)
+                {
+                    if (rootFrame.CurrentSourcePageType != typeof(CustomerListPage))
+                    {
+                        Navigate(typeof(CustomerListPage));
+                    }
+                }
                 else if (selectedItem == DesignGuidanceItem || selectedItem == AccessibilityItem)
                 {
                     //Navigate(typeof(SectionPage), "Design_Guidance");

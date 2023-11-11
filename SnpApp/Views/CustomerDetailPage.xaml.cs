@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Xaml;
@@ -29,7 +28,7 @@ namespace Snp.App.Views
             InitializeComponent();
         }
         
-        private CustomerViewModel _viewModel;
+        private CustomerViewModel? _viewModel;
 
         /// <summary>
         /// Used to bind the UI to the data.
