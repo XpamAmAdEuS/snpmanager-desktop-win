@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,13 +28,22 @@ namespace Snp.Core.Repository.Grpc
 
         public async Task<PaginatedList<Customer>> SearchCustomerAsync(SearchRequestModel searchRequestModel)
         {
-           
-            var result =  await _client.SearchCustomerAsync(_mapper.Map<SearchRequest>(searchRequestModel));
-            var items = result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
-            int count = (int)result.TotalRecords;
-            int pageSize = (int)searchRequestModel.PerPage;
-            int pageIndex = (int)searchRequestModel.CurrentPage;
-            return new PaginatedList<Customer>(items, count, pageIndex, pageSize);
+
+            // Grpc.Core.RpcException;
+
+            try
+            {
+                var result = await _client.SearchCustomerAsync(_mapper.Map<SearchRequest>(searchRequestModel));
+                var items = result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
+                var count = (int)result.TotalRecords;
+                var pageSize = (int)searchRequestModel.PerPage;
+                var pageIndex = (int)searchRequestModel.CurrentPage;
+                return new PaginatedList<Customer>(items, count, pageIndex, pageSize);
+            }
+            catch (Exception e)
+            {
+                throw new RpcException(Status.DefaultCancelled, e.Message);
+            }
             
             //return result.Data.Select(cus => _mapper.Map<Customer>(cus)).ToList();
         }

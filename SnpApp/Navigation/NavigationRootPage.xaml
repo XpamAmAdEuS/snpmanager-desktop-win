@@ -1,14 +1,3 @@
-<!--
-    //*********************************************************
-    //
-    // Copyright (c) Microsoft. All rights reserved.
-    // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-    // ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-    // IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-    // PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-    //
-    //*********************************************************
--->
 <Page
     HighContrastAdjustment="None"
     x:Class="Snp.App.Navigation.NavigationRootPage"
@@ -164,10 +153,14 @@
                 </AutoSuggestBox>
             </NavigationView.AutoSuggestBox>
 
+
             <Frame
                 Navigated="OnRootFrameNavigated"
                 Navigating="OnRootFrameNavigating"
                 x:Name="rootFrame" />
+
+
+
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     AutomationProperties.AutomationId="Home"

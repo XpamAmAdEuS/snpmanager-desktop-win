@@ -79,8 +79,8 @@ namespace Snp.App.Navigation
 
             SetDeviceFamily();
             AddNavigationMenuItems();
-
-            this.GotFocus += (object sender, RoutedEventArgs e) =>
+            
+            GotFocus += (object sender, RoutedEventArgs e) =>
             {
                 // helpful for debugging focus problems w/ keyboard & gamepad
                 if (FocusManager.GetFocusedElement() is FrameworkElement focus)
@@ -597,6 +597,8 @@ namespace Snp.App.Navigation
         #endregion
 
     }
+    
+    
 
     public class NavigationRootPageArgs
     {

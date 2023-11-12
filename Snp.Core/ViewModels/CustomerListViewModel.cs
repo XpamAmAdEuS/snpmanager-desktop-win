@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -119,32 +120,43 @@ public class CustomerListViewModel : ObservableObject
         private set => SetProperty(ref _pageCount, value);
     }
 
-    /// <summary>
-    ///     Gets the complete list of customers from the database.
-    /// </summary>
     public async Task GetCustomerListAsync(int pageIndex)
     {
         await _dispatcherQueue.EnqueueAsync(() => IsLoading = true);
 
         SearchRequestModel.CurrentPage = (uint)pageIndex;
 
-        var customers = await Ioc.Default.GetRequiredService<ISnpRepository>().Customers
-            .SearchCustomerAsync(SearchRequestModel);
-        if (customers.Items == null) return;
-
-        PageNumber = customers.PageIndex;
-        PageCount = customers.PageCount;
-        FirstAsyncCommand.NotifyCanExecuteChanged();
-        PreviousAsyncCommand.NotifyCanExecuteChanged();
-        NextAsyncCommand.NotifyCanExecuteChanged();
-        LastAsyncCommand.NotifyCanExecuteChanged();
-
-        await _dispatcherQueue.EnqueueAsync(() =>
+        try
         {
-            Customers.Clear();
-            foreach (var c in customers.Items) Customers.Add(new CustomerViewModel(c));
+            var customers = await Ioc.Default.GetRequiredService<ISnpRepository>().Customers
+                .SearchCustomerAsync(SearchRequestModel);
+            if (customers.Items == null) return;
+
+            PageNumber = customers.PageIndex;
+            PageCount = customers.PageCount;
+            FirstAsyncCommand.NotifyCanExecuteChanged();
+            PreviousAsyncCommand.NotifyCanExecuteChanged();
+            NextAsyncCommand.NotifyCanExecuteChanged();
+            LastAsyncCommand.NotifyCanExecuteChanged();
+
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                Customers.Clear();
+                foreach (var c in customers.Items) Customers.Add(new CustomerViewModel(c));
+            });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
             IsLoading = false;
-        });
+            throw;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+
+        
     }
 
     /// <summary>

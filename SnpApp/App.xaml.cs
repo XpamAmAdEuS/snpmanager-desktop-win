@@ -112,15 +112,18 @@ namespace Snp.App
 
             var token = JwtTokenHelper.JwtToken;
             
-            CallInvoker invoker = channel
-                .Intercept(new AuthorizationHeaderInterceptor(token))
-                .Intercept(new ErrorHandlerInterceptor());
+            // CallInvoker invoker = channel
+            //     .Intercept(new AuthorizationHeaderInterceptor(token))
+            //     .Intercept(new ErrorHandlerInterceptor());
+            
+            CallInvoker invoker = channel.Intercept(new AuthorizationHeaderInterceptor(token));
             
             Ioc.Default.ConfigureServices
             (new ServiceCollection()
                 .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
                 .AddSingleton<IFilePickManager>(FilePickerManager.Default)
                 .AddSingleton<ISnpRepository>(new GrpcSnpRepository(invoker,mapper))
+                .AddSingleton<ICustomerRepository>(new GrpcCustomerRepository(invoker,mapper))
                 .AddSingleton<IConnection>(Connection.Default)
                 .AddTransient<CustomerListViewModel>()
                 .AddTransient<CustomerViewModel>()
