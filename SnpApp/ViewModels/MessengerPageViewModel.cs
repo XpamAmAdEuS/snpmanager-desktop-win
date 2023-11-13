@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Snp.Core.Services;
 
-namespace Snp.Core.ViewModels;
+namespace Snp.App.ViewModels;
 
 public class MessengerPageViewModel : SamplePageViewModel
 {

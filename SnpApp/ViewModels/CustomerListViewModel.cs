@@ -11,7 +11,7 @@ using Microsoft.UI.Dispatching;
 using Snp.Core.Models;
 using Snp.Core.Repository;
 
-namespace Snp.Core.ViewModels;
+namespace Snp.App.ViewModels;
 
 /// <summary>
 ///     Provides data and commands accessible to the entire app.

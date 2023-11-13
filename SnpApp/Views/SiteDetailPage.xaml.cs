@@ -9,7 +9,7 @@ using Windows.ApplicationModel.Email;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Snp.Core.Models;
 using Snp.Core.Services;
-using Snp.Core.ViewModels;
+using Snp.App.ViewModels;
 
 namespace Snp.App.Views
 {

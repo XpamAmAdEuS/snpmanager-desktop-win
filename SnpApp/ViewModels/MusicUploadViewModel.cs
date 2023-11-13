@@ -13,7 +13,7 @@ using Snp.Core.Services;
 using Snp.V1;
 
 
-namespace Snp.Core.ViewModels
+namespace Snp.App.ViewModels
 {
     public class MusicUploadViewModel : ObservableObject
     {

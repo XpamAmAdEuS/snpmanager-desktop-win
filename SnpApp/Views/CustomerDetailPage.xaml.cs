@@ -8,7 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Snp.Core.Models;
-using Snp.Core.ViewModels;
+using Snp.App.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
 using Snp.App.Navigation;
 using Snp.Core.Repository;

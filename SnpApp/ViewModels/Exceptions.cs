@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snp.Core.ViewModels
+namespace Snp.App.ViewModels
 {
     /// <summary>
     /// Represents an exception that occurs when there's an error saving an order.

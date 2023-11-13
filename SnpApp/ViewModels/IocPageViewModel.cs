@@ -4,11 +4,11 @@
 
 using Snp.Core.Services;
 
-namespace Snp.Core.ViewModels;
+namespace Snp.App.ViewModels;
 
-public partial class ObservableValidatorPageViewModel : SamplePageViewModel
+public class IocPageViewModel : SamplePageViewModel
 {
-    public ObservableValidatorPageViewModel(IFilesService filesService)
+    public IocPageViewModel(IFilesService filesService) 
         : base(filesService)
     {
     }

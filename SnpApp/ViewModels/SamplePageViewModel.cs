@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Snp.Core.Services;
 
-namespace Snp.Core.ViewModels;
+namespace Snp.App.ViewModels;
 
 /// <summary>
 /// A base class for viewmodels for sample pages in the app.

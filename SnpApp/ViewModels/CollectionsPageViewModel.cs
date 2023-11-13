@@ -4,11 +4,11 @@
 
 using Snp.Core.Services;
 
-namespace Snp.Core.ViewModels;
+namespace Snp.App.ViewModels;
 
-public class IocPageViewModel : SamplePageViewModel
+public partial class CollectionsPageViewModel : SamplePageViewModel
 {
-    public IocPageViewModel(IFilesService filesService) 
+    public CollectionsPageViewModel(IFilesService filesService) 
         : base(filesService)
     {
     }

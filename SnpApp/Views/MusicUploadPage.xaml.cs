@@ -8,7 +8,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Navigation;
 using Snp.Core.Models;
 using Snp.Core.Services;
-using Snp.Core.ViewModels;
+using Snp.App.ViewModels;
 using WinRT.Interop;
 
 namespace Snp.App.Views

@@ -6,7 +6,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Snp.Core.Services;
 
-namespace Snp.Core.ViewModels;
+namespace Snp.App.ViewModels;
 
 public class RelayCommandPageViewModel : SamplePageViewModel
 {

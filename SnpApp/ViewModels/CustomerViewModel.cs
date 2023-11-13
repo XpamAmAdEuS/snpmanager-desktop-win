@@ -10,7 +10,7 @@ using Snp.Core.Models;
 using Snp.Core.Repository;
 
 
-namespace Snp.Core.ViewModels
+namespace Snp.App.ViewModels
 {
     /// <summary>
     /// Provides a bindable wrapper for the Customer model class, encapsulating various services for access by the UI.

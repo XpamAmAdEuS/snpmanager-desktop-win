@@ -7,7 +7,7 @@ using Snp.Core.Models;
 using Snp.Core.Repository;
 using CommunityToolkit.WinUI;
 
-namespace Snp.Core.ViewModels
+namespace Snp.App.ViewModels
 {
     /// <summary>
     /// Provides a bindable wrapper for the Site model class, encapsulating various services for access by the UI.

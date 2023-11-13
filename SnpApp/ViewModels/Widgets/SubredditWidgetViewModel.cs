@@ -11,7 +11,7 @@ using Snp.Core.Models;
 using Snp.Core.Services;
 using Nito.AsyncEx;
 
-namespace Snp.Core.ViewModels.Widgets;
+namespace Snp.App.ViewModels.Widgets;
 
 /// <summary>
 /// A viewmodel for a subreddit widget.

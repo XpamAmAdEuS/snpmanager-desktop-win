@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Snp.Core.Services;
 
-namespace Snp.Core.ViewModels.Widgets;
+namespace Snp.App.ViewModels.Widgets;
 
 /// <summary>
 /// A viewmodel for the validation widget.
