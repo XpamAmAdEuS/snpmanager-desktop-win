@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
-using Google.Protobuf;
 using Microsoft.UI.Dispatching;
 using Snp.Core.Models;
-using Snp.Core.Services;
-using Snp.V1;
 
 
 namespace Snp.App.ViewModels
 {
-    public class MusicUploadViewModel : ObservableObject
+    public partial class MusicUploadViewModel : ObservableObject
     {
         
         private DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -57,14 +54,17 @@ namespace Snp.App.ViewModels
             });
         }
         
-        public async Task Clear()
+        [RelayCommand(CanExecute = nameof(CanClear))]
+        public void Clear() => _myModel.Clear();
+
+       
+        
+        
+        private bool CanClear()
         {
-            await _dispatcherQueue.EnqueueAsync(() =>
-            {
-                _myModel.Clear();
-                OnPropertyChanged("Model");
-            });
+            return true;
         }
+        
         
         private bool _isUpLoading;
 
@@ -86,7 +86,7 @@ namespace Snp.App.ViewModels
             {
                 foreach (var t in _myModel)
                 {
-                    await _dispatcherQueue.EnqueueAsync(() => t.Execute(null));
+                    await _dispatcherQueue.EnqueueAsync(() => t.Upload());
                 }
 
                 IsUpLoading = false;
@@ -94,7 +94,29 @@ namespace Snp.App.ViewModels
         }
         
         private ObservableCollection<UploadItem> _myModel;
-
+        
         public ObservableCollection<UploadItem> Model { get { return _myModel; } }
+        
+        public async Task AddStorageFolder(StorageFolder folder)
+        {
+           
+            foreach (var item in await folder.GetFilesAsync())
+            {
+                AddStorageFile(item);
+            }
+            
+        }
+        
+        public void AddStorageFile(StorageFile item)
+        {
+            var t = new UploadItem
+            {
+                Name = item.Name,
+                Path = item.Path,
+                ShowError = false,
+                ShowPaused = true
+            };
+            Model.Add(t);
+        }
     }
 }

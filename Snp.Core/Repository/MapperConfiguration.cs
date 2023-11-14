@@ -8,7 +8,7 @@ namespace Snp.Core.Repository;
 public class MapperConfig
 {
     
-    public class DirectionFormatter : IValueConverter<DataGridSortDirection, string> {
+    class DirectionFormatter : IValueConverter<DataGridSortDirection, string> {
         
         public string Convert(DataGridSortDirection source, ResolutionContext context)
         {

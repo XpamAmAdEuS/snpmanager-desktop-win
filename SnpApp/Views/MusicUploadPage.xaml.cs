@@ -1,12 +1,13 @@
 using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.Core.Models;
+using Snp.App.Helper;
 using Snp.Core.Services;
 using Snp.App.ViewModels;
 using WinRT.Interop;
@@ -49,6 +50,34 @@ namespace Snp.App.Views
            
         }
         
+         private async void PickFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            // Create a folder picker
+            FolderPicker openPicker = new Windows.Storage.Pickers.FolderPicker();
+
+            // Retrieve the window handle (HWND) of the current WinUI 3 window.
+            var window = WindowHelper.GetWindowForElement(this);
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+
+            // Initialize the folder picker with the window handle (HWND).
+            InitializeWithWindow.Initialize(openPicker, hWnd);
+
+            // Set options for your folder picker
+            openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
+            openPicker.FileTypeFilter.Add("*");
+
+            // Open the picker for the user to pick a folder
+            StorageFolder folder = await openPicker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
+                
+                await ViewModel.AddStorageFolder(folder);
+                
+            }
+        }
+        
         private void StartUpload_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Upload();
@@ -62,34 +91,8 @@ namespace Snp.App.Views
             if (files is not { Count: > 0 }) return;
             foreach (var item in files)
             {
-                AddFileToModel(item);
+                ViewModel.AddStorageFile(item);
             }
-        }
-        
-        private async void AddMusicFolder_Click(object sender, RoutedEventArgs e)
-        {
-            
-            FolderPicker folderOpenPicker = new()
-            {
-                ViewMode = PickerViewMode.Thumbnail,
-            };
-
-            nint windowHandle = WindowNative.GetWindowHandle(App.StartupWindow);
-            InitializeWithWindow.Initialize(folderOpenPicker, windowHandle);
-
-            StorageFolder folder = await folderOpenPicker.PickSingleFolderAsync();
-
-            if (folder != null)
-            {
-                AddFolderToModel(folder);
-            }
-
-        }
-        
-        private async void Clear_Click(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.Clear();
-            
         }
         
         private void Grid_DragOver(object sender, DragEventArgs e)
@@ -109,39 +112,15 @@ namespace Snp.App.Views
                         switch (item)
                         {
                             case StorageFolder folder:
-                                AddFolderToModel(folder);
+                               // ViewModel.AddFolder(folder);
                                 break;
                             case StorageFile file:
-                                AddFileToModel(file);
+                               // ViewModel.AddFile(file);
                                 break;
                         }
                     }
                 }
             }
-        }
-        
-        
-
-        private async void AddFolderToModel(StorageFolder folder)
-        {
-           
-                foreach (var item in await folder.GetFilesAsync())
-                {
-                   AddFileToModel(item);
-                }
-            
-        }
-        
-        private async void AddFileToModel(StorageFile item)
-        {
-            var t = new UploadItem
-            {
-                Name = item.Name,
-                Path = item.Path,
-                ShowError = false,
-                ShowPaused = true
-            };
-            await ViewModel.Add(t);
         }
     }
 }

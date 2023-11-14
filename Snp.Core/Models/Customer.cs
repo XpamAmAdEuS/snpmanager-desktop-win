@@ -32,6 +32,10 @@ namespace Snp.Core.Models
             Email == other.Email &&
             Phone == other.Phone &&
             Address == other.Address;
-            
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Customer);
+        }
     }
 }

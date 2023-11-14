@@ -1,32 +1,15 @@
-﻿using System.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Snp.Core.Models;
 
 
-public class SizeLimitModel : INotifyPropertyChanged
+public partial class SizeLimitModel : ObservableObject
 {
-    #region Constructor
-
-    public SizeLimitModel() {}
-
-    #endregion
-
     #region Properties
 
-    public ulong Value { get; set; }
+    [ObservableProperty] private ulong _value;
 
-    public string Name { get; set; }
-
-    #endregion
-
-    #region Notify Property Changed
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public void NotifyPropertyChanged(string propName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-    }
+    [ObservableProperty] private string _name;
 
     #endregion
 }

@@ -45,7 +45,7 @@
         <!-- </DataTemplate> -->
     </Page.Resources>
 
-    <RelativePanel x:Name="LayoutRoot">
+    <RelativePanel Padding="36,4,36,0" x:Name="PanelRoot">
         <TextBlock
             Style="{StaticResource TitleTextBlockStyle}"
             Text="Music upload"
@@ -58,16 +58,16 @@
             RelativePanel.RightOf="PageTitle"
             x:Name="MainCommandBar">
             <AppBarButton
-                Click="AddMusicFolder_Click"
+                Click="PickFolderButton_Click"
                 Icon="SyncFolder"
-                Label="Add folder"
-                ToolTipService.ToolTip="Add folder" />
+                Label="Pick folder"
+                ToolTipService.ToolTip="Pick folder" />
             <AppBarSeparator />
             <AppBarButton
                 Click="AddMusicFiles_Click"
                 Icon="OpenFile"
-                Label="Add files"
-                ToolTipService.ToolTip="Add files" />
+                Label="Pick files"
+                ToolTipService.ToolTip="Pick files" />
             <AppBarSeparator />
             <AppBarButton
                 Click="StartUpload_Click"
@@ -75,7 +75,7 @@
                 Label="Start Upload"
                 ToolTipService.ToolTip="Start Upload" />
             <AppBarButton
-                Click="Clear_Click"
+                Command="{x:Bind ViewModel.ClearCommand}"
                 Icon="Upload"
                 Label="Clear"
                 ToolTipService.ToolTip="Clear list" />
@@ -140,7 +140,7 @@
                     <toolkit:DataGridTemplateColumn Header="Start" Tag="Start">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="models:UploadItem">
-                                <Button Command="{Binding}" Content="Start" />
+                                <Button Command="{x:Bind UploadCommand}" Content="Start" />
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>
@@ -181,6 +181,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="MainCommandBar.DefaultLabelPosition" Value="Bottom" />
+                        <Setter Target="PanelRoot.Padding" Value="8,48,8,0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

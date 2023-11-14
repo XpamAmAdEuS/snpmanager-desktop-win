@@ -321,6 +321,13 @@ namespace Snp.App.Navigation
                         Navigate(typeof(HomePage));
                     }
                 }
+                else if (selectedItem == MusicUpload)
+                {
+                    if (rootFrame.CurrentSourcePageType != typeof(MusicUploadPage))
+                    {
+                        Navigate(typeof(MusicUploadPage));
+                    }
+                }
                 else if (selectedItem == WaveForm)
                 {
                     if (rootFrame.CurrentSourcePageType != typeof(WaveformPage))
