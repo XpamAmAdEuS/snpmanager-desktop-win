@@ -181,6 +181,12 @@
                     x:Name="MusicUpload" />
 
                 <NavigationViewItem
+                    AutomationProperties.AutomationId="MusicImport"
+                    Content="MusicImport"
+                    Icon="Home"
+                    x:Name="MusicImport" />
+
+                <NavigationViewItem
                     AutomationProperties.AutomationId="WaveForm"
                     Content="WaveForm"
                     Icon="Home"

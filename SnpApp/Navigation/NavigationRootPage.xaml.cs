@@ -328,6 +328,13 @@ namespace Snp.App.Navigation
                         Navigate(typeof(MusicUploadPage));
                     }
                 }
+                else if (selectedItem == MusicImport)
+                {
+                    if (rootFrame.CurrentSourcePageType != typeof(MusicImportPage))
+                    {
+                        Navigate(typeof(MusicImportPage));
+                    }
+                }
                 else if (selectedItem == WaveForm)
                 {
                     if (rootFrame.CurrentSourcePageType != typeof(WaveformPage))

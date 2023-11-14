@@ -120,12 +120,16 @@ namespace Snp.App
             (new ServiceCollection()
                 .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
                 .AddSingleton<IFilePickManager>(FilePickerManager.Default)
-                .AddSingleton<ISnpRepository>(new GrpcSnpRepository(invoker,mapper))
-                .AddSingleton<ICustomerRepository>(new GrpcCustomerRepository(invoker,mapper))
+                .AddSingleton(new GrpcCustomerRepository(invoker,mapper))
+                .AddSingleton(new GrpcSiteRepository(invoker,mapper))
+                .AddSingleton(new GrpcUserRepository(invoker,mapper))
+                .AddSingleton(new MusicImportService(invoker,mapper))
                 .AddSingleton<IConnection>(Connection.Default)
                 .AddTransient<CustomerListViewModel>()
                 .AddTransient<CustomerViewModel>()
                 .AddTransient<MusicUploadViewModel>()
+                .AddTransient<MusicImportViewModel>()
+                .AddTransient<MusicImportListViewModel>()
                 .AddTransient<SiteViewModel>()
                 .BuildServiceProvider()
             );
@@ -277,39 +281,6 @@ namespace Snp.App
                 var jwt = e as TokenChangedEventArgs;
                 jwtToken = jwt.NewValue;
                 ApplicationData.Current.LocalSettings.Values[Constants.StoredJwtTokenKey] = jwtToken;
-                
-                
-                var mapper = MapperConfig.InitializeAutomapper();
-            
-                ChannelBase channel = GrpcChannel.ForAddress(
-                    Constants.GrpcUrl,
-                    new GrpcChannelOptions
-                    {
-                        Credentials = ChannelCredentials.Insecure,
-                        LoggerFactory = LoggerFactory.Create(logging =>
-                        {
-                            logging.AddConsole();
-                            logging.AddDebug();
-                            logging.SetMinimumLevel(LogLevel.Debug);
-                        })
-                    });
-            
-                CallInvoker invoker = channel
-                    .Intercept(new AuthorizationHeaderInterceptor(jwtToken))
-                    .Intercept(new ErrorHandlerInterceptor());
-            
-                Ioc.Default.ConfigureServices
-                (new ServiceCollection()
-                    .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
-                    .AddSingleton<IFilePickManager>(FilePickerManager.Default)
-                    .AddSingleton<ISnpRepository>(new GrpcSnpRepository(invoker,mapper))
-                    .AddSingleton<IConnection>(Connection.Default)
-                    .AddTransient<CustomerListViewModel>()
-                    .AddTransient<CustomerViewModel>()
-                    .AddTransient<MusicUploadViewModel>()
-                    .AddTransient<SiteViewModel>()
-                    .BuildServiceProvider()
-                );
             }
             
             // _mWindow.ExtendsContentIntoTitleBar = true;

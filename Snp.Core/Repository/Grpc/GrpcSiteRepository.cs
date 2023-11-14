@@ -13,10 +13,8 @@ using Snp.V1;
 
 namespace Snp.Core.Repository.Grpc
 {
-    /// <summary>
-    /// Contains methods for interacting with the customers backend using GRPC. 
-    /// </summary>
-    public class GrpcSiteRepository : ISiteRepository
+   
+    public class GrpcSiteRepository
     {
         
         private readonly SiteCrud.SiteCrudClient _client;

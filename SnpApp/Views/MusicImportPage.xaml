@@ -1,0 +1,188 @@
+<Page
+    mc:Ignorable="d"
+    x:Class="Snp.App.Views.MusicImportPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Snp.Core.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:uc="using:Snp.App.UserControls"
+    xmlns:vm="using:Snp.App.Converters"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Page.Resources>
+        <MenuFlyout x:Key="DataGridContextMenu">
+            <MenuFlyoutItem
+                Click="ViewDetails_Click"
+                Icon="OpenFile"
+                Text="View details" />
+        </MenuFlyout>
+    </Page.Resources>
+
+    <RelativePanel Padding="36,4,36,0" x:Name="PanelRoot">
+        <TextBlock
+            Style="{StaticResource TitleTextBlockStyle}"
+            Text="Music Import"
+            x:Name="PageTitle" />
+
+        <CommandBar
+            Background="Transparent"
+            DefaultLabelPosition="Right"
+            HorizontalAlignment="Stretch"
+            RelativePanel.LeftOf="SearchBox"
+            RelativePanel.RightOf="PageTitle"
+            x:Name="MainCommandBar">
+            <AppBarButton
+                Click="ViewDetails_Click"
+                Icon="Contact"
+                IsEnabled="{x:Bind vm:Converters.IsNotNull(ViewModel.SelectedMusic), Mode=OneWay}"
+                Label="View details"
+                ToolTipService.ToolTip="View details" />
+            <AppBarSeparator />
+            <AppBarButton
+                Click="{x:Bind ViewModel.Sync}"
+                Icon="Refresh"
+                Label="Sync"
+                ToolTipService.ToolTip="Sync with server" />
+        </CommandBar>
+
+        <uc:CollapsibleSearchBox
+            CollapseWidth="{StaticResource LargeWindowSnapPoint}"
+            Loaded="SearchBox_Loaded"
+            Margin="12,8,12,0"
+            RelativePanel.AlignRightWithPanel="True"
+            Width="240"
+            x:Name="SearchBox" />
+
+
+        <Grid
+            Margin="0,10,0,0"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.Below="MainCommandBar"
+            RowDefinitions="*,Auto">
+
+            <toolkit:DataGrid
+                AutoGenerateColumns="False"
+                BorderThickness="0"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                ContextFlyout="{StaticResource DataGridContextMenu}"
+                DoubleTapped="DataGrid_DoubleTapped"
+                Grid.Row="0"
+                GridLinesVisibility="None"
+                KeyDown="DataGrid_KeyDown"
+                RightTapped="DataGrid_RightTapped"
+                SelectedItem="{x:Bind ViewModel.SelectedMusic, Mode=TwoWay}"
+                SelectionMode="Single"
+                Sorting="DataGrid_Sorting"
+                x:Name="DataGrid">
+                <toolkit:DataGrid.Columns>
+                    <toolkit:DataGridTextColumn
+                        Binding="{Binding Title}"
+                        CanUserSort="True"
+                        Header="Title"
+                        Tag="title" />
+                    <toolkit:DataGridTextColumn
+                        Binding="{Binding Artist}"
+                        CanUserSort="True"
+                        Header="Artist"
+                        Tag="artist" />
+                    <toolkit:DataGridCheckBoxColumn
+                        Binding="{Binding Selected}"
+                        CanUserSort="False"
+                        Header="Selected"
+                        Tag="selected" />
+                    <toolkit:DataGridTemplateColumn Header="Start" Tag="Start">
+                        <toolkit:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate x:DataType="models:MusicImport">
+                                <MediaPlayerElement
+                                    AreTransportControlsEnabled="True"
+                                    AutoPlay="False"
+                                    MaxWidth="400"
+                                    Source="{x:Bind Source}" />
+                            </DataTemplate>
+                        </toolkit:DataGridTemplateColumn.CellTemplate>
+                    </toolkit:DataGridTemplateColumn>
+                </toolkit:DataGrid.Columns>
+            </toolkit:DataGrid>
+
+            <CommandBar
+                Background="Transparent"
+                DefaultLabelPosition="Right"
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                x:Name="PaginationCommandBar">
+                <AppBarButton
+                    Command="{x:Bind ViewModel.FirstAsyncCommand, Mode=OneWay}"
+                    Foreground="{ThemeResource SystemAccentColor}"
+                    Icon="Previous"
+                    ToolTipService.ToolTip="First" />
+                <AppBarButton
+                    Command="{x:Bind ViewModel.PreviousAsyncCommand, Mode=OneWay}"
+                    Foreground="{ThemeResource SystemAccentColor}"
+                    Icon="Back"
+                    ToolTipService.ToolTip="Previous" />
+                <AppBarElementContainer VerticalContentAlignment="Center">
+                    <TextBlock Margin="12,0,8,0" Text="Page" />
+                </AppBarElementContainer>
+                <AppBarElementContainer VerticalContentAlignment="Center">
+                    <TextBlock Text="{x:Bind ViewModel.PageNumber, Mode=OneWay}" />
+                </AppBarElementContainer>
+                <AppBarElementContainer VerticalContentAlignment="Center">
+                    <TextBlock Margin="8,0" Text="of" />
+                </AppBarElementContainer>
+                <AppBarElementContainer VerticalContentAlignment="Center">
+                    <TextBlock Margin="0,0,12,0" Text="{x:Bind ViewModel.PageCount, Mode=OneWay}" />
+                </AppBarElementContainer>
+                <AppBarButton
+                    Command="{x:Bind ViewModel.NextAsyncCommand, Mode=OneWay}"
+                    Foreground="{ThemeResource SystemAccentColor}"
+                    Icon="Forward"
+                    ToolTipService.ToolTip="Next" />
+                <AppBarButton
+                    Command="{x:Bind ViewModel.LastAsyncCommand, Mode=OneWay}"
+                    Foreground="{ThemeResource SystemAccentColor}"
+                    Icon="Next"
+                    ToolTipService.ToolTip="Last" />
+                <AppBarSeparator />
+                <AppBarElementContainer VerticalContentAlignment="Center">
+                    <TextBlock Margin="8,0" Text="Rows per page" />
+                </AppBarElementContainer>
+                <AppBarElementContainer VerticalContentAlignment="Center">
+                    <ComboBox ItemsSource="{x:Bind ViewModel.PageSizes}" SelectedItem="{x:Bind ViewModel.PageSize, Mode=TwoWay}" />
+                </AppBarElementContainer>
+            </CommandBar>
+
+            <muxc:ProgressBar
+                HorizontalAlignment="Stretch"
+                IsIndeterminate="True"
+                Margin="0,50,0,0"
+                VerticalAlignment="Top"
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        </Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="PanelRoot.Padding" Value="8,48,8,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </RelativePanel>
+
+</Page>

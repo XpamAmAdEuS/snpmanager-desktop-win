@@ -83,7 +83,7 @@ public class MapperConfig
                 .ForMember(d => d.SortDirection, 
                     opt => 
                         opt.ConvertUsing(new DirectionFormatter(), src => src.SortDirection));
-            cfg.CreateMap<V1.ProtoSiteRepo.Types.ProtoSite, Site>()
+            cfg.CreateMap<ProtoSiteRepo.Types.ProtoSite, Site>()
                 // //Monday
                 // .ForMember(dest => dest.OpenMon, 
                 //     act => act.MapFrom(
@@ -141,7 +141,9 @@ public class MapperConfig
                 
                 
                 .ReverseMap();
-            cfg.CreateMap<V1.ProtoUserRepo.Types.ProtoUser, User>().ReverseMap();
+            cfg.CreateMap<ProtoUserRepo.Types.ProtoUser, User>().ReverseMap();
+            
+            cfg.CreateMap<ProtoImportMusicRepo.Types.ImportMusic, MusicImport>().ReverseMap();
             
             // //Configuring Employee and EmployeeDTO
             // cfg.CreateMap<Employee, EmployeeDTO>()

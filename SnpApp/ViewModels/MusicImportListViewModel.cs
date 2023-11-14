@@ -9,39 +9,35 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
 using Snp.Core.Models;
-using Snp.Core.Repository.Grpc;
+using Snp.Core.Services;
 
 namespace Snp.App.ViewModels;
 
-/// <summary>
-///     Provides data and commands accessible to the entire app.
-/// </summary>
-public class CustomerListViewModel : ObservableObject
+public class MusicImportListViewModel : ObservableObject
 {
     private bool _isLoading;
     private int _pageCount;
-
     private int _pageNumber;
 
-    private CustomerViewModel _selectedCustomer;
+    private MusicImportViewModel _selectedMusic;
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-    public CustomerListViewModel()
+    public MusicImportListViewModel()
     {
         FirstAsyncCommand = new AsyncRelayCommand(
-            async () => await GetCustomerListAsync(1),
+            async () => await GetListAsync(1),
             () => _pageNumber != 1
         );
         PreviousAsyncCommand = new AsyncRelayCommand(
-            async () => await GetCustomerListAsync(_pageNumber - 1),
+            async () => await GetListAsync(_pageNumber - 1),
             () => _pageNumber > 1
         );
         NextAsyncCommand = new AsyncRelayCommand(
-            async () => await GetCustomerListAsync(_pageNumber + 1),
+            async () => await GetListAsync(_pageNumber + 1),
             () => _pageNumber < _pageCount
         );
         LastAsyncCommand = new AsyncRelayCommand(
-            async () => await GetCustomerListAsync(_pageCount),
+            async () => await GetListAsync(_pageCount),
             () => _pageNumber != _pageCount
         );
 
@@ -50,23 +46,17 @@ public class CustomerListViewModel : ObservableObject
         SearchRequestModel.Fields.AddRange(fields);
 
         Refresh();
-        //Task.Run(GetCustomerListAsync);
     }
 
 
-    /// <summary>
-    ///     The collection of customers in the list.
-    /// </summary>
-    public ObservableCollection<CustomerViewModel> Customers { get; } = new();
+  
+    public ObservableCollection<MusicImportViewModel> Musics { get; } = new();
 
-
-    /// <summary>
-    ///     Gets or sets the selected customer, or null if no customer is selected.
-    /// </summary>
-    public CustomerViewModel SelectedCustomer
+    
+    public MusicImportViewModel SelectedMusic
     {
-        get => _selectedCustomer;
-        set => SetProperty(ref _selectedCustomer, value);
+        get => _selectedMusic;
+        set => SetProperty(ref _selectedMusic, value);
     }
 
     public bool IsLoading
@@ -84,14 +74,6 @@ public class CustomerListViewModel : ObservableObject
     public IAsyncRelayCommand LastAsyncCommand { get; }
 
     public List<uint> PageSizes => new() { 5, 10, 20, 50, 100 };
-    
-    public List<SizeLimitModel> LimitSizeOptions => new()
-    {
-        new SizeLimitModel{Value =8000000000,Name = "8GB"},
-        new SizeLimitModel{Value =16000000000,Name = "16GB"},
-        new SizeLimitModel{Value =24000000000,Name = "24GB"},
-        new SizeLimitModel{Value =32000000000,Name = "32GB"},
-    };
     
     public uint PageSize
     {
@@ -120,7 +102,7 @@ public class CustomerListViewModel : ObservableObject
         private set => SetProperty(ref _pageCount, value);
     }
 
-    public async Task GetCustomerListAsync(int pageIndex)
+    public async Task GetListAsync(int pageIndex)
     {
         await _dispatcherQueue.EnqueueAsync(() => IsLoading = true);
 
@@ -128,12 +110,12 @@ public class CustomerListViewModel : ObservableObject
 
         try
         {
-            var customers = await Ioc.Default.GetRequiredService<GrpcCustomerRepository>()
-                .SearchCustomerAsync(SearchRequestModel);
-            if (customers.Items == null) return;
+            var result = await Ioc.Default.GetRequiredService<MusicImportService>()
+                .SearchImportMusicAsync(SearchRequestModel);
+            if (result.Items == null) return;
 
-            PageNumber = customers.PageIndex;
-            PageCount = customers.PageCount;
+            PageNumber = result.PageIndex;
+            PageCount = result.PageCount;
             FirstAsyncCommand.NotifyCanExecuteChanged();
             PreviousAsyncCommand.NotifyCanExecuteChanged();
             NextAsyncCommand.NotifyCanExecuteChanged();
@@ -141,8 +123,8 @@ public class CustomerListViewModel : ObservableObject
 
             await _dispatcherQueue.EnqueueAsync(() =>
             {
-                Customers.Clear();
-                foreach (var c in customers.Items) Customers.Add(new CustomerViewModel(c));
+                Musics.Clear();
+                foreach (var e in result.Items) Musics.Add(new MusicImportViewModel(e));
             });
         }
         catch (Exception e)
@@ -166,9 +148,9 @@ public class CustomerListViewModel : ObservableObject
     {
         Task.Run(async () =>
         {
-            foreach (var modifiedCustomer in Customers
-                         .Where(customer => customer.IsModified).Select(customer => customer.Model))
-                await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().UpsertAsync(modifiedCustomer);
+            foreach (var modifiedMusic in Musics
+                         .Where(entity => entity.IsModified).Select(entity => entity.Model))
+                await Ioc.Default.GetRequiredService<MusicImportService>().UpsertAsync(modifiedMusic);
 
             Refresh();
             // await GetCustomerListAsync();

@@ -6,6 +6,7 @@ using Microsoft.UI.Dispatching;
 using Snp.Core.Models;
 using Snp.Core.Repository;
 using CommunityToolkit.WinUI;
+using Snp.Core.Repository.Grpc;
 
 namespace Snp.App.ViewModels
 {
@@ -41,40 +42,27 @@ namespace Snp.App.ViewModels
         /// </summary>
         public Site Model { get; }
 
-        /// <summary>
-        /// Loads the customer with the specified ID. 
-        /// </summary>
+       
         private async void LoadCustomer(uint customerId)
         {
-            
-            var repo = Ioc.Default.GetService<ISnpRepository>();
-            
-            var customer = await repo.Customers.GetOneById(customerId);
+            var customer = await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().GetOneById(customerId);
             await dispatcherQueue.EnqueueAsync(() =>
-            {
+            { 
                 Customer = customer;
             });
         }
 
-        /// <summary>
-        /// Returns the site with the specified ID.
-        /// </summary>
+      
         private static async Task<Site> GetSite(uint siteId) =>
-            await Ioc.Default.GetService<ISnpRepository>().Sites.GetOneById(siteId); 
+            await Ioc.Default.GetRequiredService<GrpcSiteRepository>().GetOneById(siteId); 
 
-        /// <summary>
-        /// Gets a value that specifies whether the user can refresh the page.
-        /// </summary>
+      
         public bool CanRefresh => Model != null && !IsModified && IsExistingSite;
 
-        /// <summary>
-        /// Gets a value that specifies whether the user can revert changes. 
-        /// </summary>
+      
         public bool CanRevert => Model != null && IsModified && IsExistingSite;
 
-        /// <summary>
-        /// Gets or sets the site's ID.
-        /// </summary>
+     
         public uint Id
         {
             get => Model.Id; 
@@ -91,9 +79,7 @@ namespace Snp.App.ViewModels
 
         bool _IsModified;
 
-        /// <summary>
-        /// Gets or sets a value that indicates whether the underlying model has been modified. 
-        /// </summary>
+      
         public bool IsModified
         {
             get => _IsModified; 
@@ -211,7 +197,7 @@ namespace Snp.App.ViewModels
             Site result = null;
             try
             {
-                result = await Ioc.Default.GetService<ISnpRepository>().Sites.UpsertAsync(Model);
+                result = await Ioc.Default.GetRequiredService<GrpcSiteRepository>().UpsertAsync(Model);
             }
             catch (Exception ex)
             {

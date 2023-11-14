@@ -8,6 +8,7 @@ using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
 using Snp.Core.Models;
 using Snp.Core.Repository;
+using Snp.Core.Repository.Grpc;
 
 
 namespace Snp.App.ViewModels
@@ -239,7 +240,7 @@ namespace Snp.App.ViewModels
                 //App.ViewModel.Customers.Add(this);
             }
             
-            await Ioc.Default.GetService<ISnpRepository>().Customers.UpsertAsync(Model);
+            await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().UpsertAsync(Model);
         }
 
         /// <summary>
@@ -286,7 +287,7 @@ namespace Snp.App.ViewModels
         public async Task RefreshCustomerAsync()
         {
             RefreshSites();
-            Model = await Ioc.Default.GetService<ISnpRepository>().Customers.GetOneById(Model.Id);
+            Model = await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().GetOneById(Model.Id);
         }
         
         public void RefreshSites() => Task.Run(LoadSitesAsync);
@@ -298,7 +299,7 @@ namespace Snp.App.ViewModels
                 IsLoading = true;
             });
 
-            var sites = await Ioc.Default.GetService<ISnpRepository>().Sites.GetByCustomerId(Model.Id);
+            var sites = await Ioc.Default.GetRequiredService<GrpcSiteRepository>().GetByCustomerId(Model.Id);
 
             await dispatcherQueue.EnqueueAsync(() =>
             {

@@ -12,6 +12,7 @@ using Snp.App.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
 using Snp.App.Navigation;
 using Snp.Core.Repository;
+using Snp.Core.Repository.Grpc;
 
 namespace Snp.App.Views
 {
@@ -73,7 +74,7 @@ namespace Snp.App.Views
                 
                 NavigationRootPageArgs args = (NavigationRootPageArgs)e.Parameter;
                 uint id = (uint)args.Parameter;
-                var c = await Ioc.Default.GetRequiredService<ISnpRepository>().Customers.GetOneById(id);
+                var c = await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().GetOneById(id);
                 ViewModel = new CustomerViewModel(c);
 
             }
@@ -166,12 +167,12 @@ namespace Snp.App.Views
                 {
                     sender.ItemsSource = null;
                 }
-                else
-                {
-                    var repo = Ioc.Default.GetService<ISnpRepository>();
-                    if (repo?.Customers != null)
-                        sender.ItemsSource = await repo.Customers.SearchByTitleAsync(sender.Text);
-                }
+                // else
+                // {
+                //     var repo = Ioc.Default.GetService<GrpcCustomerRepository>();
+                //     if (repo?.Customers != null)
+                //         sender.ItemsSource = await repo.Customers.SearchByTitleAsync(sender.Text);
+                // }
             }
         }
 
