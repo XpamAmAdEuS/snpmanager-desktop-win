@@ -16,6 +16,6 @@ namespace Snp.Core.Models
         public string Genre { get; set; }
         public bool Selected { get; set; }
         
-        IMediaPlaybackSource Source { get; set; }
+        public IMediaPlaybackSource Source { get; set; }
     }
 }
