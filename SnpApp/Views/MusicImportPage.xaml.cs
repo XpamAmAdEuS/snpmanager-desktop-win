@@ -3,9 +3,11 @@ using Windows.System;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using Snp.App.ViewModels;
@@ -38,6 +40,7 @@ public sealed partial class MusicImportPage
 
         DataGrid.ItemsSource = ViewModel.Musics;
         DataGrid.Columns[0].SortDirection = DataGridSortDirection.Ascending;
+        
     }
 
     /// <summary>
@@ -148,6 +151,15 @@ public sealed partial class MusicImportPage
         if (ViewModel.SelectedMusic != null)
             Frame.Navigate(typeof(SiteDetailPage), ViewModel.SelectedMusic.Model.Id,
                 new DrillInNavigationTransitionInfo());
+    }
+    
+    public void Play_Row_Click(object sender, RoutedEventArgs e)
+    {
+        
+        MusicImportViewModel model = (sender as Button).DataContext as MusicImportViewModel;
+
+        ViewModel.Play(model.Model);
+
     }
 
     /// <summary>

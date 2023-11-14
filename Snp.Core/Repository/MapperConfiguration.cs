@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+using Windows.Media.Core;
+using AutoMapper;
 using CommunityToolkit.WinUI.UI.Controls;
 using Snp.Core.Models;
 using Snp.V1;
@@ -143,7 +145,9 @@ public class MapperConfig
                 .ReverseMap();
             cfg.CreateMap<ProtoUserRepo.Types.ProtoUser, User>().ReverseMap();
             
-            cfg.CreateMap<ProtoImportMusicRepo.Types.ImportMusic, MusicImport>().ReverseMap();
+            cfg.CreateMap<ProtoImportMusicRepo.Types.ImportMusic, MusicImport>()
+                .ForMember(dest => dest.Source, act => 
+                    act.MapFrom(src => MediaSource.CreateFromUri(new Uri($"http://192.168.1.36:50051/v1/music/import/file/{src.Hash}.mp3"))));
             
             // //Configuring Employee and EmployeeDTO
             // cfg.CreateMap<Employee, EmployeeDTO>()

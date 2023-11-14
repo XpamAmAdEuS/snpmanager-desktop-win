@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Media.Core;
+using Windows.Media.Playback;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
@@ -18,6 +20,8 @@ public class MusicImportListViewModel : ObservableObject
     private bool _isLoading;
     private int _pageCount;
     private int _pageNumber;
+
+    private MediaPlayer _mediaPlayer;
 
     private MusicImportViewModel _selectedMusic;
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -102,6 +106,13 @@ public class MusicImportListViewModel : ObservableObject
         private set => SetProperty(ref _pageCount, value);
     }
 
+    public void Play(MusicImport e)
+    {
+        _mediaPlayer.Source = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri($"http://192.168.1.36:50051/v1/music/import/file/{e.Hash}.mp3")));
+        _mediaPlayer.Play();
+        IsLoading = false;
+    }
+
     public async Task GetListAsync(int pageIndex)
     {
         await _dispatcherQueue.EnqueueAsync(() => IsLoading = true);
@@ -120,11 +131,19 @@ public class MusicImportListViewModel : ObservableObject
             PreviousAsyncCommand.NotifyCanExecuteChanged();
             NextAsyncCommand.NotifyCanExecuteChanged();
             LastAsyncCommand.NotifyCanExecuteChanged();
+            
 
+            _mediaPlayer = new MediaPlayer();
+            
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 Musics.Clear();
-                foreach (var e in result.Items) Musics.Add(new MusicImportViewModel(e));
+                
+                foreach (var e in result.Items)
+                {
+                    Musics.Add(new MusicImportViewModel(e));
+                   
+                }
             });
         }
         catch (Exception e)

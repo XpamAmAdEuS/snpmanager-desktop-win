@@ -147,52 +147,52 @@
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
 
-            <CommandBar
-                Background="Transparent"
-                DefaultLabelPosition="Right"
-                Grid.Row="1"
-                HorizontalAlignment="Stretch"
-                x:Name="PaginationCommandBar">
-                <AppBarButton
-                    Command="{x:Bind ViewModel.FirstAsyncCommand, Mode=OneWay}"
-                    Foreground="{ThemeResource SystemAccentColor}"
-                    Icon="Previous"
-                    ToolTipService.ToolTip="First" />
-                <AppBarButton
-                    Command="{x:Bind ViewModel.PreviousAsyncCommand, Mode=OneWay}"
-                    Foreground="{ThemeResource SystemAccentColor}"
-                    Icon="Back"
-                    ToolTipService.ToolTip="Previous" />
-                <AppBarElementContainer VerticalContentAlignment="Center">
-                    <TextBlock Margin="12,0,8,0" Text="Page" />
-                </AppBarElementContainer>
-                <AppBarElementContainer VerticalContentAlignment="Center">
-                    <TextBlock Text="{x:Bind ViewModel.PageNumber, Mode=OneWay}" />
-                </AppBarElementContainer>
-                <AppBarElementContainer VerticalContentAlignment="Center">
-                    <TextBlock Margin="8,0" Text="of" />
-                </AppBarElementContainer>
-                <AppBarElementContainer VerticalContentAlignment="Center">
-                    <TextBlock Margin="0,0,12,0" Text="{x:Bind ViewModel.PageCount, Mode=OneWay}" />
-                </AppBarElementContainer>
-                <AppBarButton
-                    Command="{x:Bind ViewModel.NextAsyncCommand, Mode=OneWay}"
-                    Foreground="{ThemeResource SystemAccentColor}"
-                    Icon="Forward"
-                    ToolTipService.ToolTip="Next" />
-                <AppBarButton
-                    Command="{x:Bind ViewModel.LastAsyncCommand, Mode=OneWay}"
-                    Foreground="{ThemeResource SystemAccentColor}"
-                    Icon="Next"
-                    ToolTipService.ToolTip="Last" />
-                <AppBarSeparator />
-                <AppBarElementContainer VerticalContentAlignment="Center">
-                    <TextBlock Margin="8,0" Text="Rows per page" />
-                </AppBarElementContainer>
-                <AppBarElementContainer VerticalContentAlignment="Center">
-                    <ComboBox ItemsSource="{x:Bind ViewModel.PageSizes}" SelectedItem="{x:Bind ViewModel.PageSize, Mode=TwoWay}" />
-                </AppBarElementContainer>
-            </CommandBar>
+            <!--  <CommandBar  -->
+            <!--  Background="Transparent"  -->
+            <!--  DefaultLabelPosition="Right"  -->
+            <!--  Grid.Row="1"  -->
+            <!--  HorizontalAlignment="Stretch"  -->
+            <!--  x:Name="PaginationCommandBar">  -->
+            <!--  <AppBarButton  -->
+            <!--  Command="{x:Bind ViewModel.FirstAsyncCommand, Mode=OneWay}"  -->
+            <!--  Foreground="{ThemeResource SystemAccentColor}"  -->
+            <!--  Icon="Previous"  -->
+            <!--  ToolTipService.ToolTip="First" />  -->
+            <!--  <AppBarButton  -->
+            <!--  Command="{x:Bind ViewModel.PreviousAsyncCommand, Mode=OneWay}"  -->
+            <!--  Foreground="{ThemeResource SystemAccentColor}"  -->
+            <!--  Icon="Back"  -->
+            <!--  ToolTipService.ToolTip="Previous" />  -->
+            <!--     <AppBarElementContainer VerticalContentAlignment="Center"> -->
+            <!--         <TextBlock Margin="12,0,8,0" Text="Page" /> -->
+            <!--     </AppBarElementContainer> -->
+            <!--     <AppBarElementContainer VerticalContentAlignment="Center"> -->
+            <!--         <TextBlock Text="{x:Bind ViewModel.PageNumber, Mode=OneWay}" /> -->
+            <!--     </AppBarElementContainer> -->
+            <!--     <AppBarElementContainer VerticalContentAlignment="Center"> -->
+            <!--         <TextBlock Margin="8,0" Text="of" /> -->
+            <!--     </AppBarElementContainer> -->
+            <!--     <AppBarElementContainer VerticalContentAlignment="Center"> -->
+            <!--         <TextBlock Margin="0,0,12,0" Text="{x:Bind ViewModel.PageCount, Mode=OneWay}" /> -->
+            <!--     </AppBarElementContainer> -->
+            <!--  <AppBarButton  -->
+            <!--  Command="{x:Bind ViewModel.NextAsyncCommand, Mode=OneWay}"  -->
+            <!--  Foreground="{ThemeResource SystemAccentColor}"  -->
+            <!--  Icon="Forward"  -->
+            <!--  ToolTipService.ToolTip="Next" />  -->
+            <!--  <AppBarButton  -->
+            <!--  Command="{x:Bind ViewModel.LastAsyncCommand, Mode=OneWay}"  -->
+            <!--  Foreground="{ThemeResource SystemAccentColor}"  -->
+            <!--  Icon="Next"  -->
+            <!--  ToolTipService.ToolTip="Last" />  -->
+            <!--     <AppBarSeparator /> -->
+            <!--     <AppBarElementContainer VerticalContentAlignment="Center"> -->
+            <!--         <TextBlock Margin="8,0" Text="Rows per page" /> -->
+            <!--     </AppBarElementContainer> -->
+            <!--     <AppBarElementContainer VerticalContentAlignment="Center"> -->
+            <!--         <ComboBox ItemsSource="{x:Bind ViewModel.PageSizes}" SelectedItem="{x:Bind ViewModel.PageSize, Mode=TwoWay}" /> -->
+            <!--     </AppBarElementContainer> -->
+            <!-- </CommandBar> -->
 
             <muxc:ProgressBar
                 HorizontalAlignment="Stretch"
@@ -227,5 +227,53 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </RelativePanel>
+
+    <Page.BottomAppBar>
+        <CommandBar
+            Background="Transparent"
+            DefaultLabelPosition="Right"
+            Grid.Row="1"
+            HorizontalAlignment="Stretch">
+            <AppBarButton
+                Command="{x:Bind ViewModel.FirstAsyncCommand, Mode=OneWay}"
+                Foreground="{ThemeResource SystemAccentColor}"
+                Icon="Previous"
+                ToolTipService.ToolTip="First" />
+            <AppBarButton
+                Command="{x:Bind ViewModel.PreviousAsyncCommand, Mode=OneWay}"
+                Foreground="{ThemeResource SystemAccentColor}"
+                Icon="Back"
+                ToolTipService.ToolTip="Previous" />
+            <AppBarElementContainer VerticalContentAlignment="Center">
+                <TextBlock Margin="12,0,8,0" Text="Page" />
+            </AppBarElementContainer>
+            <AppBarElementContainer VerticalContentAlignment="Center">
+                <TextBlock Text="{x:Bind ViewModel.PageNumber, Mode=OneWay}" />
+            </AppBarElementContainer>
+            <AppBarElementContainer VerticalContentAlignment="Center">
+                <TextBlock Margin="8,0" Text="of" />
+            </AppBarElementContainer>
+            <AppBarElementContainer VerticalContentAlignment="Center">
+                <TextBlock Margin="0,0,12,0" Text="{x:Bind ViewModel.PageCount, Mode=OneWay}" />
+            </AppBarElementContainer>
+            <AppBarButton
+                Command="{x:Bind ViewModel.NextAsyncCommand, Mode=OneWay}"
+                Foreground="{ThemeResource SystemAccentColor}"
+                Icon="Forward"
+                ToolTipService.ToolTip="Next" />
+            <AppBarButton
+                Command="{x:Bind ViewModel.LastAsyncCommand, Mode=OneWay}"
+                Foreground="{ThemeResource SystemAccentColor}"
+                Icon="Next"
+                ToolTipService.ToolTip="Last" />
+            <AppBarSeparator />
+            <AppBarElementContainer VerticalContentAlignment="Center">
+                <TextBlock Margin="8,0" Text="Rows per page" />
+            </AppBarElementContainer>
+            <AppBarElementContainer VerticalContentAlignment="Center">
+                <ComboBox ItemsSource="{x:Bind ViewModel.PageSizes}" SelectedItem="{x:Bind ViewModel.PageSize, Mode=TwoWay}" />
+            </AppBarElementContainer>
+        </CommandBar>
+    </Page.BottomAppBar>
 
 </Page>

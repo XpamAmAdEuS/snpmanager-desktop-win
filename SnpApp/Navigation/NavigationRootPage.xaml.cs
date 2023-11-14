@@ -342,6 +342,14 @@ namespace Snp.App.Navigation
                         Navigate(typeof(WaveformPage));
                     }
                 }
+                
+                else if (selectedItem == Test)
+                {
+                    if (rootFrame.CurrentSourcePageType != typeof(TestPage))
+                    {
+                        Navigate(typeof(TestPage));
+                    }
+                }
                 else if (selectedItem == Customer2)
                 {
                     if (rootFrame.CurrentSourcePageType != typeof(CustomerListPage))

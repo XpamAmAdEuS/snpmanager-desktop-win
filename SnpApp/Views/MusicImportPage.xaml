@@ -95,12 +95,8 @@
                         Tag="selected" />
                     <toolkit:DataGridTemplateColumn Header="Start" Tag="Start">
                         <toolkit:DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate x:DataType="models:MusicImport">
-                                <MediaPlayerElement
-                                    AreTransportControlsEnabled="True"
-                                    AutoPlay="False"
-                                    MaxWidth="400"
-                                    Source="{x:Bind Source}" />
+                            <DataTemplate>
+                                <Button Click="Play_Row_Click" Content="Play" />
                             </DataTemplate>
                         </toolkit:DataGridTemplateColumn.CellTemplate>
                     </toolkit:DataGridTemplateColumn>

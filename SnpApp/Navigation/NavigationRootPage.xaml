@@ -193,6 +193,12 @@
                     x:Name="WaveForm" />
 
                 <NavigationViewItem
+                    AutomationProperties.AutomationId="Test"
+                    Content="Test"
+                    Icon="Home"
+                    x:Name="Test" />
+
+                <NavigationViewItem
                     AutomationProperties.AutomationId="Design_Guidance"
                     Content="Design guidance"
                     Tag="Design Guidance"

@@ -1,4 +1,4 @@
-using Windows.Media.Playback;
+using Windows.Media.Core;
 using Snp.Core.Interfaces;
 
 namespace Snp.Core.Models
@@ -16,6 +16,8 @@ namespace Snp.Core.Models
         public string Genre { get; set; }
         public bool Selected { get; set; }
         
-        public IMediaPlaybackSource Source { get; set; }
+        public MediaSource Source  { get; set; }
+        
+        // public MediaSource Source { get; set; }
     }
 }
