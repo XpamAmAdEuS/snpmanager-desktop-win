@@ -4,11 +4,9 @@ using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Navigation;
 using Snp.App.Helper;
-using Snp.Core.Services;
 using Snp.App.ViewModels;
 using WinRT.Interop;
 
@@ -20,8 +18,6 @@ namespace Snp.App.Views
     /// </summary>
     public sealed partial class MusicUploadPage
     {
-        
-        private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         /// <summary>
         /// Initializes the page.
@@ -29,7 +25,7 @@ namespace Snp.App.Views
         public MusicUploadPage()
         {
             InitializeComponent();
-            this.DataContext = Ioc.Default.GetService<MusicUploadViewModel>();
+            DataContext = Ioc.Default.GetService<MusicUploadViewModel>();
         }
         
         public MusicUploadViewModel ViewModel => (MusicUploadViewModel)DataContext;
@@ -54,11 +50,11 @@ namespace Snp.App.Views
         {
             
             // Create a folder picker
-            FolderPicker openPicker = new Windows.Storage.Pickers.FolderPicker();
+            var openPicker = new FolderPicker();
 
             // Retrieve the window handle (HWND) of the current WinUI 3 window.
             var window = WindowHelper.GetWindowForElement(this);
-            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            var hWnd = WindowNative.GetWindowHandle(window);
 
             // Initialize the folder picker with the window handle (HWND).
             InitializeWithWindow.Initialize(openPicker, hWnd);
@@ -68,7 +64,7 @@ namespace Snp.App.Views
             openPicker.FileTypeFilter.Add("*");
 
             // Open the picker for the user to pick a folder
-            StorageFolder folder = await openPicker.PickSingleFolderAsync();
+            var folder = await openPicker.PickSingleFolderAsync();
             if (folder != null)
             {
                 StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
@@ -86,12 +82,33 @@ namespace Snp.App.Views
         private async void AddMusicFiles_Click(object sender, RoutedEventArgs e)
         {
             
-            var files = await Ioc.Default.GetRequiredService<IFilePickManager>().PickMultipleFilesAsync();
+            // Create a file picker
+            var openPicker = new FileOpenPicker();
 
-            if (files is not { Count: > 0 }) return;
-            foreach (var item in files)
+            // Retrieve the window handle (HWND) of the current WinUI 3 window.
+            var window = WindowHelper.GetWindowForElement(this);
+            var hWnd = WindowNative.GetWindowHandle(window);
+
+            // Initialize the file picker with the window handle (HWND).
+            InitializeWithWindow.Initialize(openPicker, hWnd);
+
+            // Set options for your file picker
+            openPicker.ViewMode = PickerViewMode.List;
+            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            openPicker.FileTypeFilter.Add(".mp3");
+
+            // Open the picker for the user to pick a file
+            var files = await openPicker.PickMultipleFilesAsync();
+            if (files.Count > 0)
             {
-                ViewModel.AddStorageFile(item);
+                
+                // Adding the names of the picked files in bold
+                foreach (var file in files)
+                {
+                    
+                    ViewModel.AddStorageFile(file);
+                }
+                
             }
         }
         
@@ -112,10 +129,10 @@ namespace Snp.App.Views
                         switch (item)
                         {
                             case StorageFolder folder:
-                               // ViewModel.AddFolder(folder);
+                              await ViewModel.AddStorageFolder(folder);
                                 break;
                             case StorageFile file:
-                               // ViewModel.AddFile(file);
+                               ViewModel.AddStorageFile(file);
                                 break;
                         }
                     }

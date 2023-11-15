@@ -18,7 +18,6 @@ using Snp.App.Common;
 using Snp.App.DataModel;
 using Snp.App.Helper;
 using Snp.App.Navigation;
-using Snp.App.Services;
 using Snp.App.ViewModels;
 using Snp.Core.Repository;
 using Snp.Core.Repository.Grpc;
@@ -29,7 +28,7 @@ using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
 
 namespace Snp.App
 {
-    public sealed partial class App : Application
+    public sealed partial class App
     {
         
         private static Window startupWindow;
@@ -119,7 +118,6 @@ namespace Snp.App
             Ioc.Default.ConfigureServices
             (new ServiceCollection()
                 .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
-                .AddSingleton<IFilePickManager>(FilePickerManager.Default)
                 .AddSingleton(new GrpcCustomerRepository(invoker,mapper))
                 .AddSingleton(new GrpcSiteRepository(invoker,mapper))
                 .AddSingleton(new GrpcUserRepository(invoker,mapper))
