@@ -9,8 +9,6 @@
 //*********************************************************
 using SnpApp.Common;
 using SnpApp.Helper;
-using ColorCode;
-using ColorCode.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
