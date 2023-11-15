@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation.Collections;
 using Windows.Media.Playback;
-using Windows.UI.Core;
+using CommunityToolkit.WinUI;
+using Microsoft.UI.Dispatching;
 
 namespace SnpApp.ViewModels
 {
@@ -19,86 +16,68 @@ namespace SnpApp.ViewModels
     /// </remarks>
     public class PlayerViewModel : INotifyPropertyChanged, IDisposable
     {
-        bool disposed;
-        MediaPlayer player;
-        CoreDispatcher dispatcher;
-        MediaPlaybackList subscribedPlaybackList;
+        private bool _disposed;
+        private readonly MediaPlayer _player;
+        private MediaPlaybackList _subscribedPlaybackList;
+        private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-        MediaListViewModel mediaList;
-        bool canSkipNext;
-        bool canSkipPrevious;
+        private MediaListViewModel _mediaList;
+        private bool _canSkipNext;
+        private bool _canSkipPrevious;
 
         public PlaybackSessionViewModel PlaybackSession { get; private set; }
 
         public bool CanSkipNext
         {
-            get { return canSkipNext; }
+            get => _canSkipNext;
             set
             {
-                if (canSkipNext != value)
+                if (_canSkipNext != value)
                 {
-                    canSkipNext = value;
-                    RaisePropertyChanged("CanSkipNext");
+                    _canSkipNext = value;
+                    RaisePropertyChanged(nameof(CanSkipNext));
                 }
             }
         }
 
         public bool CanSkipPrevious
         {
-            get { return canSkipPrevious; }
+            get => _canSkipPrevious;
             set
             {
-                if (canSkipPrevious != value)
+                if (_canSkipPrevious != value)
                 {
-                    canSkipPrevious = value;
-                    RaisePropertyChanged("CanSkipPrevious");
-                }
-            }
-        }
-
-        public IEnumerable<string> AudioCategories
-        {
-            get { return Enum.GetNames(typeof(MediaPlayerAudioCategory)); }
-        }
-
-        public string SelectedAudioCategory
-        {
-            get { return Enum.GetName(typeof(MediaPlayerAudioCategory), player.AudioCategory); }
-            set
-            {
-                if (Enum.GetName(typeof(MediaPlayerAudioCategory), player.AudioCategory) != value)
-                {
-                    player.AudioCategory = (MediaPlayerAudioCategory)Enum.Parse(typeof(MediaPlayerAudioCategory), value);
-                    RaisePropertyChanged("SelectedAudioCategory");
+                    _canSkipPrevious = value;
+                    RaisePropertyChanged(nameof(CanSkipPrevious));
                 }
             }
         }
 
         public MediaListViewModel MediaList
         {
-            get { return mediaList; }
+            get => _mediaList;
             set
             {
-                if (mediaList != value)
+                if (_mediaList != value)
                 {
-                    if (subscribedPlaybackList != null)
+                    if (_subscribedPlaybackList != null)
                     {
-                        subscribedPlaybackList.CurrentItemChanged -= SubscribedPlaybackList_CurrentItemChanged;
-                        subscribedPlaybackList.Items.VectorChanged -= Items_VectorChanged;
-                        subscribedPlaybackList = null;
+                        _subscribedPlaybackList.CurrentItemChanged -= SubscribedPlaybackList_CurrentItemChanged;
+                        _subscribedPlaybackList.Items.VectorChanged -= Items_VectorChanged;
+                        _subscribedPlaybackList = null;
                     }
 
-                    mediaList = value;
+                    _mediaList = value;
 
-                    if (mediaList != null)
+                    if (_mediaList != null)
                     {
-                        if (player.Source != mediaList.PlaybackList)
-                            player.Source = mediaList.PlaybackList;
+                        if (_player.Source != _mediaList.PlaybackList)
+                            _player.Source = _mediaList.PlaybackList;
 
-                        subscribedPlaybackList = mediaList.PlaybackList;
-                        subscribedPlaybackList.CurrentItemChanged += SubscribedPlaybackList_CurrentItemChanged;
-                        subscribedPlaybackList.Items.VectorChanged += Items_VectorChanged;
-                        HandlePlaybackListChanges(subscribedPlaybackList.Items);
+                        _subscribedPlaybackList = _mediaList.PlaybackList;
+                        _subscribedPlaybackList.CurrentItemChanged += SubscribedPlaybackList_CurrentItemChanged;
+                        _subscribedPlaybackList.Items.VectorChanged += Items_VectorChanged;
+                        HandlePlaybackListChanges(_subscribedPlaybackList.Items);
                     }
                     else
                     {
@@ -106,30 +85,28 @@ namespace SnpApp.ViewModels
                         CanSkipPrevious = false;
                     }
 
-                    RaisePropertyChanged("MediaList");
+                    RaisePropertyChanged(nameof(MediaList));
                 }
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PlayerViewModel(MediaPlayer player, CoreDispatcher dispatcher)
+        public PlayerViewModel(MediaPlayer player)
         {
-            this.player = player;
-            this.dispatcher = dispatcher;
-
-            PlaybackSession = new PlaybackSessionViewModel(player.PlaybackSession, dispatcher);
+            this._player = player;
+            PlaybackSession = new PlaybackSessionViewModel(player.PlaybackSession);
         }
 
         public void TogglePlayPause()
         {
-            switch (player.PlaybackSession.PlaybackState)
+            switch (_player.PlaybackSession.PlaybackState)
             {
                 case MediaPlaybackState.Playing:
-                    player.Pause();
+                    _player.Pause();
                     break;
                 case MediaPlaybackState.Paused:
-                    player.Play();
+                    _player.Play();
                     break;
             }
         }
@@ -139,7 +116,7 @@ namespace SnpApp.ViewModels
             if (!CanSkipNext)
                 return;
 
-            var playbackList = player.Source as MediaPlaybackList;
+            var playbackList = _player.Source as MediaPlaybackList;
             if (playbackList == null)
                 return;
 
@@ -152,7 +129,7 @@ namespace SnpApp.ViewModels
             if (!CanSkipPrevious)
                 return;
 
-            var playbackList = player.Source as MediaPlaybackList;
+            var playbackList = _player.Source as MediaPlaybackList;
             if (playbackList == null)
                 return;
 
@@ -162,20 +139,20 @@ namespace SnpApp.ViewModels
 
         private async void Items_VectorChanged(IObservableVector<MediaPlaybackItem> sender, IVectorChangedEventArgs args)
         {
-            if (disposed) return;
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            if (_disposed) return;
+            await _dispatcherQueue.EnqueueAsync(() =>
             {
-                if (disposed) return;
+                if (_disposed) return;
                 HandlePlaybackListChanges(sender);
             });
         }
 
         private async void SubscribedPlaybackList_CurrentItemChanged(MediaPlaybackList sender, CurrentMediaPlaybackItemChangedEventArgs args)
         {
-            if (disposed) return;
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            if (_disposed) return;
+            await _dispatcherQueue.EnqueueAsync(() =>
             {
-                if (disposed) return;
+                if (_disposed) return;
                 HandlePlaybackListChanges(sender.Items);
             });
         }
@@ -201,7 +178,7 @@ namespace SnpApp.ViewModels
       
         public void Dispose()
         {
-            if (disposed)
+            if (_disposed)
                 return;
 
             if (MediaList != null)
@@ -212,7 +189,7 @@ namespace SnpApp.ViewModels
 
             PlaybackSession.Dispose();
 
-            disposed = true;
+            _disposed = true;
         }
     }
 }

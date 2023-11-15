@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Media.Playback;
-using Windows.UI.Core;
+using CommunityToolkit.WinUI;
+using Microsoft.UI.Dispatching;
 
 namespace SnpApp.ViewModels
 {
@@ -14,16 +11,15 @@ namespace SnpApp.ViewModels
         bool disposed;
         MediaPlayer player;
         MediaPlaybackSession playbackSession;
-        CoreDispatcher dispatcher;
+        DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         public MediaPlaybackState PlaybackState => playbackSession.PlaybackState;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PlaybackSessionViewModel(MediaPlaybackSession playbackSession, CoreDispatcher dispatcher)
+        public PlaybackSessionViewModel(MediaPlaybackSession playbackSession)
         {
             this.player = playbackSession.MediaPlayer;
             this.playbackSession = playbackSession;
-            this.dispatcher = dispatcher;
 
             playbackSession.PlaybackStateChanged += PlaybackSession_PlaybackStateChanged;
         }
@@ -31,7 +27,7 @@ namespace SnpApp.ViewModels
         private async void PlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
         {
             if (disposed) return;
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await dispatcherQueue.EnqueueAsync(() =>
             {
                 if (disposed) return;
                 RaisePropertyChanged("PlaybackState");

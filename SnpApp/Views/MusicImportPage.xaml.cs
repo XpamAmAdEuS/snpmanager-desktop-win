@@ -12,7 +12,6 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using SnpApp.ViewModels;
 using Windows.Media.Playback;
-using Windows.UI.Core;
 using SnpApp.DataModels;
 using SnpApp.Navigation;
 using SnpApp.Services;
@@ -52,7 +51,7 @@ public sealed partial class MusicImportPage
         InitializeComponent();
         DataContext = Ioc.Default.GetService<MusicImportListViewModel>();
         // Setup MediaPlayer view model
-        PlayerViewModel = new PlayerViewModel(Player, Dispatcher);
+        PlayerViewModel = new PlayerViewModel(Player);
         Loaded += MusicImportPage_Loaded;
         Unloaded += MusicImportPage_Unloaded;
     }
@@ -95,7 +94,7 @@ public sealed partial class MusicImportPage
 
         // Create the view model list from the data model and playback model
         // and assign it to the player
-        PlayerViewModel.MediaList = new MediaListViewModel(MediaList, PlaybackList, Dispatcher);
+        PlayerViewModel.MediaList = new MediaListViewModel(MediaList, PlaybackList);
         
         
     }
@@ -132,6 +131,11 @@ public sealed partial class MusicImportPage
         // }
             
         mediaPlayerElement.AreTransportControlsEnabled = true;
+        mediaPlayerElement.TransportControls.IsZoomButtonVisible = false;
+        mediaPlayerElement.TransportControls.IsZoomEnabled = false;
+        mediaPlayerElement.TransportControls.IsPlaybackRateButtonVisible = true;
+        mediaPlayerElement.TransportControls.IsPlaybackRateEnabled = true;
+        
         customButtons.Visibility = Visibility.Collapsed;
     }
     
@@ -144,7 +148,7 @@ public sealed partial class MusicImportPage
     private async void PlaybackList_ItemFailed(MediaPlaybackList sender, MediaPlaybackItemFailedEventArgs args)
     {
         // Media callbacks use a worker thread so dispatch to UI as needed
-        await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
             var error = string.Format("Item failed to play: {0} | 0x{1:x}",
                 args.Error.ErrorCode, args.Error.ExtendedError.HResult);

@@ -116,7 +116,11 @@
                                 AreTransportControlsEnabled="True"
                                 MaxHeight="400"
                                 MaxWidth="400"
-                                x:Name="mediaPlayerElement" />
+                                x:Name="mediaPlayerElement">
+                                <MediaPlayerElement.TransportControls>
+                                    <MediaTransportControls IsCompact="True" />
+                                </MediaPlayerElement.TransportControls>
+                            </MediaPlayerElement>
 
                             <StackPanel
                                 Margin="10,40,0,0"
@@ -148,9 +152,6 @@
                                     <SymbolIcon Symbol="Next" />
                                 </Button>
                             </StackPanel>
-
-                            <TextBlock Margin="0,20,0,10">Audio Category</TextBlock>
-                            <ComboBox ItemsSource="{x:Bind PlayerViewModel.AudioCategories}" SelectedItem="{x:Bind PlayerViewModel.SelectedAudioCategory, Mode=TwoWay}" />
 
                         </StackPanel>
                         <StackPanel Margin="40,0,0,0">

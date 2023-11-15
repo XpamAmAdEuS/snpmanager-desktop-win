@@ -12,22 +12,13 @@
 using SnpApp.DataModels;
 using SnpApp.Services;
 using SnpApp.ViewModels;
-using SnpApp;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Media;
-using Windows.Media.Core;
 using Windows.Media.Playback;
-using Windows.Storage.Streams;
-using Windows.UI.Core;
 using Windows.UI.Popups;
+using CommunityToolkit.WinUI;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SnpApp.Navigation;
@@ -42,6 +33,7 @@ namespace SnpApp.Views
     public sealed partial class Scenario1 : Page
     {
         MediaPlayer Player => PlaybackService.Instance.Player;
+        private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         MediaPlaybackList PlaybackList
         {
@@ -64,7 +56,7 @@ namespace SnpApp.Views
             // this.NavigationCacheMode = NavigationCacheMode.Disabled;
 
             // Setup MediaPlayer view model
-            PlayerViewModel = new PlayerViewModel(Player, Dispatcher);
+            PlayerViewModel = new PlayerViewModel(Player);
 
             // Handle page load events
             Loaded += Scenario1_Loaded;
@@ -103,7 +95,7 @@ namespace SnpApp.Views
 
             // Create the view model list from the data model and playback model
             // and assign it to the player
-            PlayerViewModel.MediaList = new MediaListViewModel(MediaList, PlaybackList, Dispatcher);
+            PlayerViewModel.MediaList = new MediaListViewModel(MediaList, PlaybackList);
         }
 
         private void Scenario1_Unloaded(object sender, RoutedEventArgs e)
@@ -154,7 +146,7 @@ namespace SnpApp.Views
         private async void PlaybackList_ItemFailed(MediaPlaybackList sender, MediaPlaybackItemFailedEventArgs args)
         {
             // Media callbacks use a worker thread so dispatch to UI as needed
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await _dispatcherQueue.EnqueueAsync(() =>
             {
                 var error = string.Format("Item failed to play: {0} | 0x{1:x}",
                     args.Error.ErrorCode, args.Error.ExtendedError.HResult);
@@ -186,7 +178,7 @@ namespace SnpApp.Views
         private async void Player_MediaPlayerRateChanged(MediaPlayer sender, MediaPlayerRateChangedEventArgs e)
         {
             // Media callbacks use a worker thread so dispatch to UI as needed
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, UpdatePlaybackSpeed);
+            await _dispatcherQueue.EnqueueAsync(UpdatePlaybackSpeed);
         }
 
         private void UpdatePlaybackSpeed()

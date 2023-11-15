@@ -1,14 +1,11 @@
 ﻿using SnpApp.DataModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Media.Playback;
-using Windows.UI.Core;
+using CommunityToolkit.WinUI;
+using Microsoft.UI.Dispatching;
 
 namespace SnpApp.ViewModels
 {
@@ -32,7 +29,7 @@ namespace SnpApp.ViewModels
     /// </remarks>
     public class MediaListViewModel : ObservableCollection<MediaItemViewModel>, IDisposable
     {
-        CoreDispatcher dispatcher;
+        DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         int currentItemIndex = -1;
         bool disposed;
         bool initializing;
@@ -92,11 +89,10 @@ namespace SnpApp.ViewModels
 
         public MediaPlaybackList PlaybackList { get; private set; }
 
-        public MediaListViewModel(MediaList mediaList, MediaPlaybackList playbackList, CoreDispatcher dispatcher)
+        public MediaListViewModel(MediaList mediaList, MediaPlaybackList playbackList)
         {
             MediaList = mediaList;
             PlaybackList = playbackList;
-            this.dispatcher = dispatcher;
 
             // Verify consistency of the lists that were passed in
             var mediaListIds = mediaList.Select(i => i.ItemId);
@@ -174,7 +170,7 @@ namespace SnpApp.ViewModels
             if (disposed)
                 return;
 
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await dispatcherQueue.EnqueueAsync(() =>
             {
                 // If the event was unsubscribed before 
                 // this handler executed just return.

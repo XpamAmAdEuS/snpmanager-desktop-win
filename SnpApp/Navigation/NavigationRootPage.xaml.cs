@@ -24,7 +24,6 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.System.Profile;
-using Windows.UI.Core;
 using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Microsoft.UI.Xaml.Automation.Peers;
@@ -653,14 +652,11 @@ namespace SnpApp.Navigation
         {
             // If called from the UI thread, then update immediately.
             // Otherwise, schedule a task on the UI thread to perform the update.
-            if (Dispatcher.HasThreadAccess)
+
+            dispatcherQueue.TryEnqueue(() =>
             {
                 UpdateStatus(strMessage, type);
-            }
-            else
-            {
-                var task = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => UpdateStatus(strMessage, type));
-            }
+            });
         }
 
         private void UpdateStatus(string strMessage, NotifyType type)
