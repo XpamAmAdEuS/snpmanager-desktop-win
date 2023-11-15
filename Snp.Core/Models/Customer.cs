@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 
 namespace Snp.Core.Models
 {
     
-    public class Customer : IdObject,IEquatable<Customer>
+    public class Customer : IdObject
     {
       
         public string Title { get; set; }
@@ -24,18 +23,5 @@ namespace Snp.Core.Models
         public ulong SizeLimitValue { get; set; }
         
         public List<Site> Sites  { get; set; }
-
-        public bool Equals(Customer other) =>
-            Id == other.Id &&
-            Title == other.Title &&
-            Person == other.Person &&
-            Email == other.Email &&
-            Phone == other.Phone &&
-            Address == other.Address;
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Customer);
-        }
     }
 }

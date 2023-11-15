@@ -8,12 +8,9 @@ public class Connection :IConnection
 {
     private ChannelBase? _channelBase;
 
-    public ChannelBase ChannelBase
-    {
-        get => _channelBase;
-    }
-    
-    
+    public ChannelBase ChannelBase => _channelBase;
+
+
     public ILoggerFactory LogFactory = LoggerFactory.Create(logging =>
     {
         logging.AddConsole();

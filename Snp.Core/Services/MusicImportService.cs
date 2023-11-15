@@ -42,17 +42,17 @@ namespace Snp.Core.Services
 
         public Task<MusicImport> GetOneById(uint id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task<MusicImport> UpsertAsync(MusicImport site)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task DeleteAsync(uint id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

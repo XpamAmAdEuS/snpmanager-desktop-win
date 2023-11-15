@@ -1,11 +1,11 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using muxc = Microsoft.UI.Xaml.Controls;
+using mUxc = Microsoft.UI.Xaml.Controls;
 
 namespace Snp.App.UserControls
 {
-    public sealed partial class CollapsibleSearchBox : UserControl
+    public sealed partial class CollapsibleSearchBox
     {
         public CollapsibleSearchBox()
         {
@@ -86,22 +86,22 @@ namespace Snp.App.UserControls
         // Set states for animated icon in toggle button.
         private void ToggleButton_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            muxc.AnimatedIcon.SetState((UIElement)sender, "PointerOver");
+            mUxc.AnimatedIcon.SetState((UIElement)sender, "PointerOver");
         }
 
         private void ToggleButton_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            muxc.AnimatedIcon.SetState((UIElement)sender, "Pressed");
+            mUxc.AnimatedIcon.SetState((UIElement)sender, "Pressed");
         }
 
         private void ToggleButton_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            muxc.AnimatedIcon.SetState((UIElement)sender, "Normal");
+            mUxc.AnimatedIcon.SetState((UIElement)sender, "Normal");
         }
 
         private void ToggleButton_PointerExited(object sender, PointerRoutedEventArgs e)
         {
-            muxc.AnimatedIcon.SetState((UIElement)sender, "Normal");
+            mUxc.AnimatedIcon.SetState((UIElement)sender, "Normal");
         }
 
         private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)

@@ -11,8 +11,6 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
 using Snp.App.Helper;
 using WinRT.Interop;
 
@@ -25,8 +23,8 @@ namespace Snp.App.Views
     public sealed partial class TestPage : Page
     {
 
-        private AudioGraph graph;
-        private AudioFileInputNode fileInput;
+        private AudioGraph? graph;
+        private AudioFileInputNode? fileInput;
         private AudioDeviceOutputNode deviceOutput;
 
         public TestPage()
