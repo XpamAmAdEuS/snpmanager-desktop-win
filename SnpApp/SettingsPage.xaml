@@ -1,4 +1,5 @@
 ﻿<Page
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d"
     x:Class="SnpApp.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -70,6 +71,23 @@
                         <ComboBoxItem Content="Top" />
                     </ComboBox>
                 </toolkit:SettingsCard>
+
+
+                <toolkit:SettingsCard Header="Toast on App Events">
+                    <toolkit:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xF594;" />
+                    </toolkit:SettingsCard.HeaderIcon>
+                    <!-- <ComboBox SelectionChanged="navigationLocation_SelectionChanged" x:Name="navigationLocation"> -->
+                    <!--     <ComboBoxItem Content="Left" /> -->
+                    <!--     <ComboBoxItem Content="Top" /> -->
+                    <!-- </ComboBox> -->
+                    <StackPanel>
+                        <CheckBox IsChecked="{x:Bind Path=ViewModel.ToastOnAppEvents, Mode=TwoWay}">Toast on App Events</CheckBox>
+                        <CheckBox IsChecked="{x:Bind Path=ViewModel.UseCustomControls, Mode=TwoWay}">Use Custom Controls</CheckBox>
+                    </StackPanel>
+                </toolkit:SettingsCard>
+
+
 
                 <toolkit:SettingsExpander Description="Controls provide audible feedback" Header="Sound">
                     <toolkit:SettingsExpander.HeaderIcon>

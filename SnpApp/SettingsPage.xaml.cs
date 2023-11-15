@@ -17,6 +17,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
 using SnpApp.Navigation;
+using SnpApp.ViewModels;
 
 namespace SnpApp
 {
@@ -25,6 +26,9 @@ namespace SnpApp
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
+        
+        public SettingsViewModel ViewModel { get; set; }
+        
         public string Version
         {
             get
@@ -38,6 +42,9 @@ namespace SnpApp
 
         public SettingsPage()
         {
+            
+            ViewModel = new SettingsViewModel();
+            
             this.InitializeComponent();
             Loaded += OnSettingsPageLoaded;
         }

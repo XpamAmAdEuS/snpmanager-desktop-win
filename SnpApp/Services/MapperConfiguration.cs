@@ -145,9 +145,11 @@ public class MapperConfig
                 .ReverseMap();
             cfg.CreateMap<ProtoUserRepo.Types.ProtoUser, User>().ReverseMap();
             
-            cfg.CreateMap<ProtoImportMusicRepo.Types.ImportMusic, MusicImport>()
-                .ForMember(dest => dest.Source, act => 
-                    act.MapFrom(src => MediaSource.CreateFromUri(new Uri($"http://192.168.1.36:50051/v1/music/import/file/{src.Hash}.mp3"))));
+            // cfg.CreateMap<ProtoImportMusicRepo.Types.ImportMusic, MusicImport>()
+            //     .ForMember(dest => dest.Source, act => 
+            //         act.MapFrom(src => MediaSource.CreateFromUri(new Uri($"http://192.168.1.36:50051/v1/music/import/file/{src.Hash}.mp3"))));
+            
+            cfg.CreateMap<ProtoImportMusicRepo.Types.ImportMusic, MusicImport>();
             
             // //Configuring Employee and EmployeeDTO
             // cfg.CreateMap<Employee, EmployeeDTO>()

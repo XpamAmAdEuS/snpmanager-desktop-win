@@ -1,8 +1,10 @@
 <Page
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d"
     x:Class="SnpApp.Views.MusicImportPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:SnpApp.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
@@ -16,6 +18,7 @@
                 Icon="OpenFile"
                 Text="View details" />
         </MenuFlyout>
+        <vm:PlaybackStateToButtonIconConverter x:Key="MediaPlaybackStateToButtonIconConverter" />
     </Page.Resources>
 
     <RelativePanel Padding="36,4,36,0" x:Name="PanelRoot">
@@ -101,6 +104,82 @@
                     </toolkit:DataGridTemplateColumn>
                 </toolkit:DataGrid.Columns>
             </toolkit:DataGrid>
+
+            <ScrollViewer
+                Grid.Row="1"
+                VerticalScrollBarVisibility="Auto"
+                VerticalScrollMode="Auto">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <MediaPlayerElement
+                                AreTransportControlsEnabled="True"
+                                MaxHeight="400"
+                                MaxWidth="400"
+                                x:Name="mediaPlayerElement" />
+
+                            <StackPanel
+                                Margin="10,40,0,0"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Top"
+                                Visibility="Collapsed"
+                                x:Name="customButtons">
+                                <Button
+                                    Click="{x:Bind PlayerViewModel.SkipPrevious}"
+                                    Height="100"
+                                    IsEnabled="{x:Bind PlayerViewModel.CanSkipPrevious, Mode=OneWay}"
+                                    Width="100"
+                                    x:Name="prevButton">
+                                    <SymbolIcon Symbol="Previous" />
+                                </Button>
+                                <Button
+                                    Click="{x:Bind PlayerViewModel.TogglePlayPause}"
+                                    Height="100"
+                                    Width="100"
+                                    x:Name="playButton">
+                                    <SymbolIcon Symbol="{x:Bind PlayerViewModel.PlaybackSession.PlaybackState, Mode=OneWay, Converter={StaticResource MediaPlaybackStateToButtonIconConverter}}" />
+                                </Button>
+                                <Button
+                                    Click="{x:Bind PlayerViewModel.SkipNext}"
+                                    Height="100"
+                                    IsEnabled="{x:Bind PlayerViewModel.CanSkipNext, Mode=OneWay}"
+                                    Width="100"
+                                    x:Name="nextButton">
+                                    <SymbolIcon Symbol="Next" />
+                                </Button>
+                            </StackPanel>
+
+                            <TextBlock Margin="0,20,0,10">Audio Category</TextBlock>
+                            <ComboBox ItemsSource="{x:Bind PlayerViewModel.AudioCategories}" SelectedItem="{x:Bind PlayerViewModel.SelectedAudioCategory, Mode=TwoWay}" />
+
+                        </StackPanel>
+                        <StackPanel Margin="40,0,0,0">
+                            <local:PlaylistView MediaList="{x:Bind PlayerViewModel.MediaList, Mode=OneWay}" x:Name="playlistView" />
+
+                            <TextBlock
+                                Height="30"
+                                HorizontalAlignment="Left"
+                                Margin="10,10,0,0"
+                                Style="{StaticResource BodyTextBlockStyle}"
+                                Text="{x:Bind PlayerViewModel.MediaList.CurrentItem.Title, Mode=OneWay}"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Top"
+                                Visibility="Collapsed"
+                                x:Name="currentTrackTitle" />
+                            <TextBlock
+                                Height="30"
+                                HorizontalAlignment="Left"
+                                Margin="10,50,0,0"
+                                Style="{StaticResource BodyTextBlockStyle}"
+                                Text="{x:Bind PlayerViewModel.PlaybackSession.PlaybackState, Mode=OneWay}"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Top"
+                                Visibility="Collapsed"
+                                x:Name="currentStateTextBlock" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
 
             <CommandBar
                 Background="Transparent"

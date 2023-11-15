@@ -14,6 +14,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation;
@@ -23,10 +24,15 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.System.Profile;
+using Windows.UI.Core;
+using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
+using Microsoft.UI.Xaml.Automation.Peers;
 using SnpApp.DataModel;
 using SnpApp.Helper;
+using SnpApp.Services;
 using SnpApp.Views;
+using WindowActivatedEventArgs = Microsoft.UI.Xaml.WindowActivatedEventArgs;
 
 namespace SnpApp.Navigation
 {
@@ -36,6 +42,7 @@ namespace SnpApp.Navigation
         public Microsoft.UI.Dispatching.DispatcherQueue dispatcherQueue;
         private RootFrameNavigationHelper _navHelper;
         private UISettings _settings;
+        public static NavigationRootPage Current;
 
 
         public static NavigationRootPage GetForElement(object obj)
@@ -63,9 +70,9 @@ namespace SnpApp.Navigation
             get
             {
 #if DEBUG
-                return "WinUI 3 Gallery Dev";
+                return "SnpManager Dev";
 #else
-                return "WinUI 3 Gallery";
+                return "SnpManager";
 #endif
             }
         }
@@ -106,6 +113,9 @@ namespace SnpApp.Navigation
                 _settings = new UISettings();
                 _settings.ColorValuesChanged += _settings_ColorValuesChanged; // cannot use FrameworkElement.ActualThemeChanged event because the triggerTitleBarRepaint workaround no longer works
             };
+            
+            
+            Current = this;
         }
 
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
@@ -319,6 +329,13 @@ namespace SnpApp.Navigation
                     if (rootFrame.CurrentSourcePageType != typeof(HomePage))
                     {
                         Navigate(typeof(HomePage));
+                    }
+                }
+                else if (selectedItem == BackgroundMedia)
+                {
+                    if (rootFrame.CurrentSourcePageType != typeof(Scenario1))
+                    {
+                        Navigate(typeof(Scenario1));
                     }
                 }
                 else if (selectedItem == MusicUpload)
@@ -624,8 +641,86 @@ namespace SnpApp.Navigation
         private static extern void DebugBreak();
 
         #endregion
+        
+        
+         /// <summary>
+        /// Display a message to the user.
+        /// This method may be called from any thread.
+        /// </summary>
+        /// <param name="strMessage"></param>
+        /// <param name="type"></param>
+        public void NotifyUser(string strMessage, NotifyType type)
+        {
+            // If called from the UI thread, then update immediately.
+            // Otherwise, schedule a task on the UI thread to perform the update.
+            if (Dispatcher.HasThreadAccess)
+            {
+                UpdateStatus(strMessage, type);
+            }
+            else
+            {
+                var task = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => UpdateStatus(strMessage, type));
+            }
+        }
+
+        private void UpdateStatus(string strMessage, NotifyType type)
+        {
+            switch (type)
+            {
+                case NotifyType.StatusMessage:
+                    StatusBorder.Background = new SolidColorBrush(Microsoft.UI.Colors.Green);
+                    break;
+                case NotifyType.ErrorMessage:
+                    StatusBorder.Background = new SolidColorBrush(Microsoft.UI.Colors.Red);
+                    break;
+            }
+
+            StatusBlock.Text = strMessage;
+
+            // Collapse the StatusBlock if it has no text to conserve real estate.
+            StatusBorder.Visibility = (StatusBlock.Text != String.Empty) ? Visibility.Visible : Visibility.Collapsed;
+            if (StatusBlock.Text != String.Empty)
+            {
+                StatusBorder.Visibility = Visibility.Visible;
+                StatusPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                StatusBorder.Visibility = Visibility.Collapsed;
+                StatusPanel.Visibility = Visibility.Collapsed;
+            }
+
+			// Raise an event if necessary to enable a screen reader to announce the status update.
+			var peer = FrameworkElementAutomationPeer.FromElement(StatusBlock);
+			if (peer != null)
+			{
+				peer.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
+			}
+		}
+
+        /// <summary>
+        /// Sends a toast notification
+        /// </summary>
+        /// <param name="msg">Message to send</param>
+        /// <param name="subMsg">Sub message</param>
+        public void ShowToast(string msg, string subMsg = null)
+        {
+            
+            if (!SettingsService.Instance.ToastOnAppEvents)
+                return;
+
+            var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
+
+            var toastTextElements = toastXml.GetElementsByTagName("text");
+            toastTextElements[0].AppendChild(toastXml.CreateTextNode(msg));
+            toastTextElements[1].AppendChild(toastXml.CreateTextNode(subMsg));
+
+            var toast = new ToastNotification(toastXml);
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
+        }
 
     }
+    
     
     
 
@@ -642,4 +737,10 @@ namespace SnpApp.Navigation
         Other,
         Xbox
     }
+    
+    public enum NotifyType
+    {
+        StatusMessage,
+        ErrorMessage
+    };
 }

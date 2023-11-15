@@ -31,6 +31,19 @@ namespace SnpApp.ViewModels
             }
         }
         
+        public uint Id {
+            get => Model.Id;
+            set
+            {
+                if (value != Model.Id)
+                {
+                    Model.Id = value;
+                    IsModified = true;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
         public string FileName {
             get => Model.FileName;
             set

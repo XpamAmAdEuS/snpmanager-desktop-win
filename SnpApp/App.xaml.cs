@@ -45,12 +45,7 @@ namespace SnpApp
         public App()
         {
             InitializeComponent();
-            
-#if WINUI_PRERELEASE
-            this.Suspending += OnSuspending;
-            this.Resuming += App_Resuming;
-            this.RequiresPointerMode = ApplicationRequiresPointerMode.WhenRequested;
-#endif
+
         }
         
         public void EnableSound(bool withSpatial = false)
@@ -288,8 +283,4 @@ namespace SnpApp
             
         }
     }
-    
-    
-   
-    
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.System;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -9,6 +11,11 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using SnpApp.ViewModels;
+using Windows.Media.Playback;
+using Windows.UI.Core;
+using SnpApp.DataModels;
+using SnpApp.Navigation;
+using SnpApp.Services;
 using DispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue;
 
 namespace SnpApp.Views;
@@ -19,6 +26,23 @@ namespace SnpApp.Views;
 public sealed partial class MusicImportPage
 {
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+    
+    
+    MediaPlayer Player => PlaybackService.Instance.Player;
+
+    MediaPlaybackList PlaybackList
+    {
+        get { return Player.Source as MediaPlaybackList; }
+        set { Player.Source = value; }
+    }
+    MediaList MediaList
+    {
+        get { return PlaybackService.Instance.CurrentPlaylist; }
+        set { PlaybackService.Instance.CurrentPlaylist = value; }
+    }
+
+    public PlayerViewModel PlayerViewModel { get; set; }
+    
 
     /// <summary>
     ///     Initializes the page.
@@ -27,18 +51,105 @@ public sealed partial class MusicImportPage
     {
         InitializeComponent();
         DataContext = Ioc.Default.GetService<MusicImportListViewModel>();
-        Loaded += PaginationPage_Loaded;
+        // Setup MediaPlayer view model
+        PlayerViewModel = new PlayerViewModel(Player, Dispatcher);
+        Loaded += MusicImportPage_Loaded;
+        Unloaded += MusicImportPage_Unloaded;
     }
+    
 
     public MusicImportListViewModel ViewModel => (MusicImportListViewModel)DataContext;
 
-    private async void PaginationPage_Loaded(object sender, RoutedEventArgs e)
+    private async void MusicImportPage_Loaded(object sender, RoutedEventArgs e)
     {
         await ViewModel.GetListAsync(1);
 
         DataGrid.ItemsSource = ViewModel.Musics;
         DataGrid.Columns[0].SortDirection = DataGridSortDirection.Ascending;
         
+        
+        Debug.WriteLine("MusicImportPage_Loaded");
+            
+        // Update controls according to settings
+        UpdateControlVisibility();
+        // SettingsService.Instance.UseCustomControlsChanged += SettingsService_UseCustomControlsChanged;
+
+        // Bind player to element
+        mediaPlayerElement.SetMediaPlayer(Player);
+
+        // Load the playlist data model if needed
+        if (MediaList == null)
+        {
+            // Create the playlist data model
+            MediaList = new MediaList();
+            // await MediaList.LoadFromApplicationUriAsync("ms-appx:///Assets/playlist.json");
+            await MediaList.LoadFromImportMusicAsync(ViewModel.Musics);
+        }
+
+        // Create a new playback list matching the data model if one does not exist
+        if (PlaybackList == null)
+            PlaybackList = MediaList.ToPlaybackList();
+
+        // Subscribe to playback list item failure events
+        PlaybackList.ItemFailed += PlaybackList_ItemFailed;
+
+        // Create the view model list from the data model and playback model
+        // and assign it to the player
+        PlayerViewModel.MediaList = new MediaListViewModel(MediaList, PlaybackList, Dispatcher);
+        
+        
+    }
+    
+    private void MusicImportPage_Unloaded(object sender, RoutedEventArgs e)
+    {
+        Debug.WriteLine("MusicImportPage_Unloaded");
+
+        // Ensure the page is no longer holding references and force a GC
+        // to ensure these are unloaded immediately since the app has
+        // only a short timeframe to reduce working set to avoid suspending
+        // on background transition.
+
+        // SettingsService.Instance.UseCustomControlsChanged -= SettingsService_UseCustomControlsChanged;
+
+        PlaybackList.ItemFailed -= PlaybackList_ItemFailed;
+        PlayerViewModel.Dispose();
+        PlayerViewModel = null;
+
+        GC.Collect();
+    }
+    
+    void UpdateControlVisibility()
+    {
+        // if (SettingsService.Instance.UseCustomControls)
+        // {
+        //     mediaPlayerElement.AreTransportControlsEnabled = false;
+        //     customButtons.Visibility = Visibility.Visible;
+        // }
+        // else
+        // {
+        //     mediaPlayerElement.AreTransportControlsEnabled = true;
+        //     customButtons.Visibility = Visibility.Collapsed;
+        // }
+            
+        mediaPlayerElement.AreTransportControlsEnabled = true;
+        customButtons.Visibility = Visibility.Collapsed;
+    }
+    
+    
+    /// <summary>
+    /// Handle item failures
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private async void PlaybackList_ItemFailed(MediaPlaybackList sender, MediaPlaybackItemFailedEventArgs args)
+    {
+        // Media callbacks use a worker thread so dispatch to UI as needed
+        await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+        {
+            var error = string.Format("Item failed to play: {0} | 0x{1:x}",
+                args.Error.ErrorCode, args.Error.ExtendedError.HResult);
+            NavigationRootPage.Current.NotifyUser(error, NotifyType.ErrorMessage);
+        });
     }
 
     /// <summary>

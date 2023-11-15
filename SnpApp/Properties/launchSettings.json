@@ -2,6 +2,9 @@
   "profiles": {
     "SnpApp (Package)": {
       "commandName": "MsixPackage"
+    },
+    "SnpApp (Unpackaged)": {
+      "commandName": "Project"
     }
   }
 }

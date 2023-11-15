@@ -1,0 +1,28 @@
+﻿{
+  "mediaList": {
+    "title": "Ringtone Mix",
+    "items": [
+      {
+        "mediaType": "music",
+        "title": "Ring 1",
+        "mediaUri": "ms-appx:///Assets/000000af.mp3",
+        "albumArtUri": "ms-appx:///Assets/Ring01.jpg",
+        "albumArtAttribution": "Autumn Yellow Leaves | George Hodan"
+      },
+      {
+        "mediaType": "music",
+        "title": "Ring 2",
+        "mediaUri": "ms-appx:///Assets/000000de.mp3",
+        "albumArtUri": "ms-appx:///Assets/Ring02.jpg",
+        "albumArtAttribution": "Abstract Background | Larisa Koshkina"
+      },
+      {
+        "mediaType": "music",
+        "title": "Ring 3 Part 1",
+        "mediaUri": "ms-appx:///Assets/000000e4.mp3",
+        "albumArtUri": "ms-appx:///Assets/Ring03Part1.jpg",
+        "albumArtAttribution": "Snow Covered Mountains | Petr Kratochvil"
+      }
+    ]
+  }
+}
