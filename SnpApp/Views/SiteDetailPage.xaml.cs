@@ -7,11 +7,11 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Email;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using Snp.Core.Models;
-using Snp.Core.Services;
-using Snp.App.ViewModels;
+using SnpCore.Models;
+using SnpCore.Services;
+using SnpApp.ViewModels;
 
-namespace Snp.App.Views
+namespace SnpApp.Views
 {
     /// <summary>
     /// Displays and edits an order.

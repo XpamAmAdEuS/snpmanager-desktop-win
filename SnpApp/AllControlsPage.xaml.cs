@@ -10,10 +10,10 @@
 
 using System.Linq;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.App.DataModel;
-using Snp.App.Navigation;
+using SnpApp.DataModel;
+using SnpApp.Navigation;
 
-namespace Snp.App
+namespace SnpApp
 {
     /// <summary>
     /// A page that displays a grouped collection of items.

@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Snp.App.Common;
-using Snp.Core.Repository;
-using Snp.Core.Repository.Grpc;
+using SnpApp.Common;
+using SnpCore.Repository;
+using SnpCore.Repository.Grpc;
 using muxc = Microsoft.UI.Xaml.Controls;
 
-namespace Snp.App.Views.Widgets
+namespace SnpApp.Views.Widgets
 {
     public sealed partial class LoginUserControl
     {

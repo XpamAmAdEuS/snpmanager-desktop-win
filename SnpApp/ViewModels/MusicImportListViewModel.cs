@@ -10,10 +10,10 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
-using Snp.Core.Models;
-using Snp.Core.Services;
+using SnpCore.Models;
+using SnpCore.Services;
 
-namespace Snp.App.ViewModels;
+namespace SnpApp.ViewModels;
 
 public class MusicImportListViewModel : ObservableObject
 {

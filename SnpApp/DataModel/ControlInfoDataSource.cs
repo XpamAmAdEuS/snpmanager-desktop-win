@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
-using Snp.App.Common;
+using SnpApp.Common;
 
 // The data model defined by this file serves as a representative example of a strongly-typed
 // model.  The property names chosen coincide with data bindings in the standard item templates.
@@ -23,7 +23,7 @@ using Snp.App.Common;
 // responsiveness by initiating the data loading task in the code behind for App.xaml when the app
 // is first launched.
 
-namespace Snp.App.DataModel
+namespace SnpApp.DataModel
 {
     public class Root
     {
@@ -214,7 +214,7 @@ namespace Snp.App.DataModel
 
             lock (_lock)
             {
-                string pageRoot = "Snp.App.Views.";
+                string pageRoot = "SnpApp.Views.";
 
                 controlInfoDataGroup.Groups.SelectMany(g => g.Items).ToList().ForEach(item =>
                 {

@@ -7,11 +7,11 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Snp.Core.Models;
-using Snp.Core.Services;
+using SnpCore.Models;
+using SnpCore.Services;
 using Nito.AsyncEx;
 
-namespace Snp.App.ViewModels.Widgets;
+namespace SnpApp.ViewModels.Widgets;
 
 /// <summary>
 /// A viewmodel for a subreddit widget.

@@ -18,7 +18,7 @@ statusNotificationTargets:
 
 A WinUI 3 sample app that showcases UI controls (including a data grid) and the latest design guidance for apps on Windows 11. It also demonstrates features useful to enterprise developers, like Azure Active Directory (AAD) authentication, Entity Framework, and cloud API services. The sample is based around creating and managing customer accounts, orders, and products for the fictitious company Snp.
 
-> Note - This sample is targeted and tested for Windows 11 Insider Preview using the Insider Preview SDK Build 22000, and Visual Studio 2022 version 17.1 or later. If you are developing on Windows 10, retarget the Snp.App project to Windows 10, version 2004 (10.0; Build 19041).
+> Note - This sample is targeted and tested for Windows 11 Insider Preview using the Insider Preview SDK Build 22000, and Visual Studio 2022 version 17.1 or later. If you are developing on Windows 10, retarget the SnpApp project to Windows 10, version 2004 (10.0; Build 19041).
 
 ![SnpApp screenshot 1](images/customer-list.png)
 

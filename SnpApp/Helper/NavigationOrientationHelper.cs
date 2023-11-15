@@ -1,10 +1,10 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Storage;
-using Snp.App.Navigation;
+using SnpApp.Navigation;
 
 
-namespace Snp.App.Helper
+namespace SnpApp.Helper
 {
     public static class NavigationOrientationHelper
     {

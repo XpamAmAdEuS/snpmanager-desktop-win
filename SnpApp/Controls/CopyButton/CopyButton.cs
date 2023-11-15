@@ -5,9 +5,9 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
-using Snp.App.Helper;
+using SnpApp.Helper;
 
-namespace Snp.App.Controls
+namespace SnpApp.Controls
 {
     public sealed class CopyButton : Button
     {

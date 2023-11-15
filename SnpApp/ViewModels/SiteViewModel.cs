@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Dispatching;
-using Snp.Core.Models;
-using Snp.Core.Repository;
+using SnpCore.Models;
+using SnpCore.Repository;
 using CommunityToolkit.WinUI;
-using Snp.Core.Repository.Grpc;
+using SnpCore.Repository.Grpc;
 
-namespace Snp.App.ViewModels
+namespace SnpApp.ViewModels
 {
     /// <summary>
     /// Provides a bindable wrapper for the Site model class, encapsulating various services for access by the UI.

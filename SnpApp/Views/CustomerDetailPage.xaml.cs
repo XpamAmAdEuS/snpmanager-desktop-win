@@ -7,14 +7,14 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.Core.Models;
-using Snp.App.ViewModels;
+using SnpCore.Models;
+using SnpApp.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
-using Snp.App.Navigation;
-using Snp.Core.Repository;
-using Snp.Core.Repository.Grpc;
+using SnpApp.Navigation;
+using SnpCore.Repository;
+using SnpCore.Repository.Grpc;
 
-namespace Snp.App.Views
+namespace SnpApp.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.

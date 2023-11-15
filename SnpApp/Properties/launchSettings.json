@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Snp.App (Package)": {
+    "SnpApp (Package)": {
       "commandName": "MsixPackage"
     }
   }

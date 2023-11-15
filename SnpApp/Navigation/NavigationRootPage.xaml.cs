@@ -24,11 +24,11 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.System.Profile;
 using Windows.UI.ViewManagement;
-using Snp.App.DataModel;
-using Snp.App.Helper;
-using Snp.App.Views;
+using SnpApp.DataModel;
+using SnpApp.Helper;
+using SnpApp.Views;
 
-namespace Snp.App.Navigation
+namespace SnpApp.Navigation
 {
     public sealed partial class NavigationRootPage : Page
     {

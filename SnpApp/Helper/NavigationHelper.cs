@@ -12,11 +12,11 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.App.Common;
+using SnpApp.Common;
 using Windows.UI.Core;
 using Microsoft.UI.Input;
 
-namespace Snp.App.Helper
+namespace SnpApp.Helper
 {
     /// <summary>
     /// NavigationHelper aids in navigation between pages. It manages

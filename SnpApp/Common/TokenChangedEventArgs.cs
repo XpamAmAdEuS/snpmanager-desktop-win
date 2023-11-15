@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snp.App.Common;
+namespace SnpApp.Common;
 
     public class TokenChangedEventArgs : EventArgs
     {

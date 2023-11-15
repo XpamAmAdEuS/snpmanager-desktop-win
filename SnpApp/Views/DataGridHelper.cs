@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.WinUI.UI.Controls;
 
-namespace Snp.App.Views
+namespace SnpApp.Views
 {
     /// <summary>
     /// Extension methods used with the DataGrid control to support sorting.

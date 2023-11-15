@@ -4,14 +4,14 @@
 using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Snp.App.DataModel;
-using Snp.App.Helper;
+using SnpApp.DataModel;
+using SnpApp.Helper;
 using Uri = System.Uri;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace Snp.App.Controls
+namespace SnpApp.Controls
 {
     public sealed partial class PageHeader : UserControl
     {

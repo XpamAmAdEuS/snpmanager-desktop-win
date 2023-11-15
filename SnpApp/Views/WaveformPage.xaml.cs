@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 
 
-namespace Snp.App.Views
+namespace SnpApp.Views
 {
     public sealed partial class WaveformPage : Page
     {

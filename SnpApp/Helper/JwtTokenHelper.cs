@@ -1,8 +1,8 @@
 using Windows.Storage;
 using Microsoft.UI.Xaml;
-using Snp.Core.Repository;
+using SnpCore.Repository;
 
-namespace Snp.App.Helper
+namespace SnpApp.Helper
 {
     /// <summary>
     /// Class providing functionality around switching and restoring theme settings

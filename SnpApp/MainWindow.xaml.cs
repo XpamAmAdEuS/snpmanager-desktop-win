@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
-using Snp.App.Services;
+using SnpApp.Services;
 
-namespace Snp.App
+namespace SnpApp
 {
     public sealed partial class MainWindow : Window
     {

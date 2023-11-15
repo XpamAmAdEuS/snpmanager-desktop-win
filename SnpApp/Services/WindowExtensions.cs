@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml;
 using System;
 using WinRT.Interop;
 
-namespace Snp.App.Services
+namespace SnpApp.Services
 {
     internal static class WindowExtensions
     {

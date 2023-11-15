@@ -7,8 +7,8 @@
 // PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 //
 //*********************************************************
-using Snp.App.Common;
-using Snp.App.Helper;
+using SnpApp.Common;
+using SnpApp.Helper;
 using ColorCode;
 using ColorCode.Common;
 using System;
@@ -32,7 +32,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Reflection;
 
-namespace Snp.App.Controls
+namespace SnpApp.Controls
 {
     /// <summary>
     /// Describes a textual substitution in sample content.

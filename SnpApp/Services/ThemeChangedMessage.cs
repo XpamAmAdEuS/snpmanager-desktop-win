@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.UI.Xaml;
 
-namespace Snp.App.Services
+namespace SnpApp.Services
 {
     public class ThemeChangedMessage : ValueChangedMessage<ElementTheme>
     {

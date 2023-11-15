@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace Snp.App.Views
+namespace SnpApp.Views
 {
     /// <summary>
     /// Creates a dialog that gives the users a chance to save changes, discard them, 

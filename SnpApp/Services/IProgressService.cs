@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snp.App.Services
+namespace SnpApp.Services
 {
     /// <summary>
     /// Provides an Service that invokes callbacks for each reported progressvalue.

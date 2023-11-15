@@ -8,11 +8,11 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.App.Navigation;
-using Snp.App.ViewModels;
+using SnpApp.Navigation;
+using SnpApp.ViewModels;
 using DispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue;
 
-namespace Snp.App.Views;
+namespace SnpApp.Views;
 
 /// <summary>
 ///     An empty page that can be used on its own or navigated to within a Frame.

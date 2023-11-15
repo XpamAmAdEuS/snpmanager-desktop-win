@@ -9,9 +9,9 @@
 //*********************************************************
 using System.Linq;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.App.Navigation;
+using SnpApp.Navigation;
 
-namespace Snp.App
+namespace SnpApp
 {
     public sealed partial class HomePage : ItemsPageBase
     {

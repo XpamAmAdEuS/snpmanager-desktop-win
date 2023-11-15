@@ -11,11 +11,11 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.App.Helper;
+using SnpApp.Helper;
 using WinRT.Interop;
 
 
-namespace Snp.App.Views
+namespace SnpApp.Views
 {
     /// <summary>
     /// Using the AudioGraph API to playback from a file input.

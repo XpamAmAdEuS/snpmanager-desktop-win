@@ -14,19 +14,19 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Windows.AppLifecycle;
-using Snp.App.Common;
-using Snp.App.DataModel;
-using Snp.App.Helper;
-using Snp.App.Navigation;
-using Snp.App.ViewModels;
-using Snp.Core.Repository;
-using Snp.Core.Repository.Grpc;
-using Snp.Core.Repository.Grpc.Interceptors;
-using Snp.Core.Services;
+using SnpApp.Common;
+using SnpApp.DataModel;
+using SnpApp.Helper;
+using SnpApp.Navigation;
+using SnpApp.ViewModels;
+using SnpCore.Repository;
+using SnpCore.Repository.Grpc;
+using SnpCore.Repository.Grpc.Interceptors;
+using SnpCore.Services;
 using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
 
 
-namespace Snp.App
+namespace SnpApp
 {
     public sealed partial class App
     {

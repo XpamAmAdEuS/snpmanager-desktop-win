@@ -15,7 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using WinRT;
 using System.Runtime.InteropServices;
 
-namespace Snp.App.Helper
+namespace SnpApp.Helper
 {
 
     internal class TitleBarHelper

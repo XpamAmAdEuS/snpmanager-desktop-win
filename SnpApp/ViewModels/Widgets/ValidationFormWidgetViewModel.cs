@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Snp.Core.Services;
+using SnpCore.Services;
 
-namespace Snp.App.ViewModels.Widgets;
+namespace SnpApp.ViewModels.Widgets;
 
 /// <summary>
 /// A viewmodel for the validation widget.

@@ -15,11 +15,11 @@ using System.Runtime.CompilerServices;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.App.DataModel;
-using Snp.App.Navigation;
+using SnpApp.DataModel;
+using SnpApp.Navigation;
 
 
-namespace Snp.App
+namespace SnpApp
 {
     /// <summary>
     /// This page displays search results when a global search is directed to this application.

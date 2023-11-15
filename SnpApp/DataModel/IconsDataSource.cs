@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Snp.App.Common;
+using SnpApp.Common;
 
-namespace Snp.App.DataModel
+namespace SnpApp.DataModel
 {
     public class IconData
     {

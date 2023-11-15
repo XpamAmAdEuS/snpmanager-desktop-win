@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Snp.Core.Models;
+using SnpCore.Models;
 
 
-namespace Snp.App.ViewModels
+namespace SnpApp.ViewModels
 {
     /// <summary>
     /// Provides a bindable wrapper for the Customer model class, encapsulating various services for access by the UI.

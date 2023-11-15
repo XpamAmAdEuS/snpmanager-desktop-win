@@ -8,9 +8,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Snp.Core.Services;
+using SnpCore.Services;
 
-namespace Snp.App.ViewModels;
+namespace SnpApp.ViewModels;
 
 /// <summary>
 /// A base class for viewmodels for sample pages in the app.

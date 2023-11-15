@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using WinRT.Interop;
 
-namespace Snp.App.Helper
+namespace SnpApp.Helper
 {
     // Helper class to allow the app to find the Window that contains an
     // arbitrary UIElement (GetWindowForElement).  To do this, we keep track

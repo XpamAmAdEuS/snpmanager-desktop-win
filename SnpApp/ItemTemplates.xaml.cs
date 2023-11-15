@@ -9,7 +9,7 @@
 //*********************************************************
 using Microsoft.UI.Xaml;
 
-namespace Snp.App
+namespace SnpApp
 {
     public sealed partial class ItemTemplates : ResourceDictionary
     {

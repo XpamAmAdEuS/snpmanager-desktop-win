@@ -8,10 +8,10 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
-using Snp.Core.Models;
-using Snp.Core.Repository.Grpc;
+using SnpCore.Models;
+using SnpCore.Repository.Grpc;
 
-namespace Snp.App.ViewModels;
+namespace SnpApp.ViewModels;
 
 /// <summary>
 ///     Provides data and commands accessible to the entire app.

@@ -3,7 +3,7 @@
 
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:local="using:Snp.App.Controls"
+    xmlns:local="using:SnpApp.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style BasedOn="{StaticResource DefaultCopyButtonStyle}" TargetType="local:CopyButton" />

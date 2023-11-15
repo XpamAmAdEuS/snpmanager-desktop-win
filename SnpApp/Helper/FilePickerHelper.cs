@@ -6,7 +6,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 
-namespace Snp.App.Helper
+namespace SnpApp.Helper
 {
     /// <summary>
     /// Helper to open and save a file using the picker

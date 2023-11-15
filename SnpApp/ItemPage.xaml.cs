@@ -22,12 +22,12 @@ using Microsoft.UI.Xaml.Hosting;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using Snp.App.Controls;
-using Snp.App.DataModel;
-using Snp.App.Helper;
-using Snp.App.Navigation;
+using SnpApp.Controls;
+using SnpApp.DataModel;
+using SnpApp.Helper;
+using SnpApp.Navigation;
 
-namespace Snp.App
+namespace SnpApp
 {
     /// <summary>
     /// A page that displays details for a single item within a group.
@@ -77,7 +77,7 @@ namespace Snp.App
                 Item = item;
 
                 // Load control page into frame.
-                Type pageType = Type.GetType("Snp.App.Views." + item.UniqueId + "Page");
+                Type pageType = Type.GetType("SnpApp.Views." + item.UniqueId + "Page");
 
                 if (pageType != null)
                 {

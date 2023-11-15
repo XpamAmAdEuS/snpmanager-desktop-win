@@ -8,7 +8,7 @@
 //
 //*********************************************************
 using System;
-using Snp.App.Helper;
+using SnpApp.Helper;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -16,9 +16,9 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
-using Snp.App.Navigation;
+using SnpApp.Navigation;
 
-namespace Snp.App
+namespace SnpApp
 {
     /// <summary>
     /// A page that displays the app's settings.

@@ -7,10 +7,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
-using Snp.Core.Models;
+using SnpCore.Models;
 
 
-namespace Snp.App.ViewModels
+namespace SnpApp.ViewModels
 {
     public partial class MusicUploadViewModel : ObservableObject
     {

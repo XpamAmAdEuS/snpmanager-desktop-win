@@ -18,10 +18,10 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 using System.ComponentModel;
-using Snp.App.DataModel;
-using Snp.App.Navigation;
+using SnpApp.DataModel;
+using SnpApp.Navigation;
 
-namespace Snp.App
+namespace SnpApp
 {
     public abstract class ItemsPageBase : Page, INotifyPropertyChanged
     {

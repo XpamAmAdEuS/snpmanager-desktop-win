@@ -5,9 +5,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Snp.Core.Models;
+using SnpCore.Models;
 
-namespace Snp.App.ViewModels.Widgets;
+namespace SnpApp.ViewModels.Widgets;
 
 /// <summary>
 /// A viewmodel for a post widget.

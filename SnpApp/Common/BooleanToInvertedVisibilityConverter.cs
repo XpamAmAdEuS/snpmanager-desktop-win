@@ -2,7 +2,7 @@ using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
 
-namespace Snp.App.Common
+namespace SnpApp.Common
 {
     public sealed class BooleanToInvertedVisibilityConverter: IValueConverter
     {

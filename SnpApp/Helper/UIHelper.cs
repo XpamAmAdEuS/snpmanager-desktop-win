@@ -7,7 +7,7 @@ using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Media;
 using Windows.Storage;
 
-namespace Snp.App.Helper
+namespace SnpApp.Helper
 {
     public static class UIHelper
     {

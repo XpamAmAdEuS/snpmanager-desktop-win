@@ -3,7 +3,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace Snp.App.Views;
+namespace SnpApp.Views;
 
 public class CustomDataGrid : DataGrid
 {

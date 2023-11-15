@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.UI.Xaml.Data;
 
-namespace Snp.App.Common
+namespace SnpApp.Common
 {
     public sealed class BooleanToValueConverter: IValueConverter
     {

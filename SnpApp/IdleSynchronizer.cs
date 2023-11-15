@@ -4,7 +4,7 @@ using System.Threading;
 using Windows.Foundation;
 using Microsoft.UI.Dispatching;
 
-namespace Snp.App
+namespace SnpApp
 {
     class IdleSynchronizer
     {

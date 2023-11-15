@@ -3,9 +3,9 @@
 
 <UserControl
     mc:Ignorable="d"
-    x:Class="Snp.App.Controls.SampleThemeListener"
+    x:Class="SnpApp.Controls.SampleThemeListener"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Snp.App.Controls"
+    xmlns:local="using:SnpApp.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snp.App.Services
+namespace SnpApp.Services
 {
     /// <inheritdoc/>
     public class ProgressService : IProgressService

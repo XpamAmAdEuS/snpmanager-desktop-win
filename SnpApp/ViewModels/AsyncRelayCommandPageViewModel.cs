@@ -4,9 +4,9 @@
 
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
-using Snp.Core.Services;
+using SnpCore.Services;
 
-namespace Snp.App.ViewModels;
+namespace SnpApp.ViewModels;
 
 public class AsyncRelayCommandPageViewModel : SamplePageViewModel
 {

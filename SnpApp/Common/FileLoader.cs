@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using System.IO;
 using System.Reflection;
-using Snp.App.Helper;
+using SnpApp.Helper;
 
-namespace Snp.App.Common
+namespace SnpApp.Common
 {
     internal class FileLoader
     {

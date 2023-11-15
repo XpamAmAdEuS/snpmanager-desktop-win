@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Snp.App.Services
+namespace SnpApp.Services
 {
     public interface INavigation
     {

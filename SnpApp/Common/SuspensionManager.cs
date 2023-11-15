@@ -10,9 +10,9 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Snp.App.Helper;
+using SnpApp.Helper;
 
-namespace Snp.App.Common
+namespace SnpApp.Common
 {
     /// <summary>
     /// SuspensionManager captures global session state to simplify process lifetime management

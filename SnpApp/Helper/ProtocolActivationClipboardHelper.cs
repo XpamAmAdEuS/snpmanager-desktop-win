@@ -2,9 +2,9 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Snp.App.DataModel;
+using SnpApp.DataModel;
 
-namespace Snp.App.Helper
+namespace SnpApp.Helper
 {
     /// <summary>
     /// Class providing functionality to support generating and copying protocol activation URIs.

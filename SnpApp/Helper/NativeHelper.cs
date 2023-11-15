@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Snp.App.Helper
+namespace SnpApp.Helper
 {
     internal class NativeHelper
     {
