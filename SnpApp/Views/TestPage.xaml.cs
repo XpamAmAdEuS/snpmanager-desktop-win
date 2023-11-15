@@ -7,7 +7,6 @@ using Windows.Storage.Pickers;
 using Windows.UI;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
@@ -20,16 +19,16 @@ namespace SnpApp.Views
     /// <summary>
     /// Using the AudioGraph API to playback from a file input.
     /// </summary>
-    public sealed partial class TestPage : Page
+    public sealed partial class TestPage
     {
 
-        private AudioGraph? graph;
-        private AudioFileInputNode? fileInput;
-        private AudioDeviceOutputNode deviceOutput;
+        private AudioGraph? _graph;
+        private AudioFileInputNode? _fileInput;
+        private AudioDeviceOutputNode? _deviceOutput;
 
         public TestPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -40,9 +39,9 @@ namespace SnpApp.Views
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             // Destroy the graph if the page is naviated away from
-            if (graph != null)
+            if (_graph != null)
             {
-                graph.Dispose();
+                _graph.Dispose();
             }
         }
 
@@ -50,10 +49,10 @@ namespace SnpApp.Views
         {
 
             // If another file is already loaded into the FileInput node
-            if (fileInput != null)
+            if (_fileInput != null)
             {
                 // Release the file and dispose the contents of the node
-                fileInput.Dispose();
+                _fileInput.Dispose();
                 // Stop playback since a new file is being loaded. Also reset the button UI
                 if (graphButton.Content.Equals("Stop Graph"))
                 {
@@ -61,7 +60,7 @@ namespace SnpApp.Views
                 }
             }
 
-            FileOpenPicker filePicker = new FileOpenPicker();
+            var filePicker = new FileOpenPicker();
             filePicker.SuggestedStartLocation = PickerLocationId.MusicLibrary;
             filePicker.FileTypeFilter.Add(".mp3");
             filePicker.FileTypeFilter.Add(".wav");
@@ -71,7 +70,7 @@ namespace SnpApp.Views
             
             // Retrieve the window handle (HWND) of the current WinUI 3 window.
             var window = WindowHelper.GetWindowForElement(this);
-            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            var hWnd = WindowNative.GetWindowHandle(window);
 
             // Initialize the folder picker with the window handle (HWND).
             InitializeWithWindow.Initialize(filePicker, hWnd);
@@ -85,29 +84,29 @@ namespace SnpApp.Views
                 return;
             }
 
-            CreateAudioFileInputNodeResult fileInputResult = await graph.CreateFileInputNodeAsync(file);
+            CreateAudioFileInputNodeResult fileInputResult = await _graph.CreateFileInputNodeAsync(file);
             if (AudioFileNodeCreationStatus.Success != fileInputResult.Status)
             {
                 // Cannot read input file
                 return;
             }
 
-            fileInput = fileInputResult.FileInputNode;
+            _fileInput = fileInputResult.FileInputNode;
 
-            if (fileInput.Duration <= TimeSpan.FromSeconds(3))
+            if (_fileInput.Duration <= TimeSpan.FromSeconds(3))
             {
                 // Imported file is too short
-                fileInput.Dispose();
-                fileInput = null;
+                _fileInput.Dispose();
+                _fileInput = null;
                 return;
             }
 
-            fileInput.AddOutgoingConnection(deviceOutput);
+            _fileInput.AddOutgoingConnection(_deviceOutput);
             fileButton.Background = new SolidColorBrush(Colors.Green);
 
             // Trim the file: set the start time to 3 seconds from the beginning
             // fileInput.EndTime can be used to trim from the end of file
-            fileInput.StartTime = TimeSpan.FromSeconds(3);
+            _fileInput.StartTime = TimeSpan.FromSeconds(3);
 
             // Enable buttons in UI to start graph, loop and change playback speed factor
             graphButton.IsEnabled = true;
@@ -125,13 +124,13 @@ namespace SnpApp.Views
             //Toggle playback
             if (graphButton.Content.Equals("Start Graph"))
             {
-                graph.Start();
+                _graph.Start();
                 graphButton.Content = "Stop Graph";
                 audioPipe.Fill = new SolidColorBrush(Colors.Blue);
             }
             else
             {
-                graph.Stop();
+                _graph.Stop();
                 graphButton.Content = "Start Graph";
                 audioPipe.Fill = new SolidColorBrush(Color.FromArgb(255, 49, 49, 49));
             }
@@ -139,9 +138,9 @@ namespace SnpApp.Views
 
         private void PlaySpeedSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            if (fileInput != null)
+            if (_fileInput != null)
             {
-                fileInput.PlaybackSpeedFactor = playSpeedSlider.Value;
+                _fileInput.PlaybackSpeedFactor = playSpeedSlider.Value;
             }
         }
 
@@ -153,16 +152,16 @@ namespace SnpApp.Views
             if (loopToggle.IsOn)
             {
                 // If turning on looping, make sure the file hasn't finished playback yet
-                if (fileInput.Position >= fileInput.Duration)
+                if (_fileInput.Position >= _fileInput.Duration)
                 {
                     // If finished playback, seek back to the start time we set
-                    fileInput.Seek(fileInput.StartTime.Value);
+                    _fileInput.Seek(_fileInput.StartTime.Value);
                 }
-                fileInput.LoopCount = null; // infinite looping
+                _fileInput.LoopCount = null; // infinite looping
             }
             else
             {
-                fileInput.LoopCount = 0; // stop looping
+                _fileInput.LoopCount = 0; // stop looping
             }
         }
 
@@ -178,10 +177,10 @@ namespace SnpApp.Views
                 return;
             }
 
-            graph = result.Graph;
+            _graph = result.Graph;
 
             // Create a device output node
-            CreateAudioDeviceOutputNodeResult deviceOutputNodeResult = await graph.CreateDeviceOutputNodeAsync();
+            CreateAudioDeviceOutputNodeResult deviceOutputNodeResult = await _graph.CreateDeviceOutputNodeAsync();
 
             if (deviceOutputNodeResult.Status != AudioDeviceNodeCreationStatus.Success)
             {
@@ -190,7 +189,7 @@ namespace SnpApp.Views
                 return;
             }
 
-            deviceOutput = deviceOutputNodeResult.DeviceOutputNode;
+            _deviceOutput = deviceOutputNodeResult.DeviceOutputNode;
             speakerContainer.Background = new SolidColorBrush(Colors.Green);
         }
     }

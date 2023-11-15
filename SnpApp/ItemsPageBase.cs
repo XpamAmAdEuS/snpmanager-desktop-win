@@ -1,21 +1,9 @@
-//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Windows.Foundation.Metadata;
-using Windows.System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 using System.ComponentModel;
 using SnpApp.DataModel;
@@ -25,10 +13,10 @@ namespace SnpApp
 {
     public abstract class ItemsPageBase : Page, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        private string _itemId;
-        private IEnumerable<ControlInfoDataItem> _items;
+        private string? _itemId;
+        private IEnumerable<ControlInfoDataItem>? _items;
 
         public IEnumerable<ControlInfoDataItem> Items
         {
@@ -82,7 +70,7 @@ namespace SnpApp
             }
         }
 
-        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string? propertyName = null)
         {
             if (Equals(storage, value)) return false;
 

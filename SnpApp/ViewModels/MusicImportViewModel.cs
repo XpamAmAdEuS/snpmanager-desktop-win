@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SnpCore.Models;
+using SnpApp.Models;
 
 
 namespace SnpApp.ViewModels

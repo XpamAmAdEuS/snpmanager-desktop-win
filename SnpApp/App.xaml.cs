@@ -18,11 +18,9 @@ using SnpApp.Common;
 using SnpApp.DataModel;
 using SnpApp.Helper;
 using SnpApp.Navigation;
+using SnpApp.Services;
+using SnpApp.Services.Interceptors;
 using SnpApp.ViewModels;
-using SnpCore.Repository;
-using SnpCore.Repository.Grpc;
-using SnpCore.Repository.Grpc.Interceptors;
-using SnpCore.Services;
 using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
 
 
@@ -118,11 +116,11 @@ namespace SnpApp
             Ioc.Default.ConfigureServices
             (new ServiceCollection()
                 .AddSingleton<IMessenger>(WeakReferenceMessenger.Default)
-                .AddSingleton(new GrpcCustomerRepository(invoker,mapper))
-                .AddSingleton(new GrpcSiteRepository(invoker,mapper))
-                .AddSingleton(new GrpcUserRepository(invoker,mapper))
+                .AddSingleton(new CustomerService(invoker,mapper))
+                .AddSingleton(new SiteService(invoker,mapper))
+                .AddSingleton(new UserService(invoker,mapper))
                 .AddSingleton(new MusicImportService(invoker,mapper))
-                .AddSingleton<IConnection>(Connection.Default)
+                .AddSingleton(ConnectionService.Default)
                 .AddTransient<CustomerListViewModel>()
                 .AddTransient<CustomerViewModel>()
                 .AddTransient<MusicUploadViewModel>()

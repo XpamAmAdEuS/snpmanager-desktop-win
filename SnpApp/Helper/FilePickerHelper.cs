@@ -26,7 +26,7 @@ namespace SnpApp.Helper
         /// </summary>
         /// <param name="fileTypeExtensionFilters">Extension List eg: .jpg, .png</param>
         /// <returns>StorageFile</returns>
-        public static async Task<StorageFile> OpenFile(IList<string> fileTypeExtensionFilters = null, PickerLocationId pickerLocationId = PickerLocationId.Downloads)
+        public static async Task<StorageFile> OpenFile(IList<string>? fileTypeExtensionFilters = null, PickerLocationId pickerLocationId = PickerLocationId.Downloads)
         {
             FileOpenPicker picker = GeneratePicker(fileTypeExtensionFilters, pickerLocationId);
             return await picker.PickSingleFileAsync();

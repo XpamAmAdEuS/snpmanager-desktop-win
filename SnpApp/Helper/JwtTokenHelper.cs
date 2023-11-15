@@ -1,6 +1,4 @@
 using Windows.Storage;
-using Microsoft.UI.Xaml;
-using SnpCore.Repository;
 
 namespace SnpApp.Helper
 {

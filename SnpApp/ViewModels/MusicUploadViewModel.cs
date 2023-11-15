@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
-using SnpCore.Models;
+using SnpApp.Models;
 
 
 namespace SnpApp.ViewModels

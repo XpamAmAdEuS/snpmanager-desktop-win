@@ -9,12 +9,12 @@ public class CustomDataGrid : DataGrid
 {
     public CustomDataGrid ()
     {
-        this.SelectionChanged += CustomDataGrid_SelectionChanged;
+        SelectionChanged += CustomDataGrid_SelectionChanged;
     }
 
     void CustomDataGrid_SelectionChanged (object sender, SelectionChangedEventArgs e)
     {
-        this.SelectedItemsList = this.SelectedItems;
+        SelectedItemsList = SelectedItems;
     }
     #region SelectedItemsList
 

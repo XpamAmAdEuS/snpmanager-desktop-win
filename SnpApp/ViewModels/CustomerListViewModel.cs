@@ -8,8 +8,8 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
-using SnpCore.Models;
-using SnpCore.Repository.Grpc;
+using SnpApp.Models;
+using SnpApp.Services;
 
 namespace SnpApp.ViewModels;
 
@@ -128,7 +128,7 @@ public class CustomerListViewModel : ObservableObject
 
         try
         {
-            var customers = await Ioc.Default.GetRequiredService<GrpcCustomerRepository>()
+            var customers = await Ioc.Default.GetRequiredService<CustomerService>()
                 .SearchCustomerAsync(SearchRequestModel);
             if (customers.Items == null) return;
 
@@ -168,7 +168,7 @@ public class CustomerListViewModel : ObservableObject
         {
             foreach (var modifiedCustomer in Customers
                          .Where(customer => customer.IsModified).Select(customer => customer.Model))
-                await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().UpsertAsync(modifiedCustomer);
+                await Ioc.Default.GetRequiredService<CustomerService>().UpsertAsync(modifiedCustomer);
 
             Refresh();
             // await GetCustomerListAsync();

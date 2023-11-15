@@ -6,9 +6,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
-using SnpCore.Models;
-using SnpCore.Repository;
-using SnpCore.Repository.Grpc;
+using SnpApp.Models;
+using SnpApp.Services;
 
 
 namespace SnpApp.ViewModels
@@ -23,9 +22,9 @@ namespace SnpApp.ViewModels
         /// <summary>
         /// Initializes a new instance of the CustomerViewModel class that wraps a Customer object.
         /// </summary>
-        public CustomerViewModel(Customer model = null) => Model = model ?? new Customer();
+        public CustomerViewModel(Customer? model = null) => Model = model ?? new Customer();
 
-        private Customer _model;
+        private Customer? _model;
 
         /// <summary>
         /// Gets or sets the underlying Customer object.
@@ -183,10 +182,7 @@ namespace SnpApp.ViewModels
         /// </remarks>
         public bool IsModified { get; set; }
         
-        
-        public ObservableCollection<Site> Sites2 { get; } = new ();
-        
-        private Site _selectedSite;
+        private Site? _selectedSite;
         
         public Site SelectedSite
         {
@@ -240,13 +236,13 @@ namespace SnpApp.ViewModels
                 //App.ViewModel.Customers.Add(this);
             }
             
-            await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().UpsertAsync(Model);
+            await Ioc.Default.GetRequiredService<CustomerService>().UpsertAsync(Model);
         }
 
         /// <summary>
         /// Raised when the user cancels the changes they've made to the customer data.
         /// </summary>
-        public event EventHandler AddNewCustomerCanceled;
+        public event EventHandler? AddNewCustomerCanceled;
 
         /// <summary>
         /// Cancels any in progress edits.
@@ -287,7 +283,7 @@ namespace SnpApp.ViewModels
         public async Task RefreshCustomerAsync()
         {
             RefreshSites();
-            Model = await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().GetOneById(Model.Id);
+            Model = await Ioc.Default.GetRequiredService<CustomerService>().GetOneById(Model.Id);
         }
         
         public void RefreshSites() => Task.Run(LoadSitesAsync);
@@ -299,7 +295,7 @@ namespace SnpApp.ViewModels
                 IsLoading = true;
             });
 
-            var sites = await Ioc.Default.GetRequiredService<GrpcSiteRepository>().GetByCustomerId(Model.Id);
+            var sites = await Ioc.Default.GetRequiredService<SiteService>().GetByCustomerId(Model.Id);
 
             await dispatcherQueue.EnqueueAsync(() =>
             {

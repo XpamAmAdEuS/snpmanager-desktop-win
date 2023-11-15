@@ -9,8 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:SnpApp.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:SnpCore.Models"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:models="using:SnpApp.Models"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
@@ -24,25 +23,6 @@
                 Icon="Shop"
                 Text="Add files" />
         </MenuFlyout>
-        <!-- <DataTemplate x:Key="Image"> -->
-        <!--  <Border BorderThickness="1" Background="Transparent"  -->
-        <!--  AllowDrop="True" Drop="File_DragOver" >  -->
-        <!--  <Grid Width="{Binding ElementName=PIImageSize, Path=Value}"  -->
-        <!--  Height="{Binding ElementName=PIImageSize, Path=Value}" >  -->
-        <!--             <Grid.RowDefinitions> -->
-        <!--                 <RowDefinition Height="Auto" /> -->
-        <!--                 <RowDefinition Height="*" /> -->
-        <!--                 <RowDefinition Height="Auto" /> -->
-        <!--             </Grid.RowDefinitions> -->
-        <!--  <TextBlock Grid.Row="0" Margin="2" HorizontalAlignment="Center"  -->
-        <!--  Text="{x:Bind Path=Type, Mode=OneWay}" />  -->
-        <!--             <Image Grid.Row="1" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="{x:Bind Path=BitmapImage, Mode=OneWay}"/> -->
-        <!--             <TextBox Grid.Row="2" Text="{x:Bind Path=Path, Mode=TwoWay}" /> -->
-        <!--         </Grid> -->
-        <!--         <Border.ContextFlyout> -->
-        <!--         </Border.ContextFlyout> -->
-        <!--     </Border> -->
-        <!-- </DataTemplate> -->
     </Page.Resources>
 
     <RelativePanel Padding="36,4,36,0" x:Name="PanelRoot">

@@ -10,8 +10,8 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
-using SnpCore.Models;
-using SnpCore.Services;
+using SnpApp.Models;
+using SnpApp.Services;
 
 namespace SnpApp.ViewModels;
 

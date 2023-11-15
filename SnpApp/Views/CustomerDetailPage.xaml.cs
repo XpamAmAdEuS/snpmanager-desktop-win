@@ -7,12 +7,11 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using SnpCore.Models;
 using SnpApp.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
+using SnpApp.Models;
 using SnpApp.Navigation;
-using SnpCore.Repository;
-using SnpCore.Repository.Grpc;
+using SnpApp.Services;
 
 namespace SnpApp.Views
 {
@@ -74,7 +73,7 @@ namespace SnpApp.Views
                 
                 NavigationRootPageArgs args = (NavigationRootPageArgs)e.Parameter;
                 uint id = (uint)args.Parameter;
-                var c = await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().GetOneById(id);
+                var c = await Ioc.Default.GetRequiredService<CustomerService>().GetOneById(id);
                 ViewModel = new CustomerViewModel(c);
 
             }
@@ -169,7 +168,7 @@ namespace SnpApp.Views
                 }
                 // else
                 // {
-                //     var repo = Ioc.Default.GetService<GrpcCustomerRepository>();
+                //     var repo = Ioc.Default.GetService<CustomerService>();
                 //     if (repo?.Customers != null)
                 //         sender.ItemsSource = await repo.Customers.SearchByTitleAsync(sender.Text);
                 // }

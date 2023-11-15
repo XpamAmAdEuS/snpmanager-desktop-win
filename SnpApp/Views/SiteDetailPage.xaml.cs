@@ -1,14 +1,11 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Email;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using SnpCore.Models;
-using SnpCore.Services;
+using SnpApp.Interfaces;
 using SnpApp.ViewModels;
 
 namespace SnpApp.Views
@@ -23,8 +20,8 @@ namespace SnpApp.Views
         
         public SiteDetailPage(IDialogService dialogService)
         {
-            this.InitializeComponent();
-            this.DataContext = Ioc.Default.GetService<SiteViewModel>();
+            InitializeComponent();
+            DataContext = Ioc.Default.GetService<SiteViewModel>();
             DialogService = dialogService;
         }
         

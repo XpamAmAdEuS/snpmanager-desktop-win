@@ -1,15 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SnpCore.Models;
-using SnpCore.Services;
 using Nito.AsyncEx;
+using SnpApp.Interfaces;
+using SnpApp.Models;
 
 namespace SnpApp.ViewModels.Widgets;
 

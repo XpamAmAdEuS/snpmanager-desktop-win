@@ -2,9 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using SnpApp.Common;
-using SnpCore.Repository;
-using SnpCore.Repository.Grpc;
-using muxc = Microsoft.UI.Xaml.Controls;
+using SnpApp.Services;
 
 namespace SnpApp.Views.Widgets
 {
@@ -97,7 +95,7 @@ namespace SnpApp.Views.Widgets
             if (IsValid())
             {
                 
-                var accessToken =  GrpcAuthRepository.Default?.GetToken(userNameTextBox.Text,passwordTextBox.Password);
+                var accessToken =  AuthenticationService.Default.GetToken(userNameTextBox.Text,passwordTextBox.Password);
                 if (!string.IsNullOrEmpty(accessToken))
                 {
                     UserLoggedIn?.Invoke(this, new TokenChangedEventArgs(accessToken));

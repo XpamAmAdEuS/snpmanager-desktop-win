@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Dispatching;
-using SnpCore.Models;
-using SnpCore.Repository;
 using CommunityToolkit.WinUI;
-using SnpCore.Repository.Grpc;
+using SnpApp.Models;
+using SnpApp.Services;
 
 namespace SnpApp.ViewModels
 {
@@ -45,7 +44,7 @@ namespace SnpApp.ViewModels
        
         private async void LoadCustomer(uint customerId)
         {
-            var customer = await Ioc.Default.GetRequiredService<GrpcCustomerRepository>().GetOneById(customerId);
+            var customer = await Ioc.Default.GetRequiredService<CustomerService>().GetOneById(customerId);
             await dispatcherQueue.EnqueueAsync(() =>
             { 
                 Customer = customer;
@@ -54,7 +53,7 @@ namespace SnpApp.ViewModels
 
       
         private static async Task<Site> GetSite(uint siteId) =>
-            await Ioc.Default.GetRequiredService<GrpcSiteRepository>().GetOneById(siteId); 
+            await Ioc.Default.GetRequiredService<SiteService>().GetOneById(siteId); 
 
       
         public bool CanRefresh => Model != null && !IsModified && IsExistingSite;
@@ -197,7 +196,7 @@ namespace SnpApp.ViewModels
             Site result = null;
             try
             {
-                result = await Ioc.Default.GetRequiredService<GrpcSiteRepository>().UpsertAsync(Model);
+                result = await Ioc.Default.GetRequiredService<SiteService>().UpsertAsync(Model);
             }
             catch (Exception ex)
             {
