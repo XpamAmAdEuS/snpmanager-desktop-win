@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Media.Core;
-using Windows.Media.Playback;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
@@ -20,10 +18,7 @@ public class MusicImportListViewModel : ObservableObject
     private bool _isLoading;
     private int _pageCount;
     private int _pageNumber;
-
-    private MediaPlayer _mediaPlayer;
-
-    private MusicImportViewModel _selectedMusic;
+    
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
     public MusicImportListViewModel()
@@ -44,24 +39,65 @@ public class MusicImportListViewModel : ObservableObject
             async () => await GetListAsync(_pageCount),
             () => _pageNumber != _pageCount
         );
+        
+        CheckCommand = new RelayCommand(OnCheck);
+        CheckAllCommand = new RelayCommand(OnCheckAll);
+        IsAllSelected = false;
 
         SearchRequestModel.Fields.Clear();
         string[] fields = { "title", "email", "address", "phone", "person" };
         SearchRequestModel.Fields.AddRange(fields);
+        // Entries = new ();
 
         Refresh();
     }
-
-
-  
-    public ObservableCollection<MusicImportViewModel> Musics { get; } = new();
-
     
-    public MusicImportViewModel SelectedMusic
+    private void OnCheckAll()
     {
-        get => _selectedMusic;
-        set => SetProperty(ref _selectedMusic, value);
+        // if (IsAllSelected == true)
+        //     Entries.ForEach(x => x.IsChecked = true);
+        // else
+        //     Entries.ForEach(x => x.IsChecked = false);
     }
+
+    private void OnCheck()
+    {
+        if (Entries.All(x => x.IsChecked))
+            IsAllSelected = true;
+        else if (Entries.All(x => !x.IsChecked))
+            IsAllSelected = false;
+        else
+            IsAllSelected = null;
+    }
+    
+    
+    private ObservableCollection<MusicImport> _entries = new ();
+    
+    // public ObservableCollection<MusicImport> Entries { get; } = new();
+    
+    public ObservableCollection<MusicImport> Entries
+    {
+        get => _entries;
+        set
+        {
+            if (Equals(value, _entries)) return;
+            _entries = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    private bool? isAllSelected = true;
+
+    public bool? IsAllSelected
+    {
+        get { return isAllSelected; }
+        set
+        {
+            isAllSelected = value;
+            OnPropertyChanged();
+        }
+    }
+    
 
     public bool IsLoading
     {
@@ -76,6 +112,9 @@ public class MusicImportListViewModel : ObservableObject
     public IAsyncRelayCommand NextAsyncCommand { get; }
 
     public IAsyncRelayCommand LastAsyncCommand { get; }
+    
+    public IRelayCommand CheckCommand { get; private set; }
+    public IRelayCommand CheckAllCommand { get; private set; }
 
     public List<uint> PageSizes => new() { 5, 10, 20, 50, 100 };
     
@@ -105,13 +144,7 @@ public class MusicImportListViewModel : ObservableObject
         get => _pageCount;
         private set => SetProperty(ref _pageCount, value);
     }
-
-    public void Play(MusicImport e)
-    {
-        _mediaPlayer.Source = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri($"http://192.168.1.36:50051/v1/music/import/file/{e.Hash}.mp3")));
-        _mediaPlayer.Play();
-        IsLoading = false;
-    }
+    
 
     public async Task GetListAsync(int pageIndex)
     {
@@ -132,18 +165,11 @@ public class MusicImportListViewModel : ObservableObject
             NextAsyncCommand.NotifyCanExecuteChanged();
             LastAsyncCommand.NotifyCanExecuteChanged();
             
-
-            _mediaPlayer = new MediaPlayer();
-            
             await _dispatcherQueue.EnqueueAsync(() =>
             {
-                Musics.Clear();
+                Entries.Clear();
+                foreach (var e in result.Items) Entries.Add(e);
                 
-                foreach (var e in result.Items)
-                {
-                    Musics.Add(new MusicImportViewModel(e));
-                   
-                }
             });
         }
         catch (Exception e)
@@ -156,24 +182,7 @@ public class MusicImportListViewModel : ObservableObject
         {
             IsLoading = false;
         }
-
         
-    }
-
-    /// <summary>
-    ///     Saves any modified customers and reloads the customer list from the database.
-    /// </summary>
-    public void Sync()
-    {
-        Task.Run(async () =>
-        {
-            foreach (var modifiedMusic in Musics
-                         .Where(entity => entity.IsModified).Select(entity => entity.Model))
-                await Ioc.Default.GetRequiredService<MusicImportService>().UpsertAsync(modifiedMusic);
-
-            Refresh();
-            // await GetCustomerListAsync();
-        });
     }
 
     private void Refresh()
@@ -181,4 +190,5 @@ public class MusicImportListViewModel : ObservableObject
         SearchRequestModel.CurrentPage = 1;
         FirstAsyncCommand.Execute(null);
     }
+    
 }

@@ -119,7 +119,6 @@ namespace SnpApp
                 .AddTransient<CustomerListViewModel>()
                 .AddTransient<CustomerViewModel>()
                 .AddTransient<MusicUploadViewModel>()
-                .AddTransient<MusicImportViewModel>()
                 .AddTransient<MusicImportListViewModel>()
                 .AddTransient<SiteViewModel>()
                 .BuildServiceProvider()

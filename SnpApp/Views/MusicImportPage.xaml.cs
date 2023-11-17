@@ -1,18 +1,17 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
-using Windows.System;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using SnpApp.ViewModels;
 using Windows.Media.Playback;
-using SnpApp.DataModels;
+using SnpApp.Models;
 using SnpApp.Navigation;
 using SnpApp.Services;
 using DispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue;
@@ -25,8 +24,6 @@ namespace SnpApp.Views;
 public sealed partial class MusicImportPage
 {
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    
-    
     MediaPlayer Player => PlaybackService.Instance.Player;
 
     MediaPlaybackList PlaybackList
@@ -63,8 +60,9 @@ public sealed partial class MusicImportPage
     {
         await ViewModel.GetListAsync(1);
 
-        DataGrid.ItemsSource = ViewModel.Musics;
-        DataGrid.Columns[0].SortDirection = DataGridSortDirection.Ascending;
+        // DataGrid.ItemsSource = ViewModel.Entries;
+        // DataGrid.IsReadOnly = true;
+        //DataGrid.Columns[1].SortDirection = DataGridSortDirection.Ascending;
         
         
         Debug.WriteLine("MusicImportPage_Loaded");
@@ -76,14 +74,18 @@ public sealed partial class MusicImportPage
         // Bind player to element
         mediaPlayerElement.SetMediaPlayer(Player);
 
+        MediaList?.Clear();
+
         // Load the playlist data model if needed
         if (MediaList == null)
         {
             // Create the playlist data model
             MediaList = new MediaList();
             // await MediaList.LoadFromApplicationUriAsync("ms-appx:///Assets/playlist.json");
-            await MediaList.LoadFromImportMusicAsync(ViewModel.Musics);
+            await MediaList.LoadFromImportMusicAsync(ViewModel.Entries.ToList());
         }
+        
+        await MediaList.LoadFromImportMusicAsync(ViewModel.Entries.ToList());
 
         // Create a new playback list matching the data model if one does not exist
         if (PlaybackList == null)
@@ -119,24 +121,18 @@ public sealed partial class MusicImportPage
     
     void UpdateControlVisibility()
     {
-        // if (SettingsService.Instance.UseCustomControls)
-        // {
-        //     mediaPlayerElement.AreTransportControlsEnabled = false;
-        //     customButtons.Visibility = Visibility.Visible;
-        // }
-        // else
-        // {
-        //     mediaPlayerElement.AreTransportControlsEnabled = true;
-        //     customButtons.Visibility = Visibility.Collapsed;
-        // }
-            
-        mediaPlayerElement.AreTransportControlsEnabled = true;
-        mediaPlayerElement.TransportControls.IsZoomButtonVisible = false;
-        mediaPlayerElement.TransportControls.IsZoomEnabled = false;
-        mediaPlayerElement.TransportControls.IsPlaybackRateButtonVisible = true;
-        mediaPlayerElement.TransportControls.IsPlaybackRateEnabled = true;
-        
-        customButtons.Visibility = Visibility.Collapsed;
+        if (SettingsService.Instance.UseCustomControls)
+        {
+            mediaPlayerElement.AreTransportControlsEnabled = false;
+            customButtons.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            mediaPlayerElement.AreTransportControlsEnabled = true;
+            mediaPlayerElement.TransportControls.IsZoomButtonVisible = false;
+            mediaPlayerElement.TransportControls.IsZoomEnabled = false;
+            customButtons.Visibility = Visibility.Collapsed;
+        }
     }
     
     
@@ -218,60 +214,12 @@ public sealed partial class MusicImportPage
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
     }
-
-    /// <summary>
-    ///     Menu flyout click control for selecting a customer and displaying details.
-    /// </summary>
-    private void ViewDetails_Click(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel.SelectedMusic != null)
-        {
-            // NavigationRootPage.GetForElement(this).Navigate(typeof(MusicImportDetailPage), ViewModel.SelectedMusic.Model.Id, new DrillInNavigationTransitionInfo());
-            
-        }
-            
-    }
-
-    private void DataGrid_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
-    {
-        // Frame.Navigate(typeof(DetailPage), ViewModel.SelectedMusic.Model.Id,
-        //     new DrillInNavigationTransitionInfo());
-    }
-
-    /// <summary>
-    ///     Reverts all changes to the row if the row has changes but a cell is not currently in edit mode.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void DataGrid_KeyDown(object sender, KeyRoutedEventArgs e)
-    {
-        if (e.Key == VirtualKey.Escape &&
-            ViewModel.SelectedMusic is { IsModified: true, IsInEdit: false })
-            (sender as DataGrid)?.CancelEdit(DataGridEditingUnit.Row);
-    }
-
-    /// <summary>
-    ///     Selects the tapped customer.
-    /// </summary>
-    private void DataGrid_RightTapped(object sender, RightTappedRoutedEventArgs e)
-    {
-        ViewModel.SelectedMusic = (e.OriginalSource as FrameworkElement)?.DataContext as MusicImportViewModel;
-    }
-
-
-    private void AddSite_Click(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel.SelectedMusic != null)
-            Frame.Navigate(typeof(SiteDetailPage), ViewModel.SelectedMusic.Model.Id,
-                new DrillInNavigationTransitionInfo());
-    }
+    
     
     public void Play_Row_Click(object sender, RoutedEventArgs e)
     {
-        
-        MusicImportViewModel model = (sender as Button).DataContext as MusicImportViewModel;
-
-        ViewModel.Play(model.Model);
+        var model = (sender as Button).DataContext as MusicImport;
+        PlayerViewModel.MediaList.CurrentItemIndex = (int)model.Id;
 
     }
 
@@ -294,7 +242,7 @@ public sealed partial class MusicImportPage
         await _dispatcherQueue.EnqueueAsync(() =>
             ViewModel.GetListAsync(0));
 
-        DataGrid.ItemsSource = ViewModel.Musics;
+        //DataGrid.ItemsSource = ViewModel.Entries;
         e.Column.SortDirection = direction;
     }
 }

@@ -1,4 +1,4 @@
-﻿using SnpApp.DataModels;
+﻿using SnpApp.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -81,8 +81,8 @@ namespace SnpApp.ViewModels
                         PlaybackList.StartingItem = CurrentItem.PlaybackItem;
                     }
 
-                    OnPropertyChanged(new PropertyChangedEventArgs("CurrentItemIndex"));
-                    OnPropertyChanged(new PropertyChangedEventArgs("CurrentItem"));
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(CurrentItemIndex)));
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(CurrentItem)));
                 }
             }
         }

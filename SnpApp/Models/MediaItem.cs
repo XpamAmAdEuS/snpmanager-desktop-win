@@ -1,37 +1,41 @@
-﻿//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// This code is licensed under the MIT License (MIT).
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Data.Json;
-using Windows.Media;
+﻿using System;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage.Streams;
-using SnpApp.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SnpApp.DataModels
+namespace SnpApp.Models
 {
-    public class MediaItem
+    
+
+    public class MediaItem : ObservableObject
     {
         public const string MediaItemIdKey = "mediaItemId";
+        
+        private bool _isChecked;
 
         Uri previewImageUri;
 
         public string ItemId { get; set; }
 
         public string Title { get; set; }
+        
+        public string Artist { get; set; }
+        
+        public string Album { get; set; }
+        
+        public string Hash { get; set; }
+        
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                if (value == _isChecked) return;
+                _isChecked = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Uri MediaUri { get; set; }
 
@@ -48,22 +52,16 @@ namespace SnpApp.DataModels
         }
 
         public MediaItem()
-        {
-        }
-
-        public MediaItem(JsonObject json) : this()
-        {
-            ItemId = json.GetNamedString("id", Guid.NewGuid().ToString());
-            Title = json.GetNamedString("title", string.Empty);
-
-            if (json.Keys.Contains("mediaUri"))
-                MediaUri = new Uri(json.GetNamedString("mediaUri"));
-        }
+        { }
         
-        public MediaItem(MusicImportViewModel mIwm) : this()
+        public MediaItem(MusicImport mIwm) : this()
         {
             ItemId = mIwm.Id.ToString();
             Title = mIwm.Title;
+            Artist = mIwm.Artist;
+            Album = mIwm.Album;
+            IsChecked = mIwm.IsChecked;
+            Hash = mIwm.Hash;
             MediaUri = new Uri($"http://192.168.1.36:50051/v1/music/import/file/{mIwm.Hash}.mp3");
         }
 
@@ -94,7 +92,7 @@ namespace SnpApp.DataModels
             // playback item's unique ID. You are also free to use your own
             // external dictionary if you want to reference non-serializable
             // types.
-            source.CustomProperties[MediaItem.MediaItemIdKey] = ItemId;
+            source.CustomProperties[MediaItemIdKey] = ItemId;
 
             return playbackItem;
         }

@@ -233,7 +233,10 @@
             Background="Transparent"
             DefaultLabelPosition="Right"
             Grid.Row="1"
-            HorizontalAlignment="Stretch">
+            HorizontalAlignment="Right"
+            IsDynamicOverflowEnabled="False"
+            MaxHeight="300"
+            OverflowButtonVisibility="Auto">
             <AppBarButton
                 Command="{x:Bind ViewModel.FirstAsyncCommand, Mode=OneWay}"
                 Foreground="{ThemeResource SystemAccentColor}"

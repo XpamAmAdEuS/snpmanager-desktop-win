@@ -227,12 +227,6 @@
                     x:Name="MusicImport" />
 
                 <NavigationViewItem
-                    AutomationProperties.AutomationId="BackgroundMedia"
-                    Content="BackgroundMedia"
-                    Icon="Home"
-                    x:Name="BackgroundMedia" />
-
-                <NavigationViewItem
                     AutomationProperties.AutomationId="WaveForm"
                     Content="WaveForm"
                     Icon="Home"

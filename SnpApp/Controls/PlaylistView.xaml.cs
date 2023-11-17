@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
+using SnpApp.Common;
 
 namespace SnpApp.Controls
 {
@@ -24,6 +25,8 @@ namespace SnpApp.Controls
     public sealed partial class PlaylistView : UserControl, INotifyPropertyChanged
     {
         MediaListViewModel mediaList;
+        
+        private ListViewColumnSorter lvwColumnSorter;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -69,7 +72,7 @@ namespace SnpApp.Controls
                     if (value != null)
                         listView.ItemsSource = mediaList;
 
-                    RaisePropertyChanged("MediaList");
+                    RaisePropertyChanged(nameof(MediaList));
                 }
             }
         }

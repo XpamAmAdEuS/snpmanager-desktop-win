@@ -1,10 +1,6 @@
-﻿using SnpApp.DataModels;
-using System;
-using System.Collections.Generic;
+﻿using SnpApp.Models;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Media.Playback;
 using Microsoft.UI.Xaml.Media.Imaging;
 

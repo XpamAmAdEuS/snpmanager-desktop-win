@@ -1,9 +1,4 @@
-﻿using SnpApp.DataModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SnpApp.Models;
 using Windows.Media.Playback;
 
 namespace SnpApp.Services
@@ -46,6 +41,7 @@ namespace SnpApp.Services
         {
             // Create the player instance
             Player = new MediaPlayer();
+            Player.Volume = 0.1;
             Player.AutoPlay = false;
         }
     }

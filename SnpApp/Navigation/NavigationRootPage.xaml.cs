@@ -330,13 +330,6 @@ namespace SnpApp.Navigation
                         Navigate(typeof(HomePage));
                     }
                 }
-                else if (selectedItem == BackgroundMedia)
-                {
-                    if (rootFrame.CurrentSourcePageType != typeof(Scenario1))
-                    {
-                        Navigate(typeof(Scenario1));
-                    }
-                }
                 else if (selectedItem == MusicUpload)
                 {
                     if (rootFrame.CurrentSourcePageType != typeof(MusicUploadPage))

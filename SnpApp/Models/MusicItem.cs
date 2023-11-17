@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Data.Json;
 using Windows.Media;
 using Windows.Media.Playback;
-using SnpApp.ViewModels;
 
-namespace SnpApp.DataModels
+namespace SnpApp.Models
 {
     class MusicItem : MediaItem
     {
@@ -28,16 +22,9 @@ namespace SnpApp.DataModels
         }
 
         public MusicItem() : base()
-        {
-        }
-
-        public MusicItem(JsonObject json) : base(json)
-        {
-            if (json.Keys.Contains("albumArtUri"))
-                AlbumArtUri = new Uri(json.GetNamedString("albumArtUri"));
-        }
+        { }
         
-        public MusicItem(MusicImportViewModel mIwm) : base(mIwm)
+        public MusicItem(MusicImport mIwm) : base(mIwm)
         {
             // if (json.Keys.Contains("albumArtUri"))
             //     AlbumArtUri = new Uri(json.GetNamedString("albumArtUri"));
@@ -50,6 +37,8 @@ namespace SnpApp.DataModels
             var displayProperties = playbackItem.GetDisplayProperties();
             displayProperties.Type = MediaPlaybackType.Music;
             displayProperties.MusicProperties.Title = Title;
+            displayProperties.MusicProperties.Artist = Artist;
+            displayProperties.MusicProperties.AlbumTitle = Album;
             playbackItem.ApplyDisplayProperties(displayProperties);
 
             return playbackItem;
