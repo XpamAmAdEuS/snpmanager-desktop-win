@@ -17,10 +17,5 @@ namespace SnpApp
             var menuItem = (Microsoft.UI.Xaml.Controls.NavigationViewItem)args.NavigationRootPage.NavigationView.MenuItems.First();
             menuItem.IsSelected = true;
         }
-
-        protected bool GetIsNarrowLayoutState()
-        {
-            return LayoutVisualStates.CurrentState == NarrowLayout;
-        }
     }
 }
