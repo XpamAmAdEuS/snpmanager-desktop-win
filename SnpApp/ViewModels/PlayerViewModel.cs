@@ -90,7 +90,7 @@ namespace SnpApp.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public PlayerViewModel(MediaPlayer player)
         {

@@ -6,7 +6,7 @@ using SnpApp.Services;
 
 namespace SnpApp.Views.Widgets
 {
-    public sealed partial class LoginUserControl: UserControl
+    public sealed partial class LoginUserControl
     {
         
         public new bool IsEnabled { get; set; }
@@ -140,9 +140,9 @@ namespace SnpApp.Views.Widgets
             return false;
         }
         
-        public event EventHandler UserLoggedIn;
+        public event EventHandler? UserLoggedIn;
         
-        public event EventHandler UserAbortedLogIn;
+        public event EventHandler? UserAbortedLogIn;
     }
     
     

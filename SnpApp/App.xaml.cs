@@ -147,10 +147,10 @@ namespace SnpApp
 #endif
         
         
-        private async void EnsureWindow(IActivatedEventArgs args = null)
+        private async void EnsureWindow(IActivatedEventArgs? args = null)
         {
             
-            Frame rootFrame = GetRootFrame();
+            var rootFrame = GetRootFrame();
 
             ThemeHelper.Initialize();
 

@@ -14,7 +14,7 @@ namespace SnpApp.ViewModels
         DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         public MediaPlaybackState PlaybackState => playbackSession.PlaybackState;
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public PlaybackSessionViewModel(MediaPlaybackSession playbackSession)
         {

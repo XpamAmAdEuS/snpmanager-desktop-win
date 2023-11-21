@@ -5,7 +5,7 @@ namespace SnpApp.ViewModels
 {
     public class SettingsViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public bool ToastOnAppEvents
         {
@@ -18,17 +18,14 @@ namespace SnpApp.ViewModels
                 if (SettingsService.Instance.ToastOnAppEvents != value)
                 {
                     SettingsService.Instance.ToastOnAppEvents = value;
-                    RaisePropertyChanged("ToastOnAppEvents");
+                    RaisePropertyChanged(nameof(ToastOnAppEvents));
                 }
             }
         }
 
         public bool UseCustomControls
         {
-            get
-            {
-                return SettingsService.Instance.UseCustomControls;
-            }
+            get => SettingsService.Instance.UseCustomControls;
             set
             {
                 if (SettingsService.Instance.UseCustomControls != value)

@@ -1,10 +1,6 @@
-// Copyright (c) Microsoft Corporation and Contributors.
-// Licensed under the MIT License.
-
 using System.Numerics;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Hosting;
 using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Composition;
@@ -14,23 +10,19 @@ using Windows.UI;
 using System;
 using CommunityToolkit.WinUI;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace SnpApp.Controls
 {
-    // ATTRIBUTION: @RykenApps
-    public sealed partial class HomePageHeaderImage : UserControl
+    public sealed partial class HomePageHeaderImage
     {
-        private Compositor _compositor;
-        private CompositionLinearGradientBrush _imageGridBottomGradientBrush;
-        private CompositionEffectBrush _imageGridEffectBrush;
-        private ExpressionAnimation _imageGridSizeAnimation;
-        private ExpressionAnimation _bottomGradientStartPointAnimation;
-        private SpriteVisual _imageGridSpriteVisual;
-        private CompositionSurfaceBrush _imageGridSurfaceBrush;
-        private Visual _imageGridVisual;
-        private CompositionVisualSurface _imageGridVisualSurface;
+        private Compositor _compositor = null!;
+        private CompositionLinearGradientBrush? _imageGridBottomGradientBrush;
+        private CompositionEffectBrush? _imageGridEffectBrush;
+        private ExpressionAnimation? _imageGridSizeAnimation;
+        private ExpressionAnimation? _bottomGradientStartPointAnimation;
+        private SpriteVisual? _imageGridSpriteVisual;
+        private CompositionSurfaceBrush? _imageGridSurfaceBrush;
+        private Visual? _imageGridVisual;
+        private CompositionVisualSurface? _imageGridVisualSurface;
         private const string GradientSizeKey = "GradientSize";
         public HomePageHeaderImage()
         {

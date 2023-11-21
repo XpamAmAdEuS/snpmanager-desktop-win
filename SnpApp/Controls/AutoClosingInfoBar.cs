@@ -8,10 +8,10 @@ namespace SnpApp.Controls
     /// </summary>
     public class AutoClosingInfoBar : Microsoft.UI.Xaml.Controls.InfoBar
     {
-        private DispatcherTimer _timer;
+        private DispatcherTimer? _timer;
         private long _token;
 
-        public AutoClosingInfoBar() : base()
+        public AutoClosingInfoBar()
         {
             this.Loaded += AutoClosingInfoBar_Loaded;
             this.Unloaded += AutoClosingInfoBar_Unloaded;
@@ -20,7 +20,7 @@ namespace SnpApp.Controls
         /// <summary>
         /// Gets or sets the auto-close interval, in milliseconds.
         /// </summary>
-        public int AutoCloseInterval { get; set; } = 5000;
+        private int AutoCloseInterval { get; set; } = 5000;
 
         private void AutoClosingInfoBar_Loaded(object sender, RoutedEventArgs e)
         {
@@ -78,7 +78,7 @@ namespace SnpApp.Controls
             _timer.Tick -= Timer_Tick;
         }
 
-        private void Timer_Tick(object sender, object e)
+        private void Timer_Tick(object? sender, object e)
         {
             this.IsOpen = false;
         }

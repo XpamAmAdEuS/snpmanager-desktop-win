@@ -27,7 +27,7 @@ namespace SnpApp.Navigation
         public Microsoft.UI.Dispatching.DispatcherQueue dispatcherQueue;
         private RootFrameNavigationHelper _navHelper;
         private UISettings _settings;
-        public static NavigationRootPage Current;
+        public static NavigationRootPage? Current { get; private set; }
 
 
         public static NavigationRootPage GetForElement(object obj)
@@ -50,17 +50,7 @@ namespace SnpApp.Navigation
 
         public DeviceType DeviceFamily { get; set; }
 
-        public string AppTitleText
-        {
-            get
-            {
-#if DEBUG
-                return "SnpManager Dev";
-#else
-                return "SnpManager";
-#endif
-            }
-        }
+        public string AppTitleText => "SnpManager";
 
         public NavigationRootPage()
         {
@@ -148,10 +138,10 @@ namespace SnpApp.Navigation
         // Please call this function rather than rootFrame.Navigate to navigate the rootFrame.
         public void Navigate(
             Type pageType,
-            object targetPageArguments = null,
-            Microsoft.UI.Xaml.Media.Animation.NavigationTransitionInfo navigationTransitionInfo = null)
+            object? targetPageArguments = null,
+            Microsoft.UI.Xaml.Media.Animation.NavigationTransitionInfo? navigationTransitionInfo = null)
         {
-            NavigationRootPageArgs args = new NavigationRootPageArgs();
+            var args = new NavigationRootPageArgs();
             args.NavigationRootPage = this;
             args.Parameter = targetPageArguments;
             rootFrame.Navigate(pageType, args, navigationTransitionInfo);
@@ -499,7 +489,7 @@ namespace SnpApp.Navigation
         /// </summary>
         /// <param name="msg">Message to send</param>
         /// <param name="subMsg">Sub message</param>
-        public void ShowToast(string msg, string subMsg = null)
+        public void ShowToast(string msg, string? subMsg = null)
         {
             
             if (!SettingsService.Instance.ToastOnAppEvents)

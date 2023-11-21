@@ -192,12 +192,12 @@ namespace SnpApp.Views
         /// <summary>
         /// Fired when a property value changes. 
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
         /// Notifies listeners that a property value changed. 
         /// </summary>
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

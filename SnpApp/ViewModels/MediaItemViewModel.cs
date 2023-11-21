@@ -29,7 +29,7 @@ namespace SnpApp.ViewModels
 
         BitmapImage previewImage;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public MediaItem MediaItem { get; private set; }
 

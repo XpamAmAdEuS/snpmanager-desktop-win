@@ -1,18 +1,4 @@
-﻿//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// This code is licensed under the MIT License (MIT).
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
-
-using SnpApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using SnpApp.ViewModels;
 using System.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using SnpApp.Common;
@@ -22,13 +8,13 @@ namespace SnpApp.Controls
     /// <summary>
     /// A custom control for playlists that wraps a ListView.
     /// </summary>
-    public sealed partial class PlaylistView : UserControl, INotifyPropertyChanged
+    public sealed partial class PlaylistView: INotifyPropertyChanged
     {
-        MediaListViewModel mediaList;
+        private MediaListViewModel? _mediaList;
         
-        private ListViewColumnSorter lvwColumnSorter;
+        private ListViewColumnSorter? lvwColumnSorter;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public PlaylistView()
         {
@@ -56,28 +42,25 @@ namespace SnpApp.Controls
         /// <summary>
         /// A collection of songs in the list to be displayed to the user
         /// </summary>
-        public MediaListViewModel MediaList
+        public MediaListViewModel? MediaList
         {
-            get
-            {
-                return mediaList;
-            }
+            get => _mediaList;
             set
             {
-                if (mediaList != value)
+                if (_mediaList != value)
                 {
-                    mediaList = value;
+                    _mediaList = value;
 
                     // Setting ItemsSource = null on page unload throws, so avoid that
                     if (value != null)
-                        listView.ItemsSource = mediaList;
+                        listView.ItemsSource = _mediaList;
 
                     RaisePropertyChanged(nameof(MediaList));
                 }
             }
         }
 
-        void RaisePropertyChanged(string propertyName)
+        private void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
