@@ -1,14 +1,22 @@
-﻿
+﻿<!--
+    //*********************************************************
+    //
+    // Copyright (c) Microsoft. All rights reserved.
+    // This code is licensed under the MIT License (MIT).
+    // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
+    // ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
+    // IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
+    // PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+    //
+    //*********************************************************
+-->
 <UserControl
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d"
     x:Class="SnpApp.Controls.PlaylistView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:SnpApp.DataModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:SnpApp.ViewModels"
@@ -18,58 +26,30 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <ListView
                 IsItemClickEnabled="True"
-                Margin="10,0"
                 SelectedIndex="{x:Bind MediaList.CurrentItemIndex, Mode=TwoWay}"
-                Width="800"
                 x:Name="listView">
-                <ListView.Header>
-
-                    <Border
-                        Background="{ThemeResource SolidBackgroundFillColorTertiaryBrush}"
-                        CornerRadius="4"
-                        Padding="8,4,0,4">
-                        <interactivity:Interaction.Behaviors>
-                            <behaviors:StickyHeaderBehavior />
-                        </interactivity:Interaction.Behaviors>
-                        <controls:DataTable ColumnSpacing="16">
-                            <controls:DataColumn DesiredWidth="60" MinWidth="60">
-                                <CheckBox IsChecked="True" />
-                            </controls:DataColumn>
-                            <controls:DataColumn Content="Id" DesiredWidth="80" />
-                            <controls:DataColumn
-                                CanResize="True"
-                                Content="Title"
-                                MinWidth="120" />
-                            <controls:DataColumn
-                                CanResize="True"
-                                Content="Artist"
-                                MinWidth="120" />
-                            <!--  Each column can be text or quickly customized by containing any content or restyled of course  -->
-                            <controls:DataColumn DesiredWidth="*">
-                                <TextBlock FontWeight="SemiBold" Text="Album" />
-                            </controls:DataColumn>
-                            <controls:DataColumn Content="Hash" DesiredWidth="100" />
-                        </controls:DataTable>
-                    </Border>
-                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="vm:MediaItemViewModel">
-                        <controls:DataRow>
-                            <CheckBox IsChecked="{x:Bind MediaItem.IsChecked}" VerticalAlignment="Center" />
-                            <TextBlock Text="{x:Bind MediaItem.ItemId}" VerticalAlignment="Center" />
-                            <TextBlock Text="{x:Bind Title}" VerticalAlignment="Center" />
-                            <TextBlock Text="{x:Bind MediaItem.Artist}" VerticalAlignment="Center" />
-                            <TextBlock Text="{x:Bind MediaItem.Album}" VerticalAlignment="Center" />
-                            <TextBlock Text="{x:Bind MediaItem.Hash}" VerticalAlignment="Center" />
-                        </controls:DataRow>
+                        <Grid Height="32" Margin="6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                                Height="32"
+                                Width="32">
+                                <Image Source="{x:Bind PreviewImage}" Stretch="UniformToFill" />
+                            </Border>
+                            <StackPanel
+                                Grid.Column="1"
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Top">
+                                <TextBlock Text="{x:Bind Title}" TextWrapping="NoWrap" />
+                            </StackPanel>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-                <ListView.ItemContainerStyle>
-                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-
             </ListView>
         </ScrollViewer>
     </Grid>

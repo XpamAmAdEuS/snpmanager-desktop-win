@@ -240,8 +240,6 @@ namespace SnpApp.Navigation
 
                 NavigationViewControl.MenuItems.Add(itemGroup);
             }
-
-            Home.Loaded += OnHomeMenuItemLoaded;
         }
 
         private void OnMenuFlyoutItemClick(object sender, RoutedEventArgs e)
@@ -277,14 +275,6 @@ namespace SnpApp.Navigation
             }
 
             DeviceFamily = parsedDeviceType;
-        }
-
-        private void OnHomeMenuItemLoaded(object sender, RoutedEventArgs e)
-        {
-            if ( NavigationViewControl.DisplayMode == NavigationViewDisplayMode.Expanded)
-            {
-                controlsSearchBox.Focus(FocusState.Keyboard);
-            }
         }
 
         private void OnNavigationViewControlLoaded(object sender, RoutedEventArgs e)
@@ -396,12 +386,8 @@ namespace SnpApp.Navigation
                 }
                 else
                 {
-                    if (selectedItem.DataContext is ControlInfoDataGroup)
-                    {
-                        var itemId = ((ControlInfoDataGroup)selectedItem.DataContext).UniqueId;
-                        Navigate(typeof(SectionPage), itemId);
-                    }
-                    else if (selectedItem.DataContext is ControlInfoDataItem)
+                    
+                    if (selectedItem.DataContext is ControlInfoDataItem)
                     {
                         var item = (ControlInfoDataItem)selectedItem.DataContext;
                         Navigate(typeof(ItemPage), item.UniqueId);
@@ -418,69 +404,6 @@ namespace SnpApp.Navigation
         private void OnRootFrameNavigating(object sender, NavigatingCancelEventArgs e)
         {
             TestContentLoadedCheckBox.IsChecked = false;
-        }
-
-        private void OnControlsSearchBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-        {
-            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-            {
-                var suggestions = new List<ControlInfoDataItem>();
-
-                var querySplit = sender.Text.Split(" ");
-                foreach (var group in ControlInfoDataSource.Instance.Groups)
-                {
-                    var matchingItems = group.Items.Where(
-                        item =>
-                        {
-                            // Idea: check for every word entered (separated by space) if it is in the name, 
-                            // e.g. for query "split button" the only result should "SplitButton" since its the only query to contain "split" and "button"
-                            // If any of the sub tokens is not in the string, we ignore the item. So the search gets more precise with more words
-                            bool flag = item.IncludedInBuild;
-                            foreach (string queryToken in querySplit)
-                            {
-                                // Check if token is not in string
-                                if (item.Title.IndexOf(queryToken, StringComparison.CurrentCultureIgnoreCase) < 0)
-                                {
-                                    // Token is not in string, so we ignore this item.
-                                    flag = false;
-                                }
-                            }
-                            return flag;
-                        });
-                    foreach (var item in matchingItems)
-                    {
-                        suggestions.Add(item);
-                    }
-                }
-                if (suggestions.Count > 0)
-                {
-                    controlsSearchBox.ItemsSource = suggestions.OrderByDescending(i => i.Title.StartsWith(sender.Text, StringComparison.CurrentCultureIgnoreCase)).ThenBy(i => i.Title);
-                }
-                else
-                {
-                    controlsSearchBox.ItemsSource = new string[] { "No results found" };
-                }
-            }
-        }
-
-        private void OnControlsSearchBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (args.ChosenSuggestion != null && args.ChosenSuggestion is ControlInfoDataItem)
-            {
-                var infoDataItem = args.ChosenSuggestion as ControlInfoDataItem;
-                var hasChangedSelection = EnsureItemIsVisibleInNavigation(infoDataItem.Title);
-
-                // In case the menu selection has changed, it means that it has triggered
-                // the selection changed event, that will navigate to the page already
-                if (!hasChangedSelection)
-                {
-                    Navigate(typeof(ItemPage), infoDataItem.UniqueId);
-                }
-            }
-            else if (!string.IsNullOrEmpty(args.QueryText))
-            {
-                Navigate(typeof(SearchResultsPage), args.QueryText);
-            }
         }
 
         public bool EnsureItemIsVisibleInNavigation(string name)
@@ -548,10 +471,6 @@ namespace SnpApp.Navigation
                 }
             }
             return changedSelection;
-        }
-        private void CtrlF_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-        {
-            controlsSearchBox.Focus(FocusState.Programmatic);
         }
 
         #region Helpers for test automation

@@ -133,27 +133,7 @@
             Loaded="OnNavigationViewControlLoaded"
             SelectionChanged="OnNavigationViewSelectionChanged"
             x:Name="NavigationViewControl">
-            <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox
-                    KeyboardAcceleratorPlacementMode="Hidden"
-                    MinWidth="200"
-                    PlaceholderText="Search"
-                    QueryIcon="Find"
-                    QuerySubmitted="OnControlsSearchBoxQuerySubmitted"
-                    TextChanged="OnControlsSearchBoxTextChanged"
-                    VerticalAlignment="Center"
-                    x:FieldModifier="public"
-                    x:Name="controlsSearchBox">
-                    <AutoSuggestBox.KeyboardAccelerators>
-                        <KeyboardAccelerator
-                            Invoked="CtrlF_Invoked"
-                            Key="F"
-                            Modifiers="Control" />
-                    </AutoSuggestBox.KeyboardAccelerators>
-                </AutoSuggestBox>
-            </NavigationView.AutoSuggestBox>
-
-
+            
             <RelativePanel>
                 <Frame
                     Margin="5"

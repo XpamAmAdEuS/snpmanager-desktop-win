@@ -200,10 +200,6 @@ namespace SnpApp
                 {
                     targetPageType = typeof(HomePage);
                 }
-                else if (ControlInfoDataSource.Instance.Groups.Any(g => g.UniqueId == uri))
-                {
-                    targetPageType = typeof(SectionPage);
-                }
                 else if (ControlInfoDataSource.Instance.Groups.Any(g => g.Items.Any(i => i.UniqueId == uri)))
                 {
                     targetPageType = typeof(ItemPage);
