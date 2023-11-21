@@ -180,7 +180,7 @@ namespace SnpApp
 
         private void soundPageHyperlink_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ItemPage), new NavigationRootPageArgs() { Parameter = "Sound", NavigationRootPage = NavigationRootPage.GetForElement(this) });
+           //  this.Frame.Navigate(typeof(ItemPage), new NavigationRootPageArgs() { Parameter = "Sound", NavigationRootPage = NavigationRootPage.GetForElement(this) });
         }
 
         private async void bugRequestCard_Click(object sender, RoutedEventArgs e)

@@ -77,6 +77,7 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\SnpCore\SnpCore.csproj">
       <Project>{28e524f7-61b3-455d-8cbd-615bc4fde814}</Project>
@@ -84,31 +85,4 @@
     </ProjectReference>
   </ItemGroup>
   
-  <ItemGroup>
-    <Page Update="Views\CustomerDetailPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\CustomerListPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SaveChangesDialog.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\MusicUploadPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Widgets\LoginUserControl.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="SettingsPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\MusicImportPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DataModel\ControlInfoData.json" />
-    <Content Include="DataModel\IconsData.json" />
-  </ItemGroup>
 </Project>

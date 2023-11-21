@@ -18,7 +18,7 @@ namespace SnpApp
             menuItem.IsSelected = true;
         }
 
-        protected override bool GetIsNarrowLayoutState()
+        protected bool GetIsNarrowLayoutState()
         {
             return LayoutVisualStates.CurrentState == NarrowLayout;
         }

@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using SnpApp.ViewModels;
 using Windows.Media.Playback;
@@ -50,7 +48,6 @@ public sealed partial class MusicImportPage
         // Setup MediaPlayer view model
         PlayerViewModel = new PlayerViewModel(Player);
         Loaded += MusicImportPage_Loaded;
-        Unloaded += MusicImportPage_Unloaded;
     }
     
 
@@ -99,24 +96,6 @@ public sealed partial class MusicImportPage
         PlayerViewModel.MediaList = new MediaListViewModel(MediaList, PlaybackList);
         
         
-    }
-    
-    private void MusicImportPage_Unloaded(object sender, RoutedEventArgs e)
-    {
-        Debug.WriteLine("MusicImportPage_Unloaded");
-
-        // Ensure the page is no longer holding references and force a GC
-        // to ensure these are unloaded immediately since the app has
-        // only a short timeframe to reduce working set to avoid suspending
-        // on background transition.
-
-        // SettingsService.Instance.UseCustomControlsChanged -= SettingsService_UseCustomControlsChanged;
-
-        PlaybackList.ItemFailed -= PlaybackList_ItemFailed;
-        PlayerViewModel.Dispose();
-        PlayerViewModel = null;
-
-        GC.Collect();
     }
     
     void UpdateControlVisibility()

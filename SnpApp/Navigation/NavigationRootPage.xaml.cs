@@ -1,23 +1,10 @@
-//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
@@ -27,7 +14,6 @@ using Windows.System.Profile;
 using Windows.UI.Notifications;
 using Windows.UI.ViewManagement;
 using Microsoft.UI.Xaml.Automation.Peers;
-using SnpApp.DataModel;
 using SnpApp.Helper;
 using SnpApp.Services;
 using SnpApp.Views;
@@ -84,7 +70,6 @@ namespace SnpApp.Navigation
             _navHelper = new RootFrameNavigationHelper(rootFrame, NavigationViewControl);
 
             SetDeviceFamily();
-            AddNavigationMenuItems();
             
             GotFocus += (object sender, RoutedEventArgs e) =>
             {
@@ -212,59 +197,6 @@ namespace SnpApp.Navigation
             }
         }
 
-        private void AddNavigationMenuItems()
-        {
-            foreach (var group in ControlInfoDataSource.Instance.Groups.OrderBy(i => i.Title).Where(i => !i.IsSpecialSection))
-            {
-                var itemGroup = new NavigationViewItem() { Content = group.Title, Tag = group.UniqueId, DataContext = group, Icon = GetIcon(group.ImageIconPath) };
-
-                var groupMenuFlyoutItem = new MenuFlyoutItem() { Text = $"Copy Link to {group.Title} samples", Icon = new FontIcon() { Glyph = "\uE8C8" }, Tag = group };
-                groupMenuFlyoutItem.Click += this.OnMenuFlyoutItemClick;
-                itemGroup.ContextFlyout = new MenuFlyout() { Items = { groupMenuFlyoutItem } };
-
-                AutomationProperties.SetName(itemGroup, group.Title);
-                AutomationProperties.SetAutomationId(itemGroup, group.UniqueId);
-
-                foreach (var item in group.Items)
-                {
-                    var itemInGroup = new NavigationViewItem() { IsEnabled = item.IncludedInBuild, Content = item.Title, Tag = item.UniqueId, DataContext = item };
-
-                    var itemInGroupMenuFlyoutItem = new MenuFlyoutItem() { Text = $"Copy Link to {item.Title} sample", Icon = new FontIcon() { Glyph = "\uE8C8" }, Tag = item };
-                    itemInGroupMenuFlyoutItem.Click += this.OnMenuFlyoutItemClick;
-                    itemInGroup.ContextFlyout = new MenuFlyout() { Items = { itemInGroupMenuFlyoutItem } };
-
-                    itemGroup.MenuItems.Add(itemInGroup);
-                    AutomationProperties.SetName(itemInGroup, item.Title);
-                    AutomationProperties.SetAutomationId(itemInGroup, item.UniqueId);
-                }
-
-                NavigationViewControl.MenuItems.Add(itemGroup);
-            }
-        }
-
-        private void OnMenuFlyoutItemClick(object sender, RoutedEventArgs e)
-        {
-            switch ((sender as MenuFlyoutItem).Tag)
-            {
-                case ControlInfoDataItem item:
-                    ProtocolActivationClipboardHelper.Copy(item);
-                    return;
-                case ControlInfoDataGroup group:
-                    ProtocolActivationClipboardHelper.Copy(group);
-                    return;
-            }
-        }
-
-        private static IconElement GetIcon(string imagePath)
-        {
-            return imagePath.ToLowerInvariant().EndsWith(".png") ?
-                        (IconElement)new BitmapIcon() { UriSource = new Uri(imagePath, UriKind.RelativeOrAbsolute), ShowAsMonochrome = false } :
-                        (IconElement)new FontIcon()
-                        {
-                            Glyph = imagePath
-                        };
-        }
-
         private void SetDeviceFamily()
         {
             var familyName = AnalyticsInfo.VersionInfo.DeviceFamily;
@@ -306,14 +238,7 @@ namespace SnpApp.Navigation
             else
             {
                 var selectedItem = args.SelectedItemContainer;
-                if (selectedItem == AllControlsItem)
-                {
-                    if (rootFrame.CurrentSourcePageType != typeof(AllControlsPage))
-                    {
-                        Navigate(typeof(AllControlsPage));
-                    }
-                }
-                else if (selectedItem == Home)
+                if (selectedItem == Home)
                 {
                     if (rootFrame.CurrentSourcePageType != typeof(HomePage))
                     {
@@ -354,43 +279,6 @@ namespace SnpApp.Navigation
                     if (rootFrame.CurrentSourcePageType != typeof(CustomerListPage))
                     {
                         Navigate(typeof(CustomerListPage));
-                    }
-                }
-                else if (selectedItem == DesignGuidanceItem || selectedItem == AccessibilityItem)
-                {
-                    //Navigate(typeof(SectionPage), "Design_Guidance");
-                }
-                else if (selectedItem == TypographyItem)
-                {
-                    Navigate(typeof(ItemPage), "Typography");
-                }
-                else if (selectedItem == ColorsItem)
-                {
-                    Navigate(typeof(ItemPage), "Colors");
-                }
-                else if (selectedItem == IconsItem)
-                {
-                    Navigate(typeof(ItemPage), "Icons");
-                }
-                else if (selectedItem == AccessibilityScreenReaderPage)
-                {
-                    Navigate(typeof(ItemPage), "AccessibilityScreenReader");
-                }
-                else if (selectedItem == AccessibilityKeyboardPage)
-                {
-                    Navigate(typeof(ItemPage), "AccessibilityKeyboard");
-                }
-                else if (selectedItem == AccessibilityContrastPage)
-                {
-                    Navigate(typeof(ItemPage), "AccessibilityColorContrast");
-                }
-                else
-                {
-                    
-                    if (selectedItem.DataContext is ControlInfoDataItem)
-                    {
-                        var item = (ControlInfoDataItem)selectedItem.DataContext;
-                        Navigate(typeof(ItemPage), item.UniqueId);
                     }
                 }
             }

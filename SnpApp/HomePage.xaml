@@ -9,7 +9,7 @@
     //
     //*********************************************************
 -->
-<local:ItemsPageBase
+<Page
     HighContrastAdjustment="None"
     NavigationCacheMode="Enabled"
     x:Class="SnpApp.HomePage"
@@ -82,4 +82,4 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>
-</local:ItemsPageBase>
+</Page>

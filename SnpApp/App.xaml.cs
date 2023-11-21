@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
@@ -15,7 +14,6 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.Windows.AppLifecycle;
 using SnpApp.Common;
-using SnpApp.DataModel;
 using SnpApp.Helper;
 using SnpApp.Navigation;
 using SnpApp.Services;
@@ -151,11 +149,7 @@ namespace SnpApp
         
         private async void EnsureWindow(IActivatedEventArgs args = null)
         {
-            // No matter what our destination is, we're going to need control data loaded - let's knock that out now.
-            // We'll never need to do this again.
-            await ControlInfoDataSource.Instance.GetGroupsAsync();
-            await IconsDataSource.Instance.LoadIcons();
-
+            
             Frame rootFrame = GetRootFrame();
 
             ThemeHelper.Initialize();
@@ -191,18 +185,10 @@ namespace SnpApp
 
                 targetPageArguments = uri;
                 string targetId = string.Empty;
-
-                if (uri == "AllControls")
-                {
-                    targetPageType = typeof(AllControlsPage);
-                }
-                else if (uri == "NewControls")
+                
+                if (uri == "NewControls")
                 {
                     targetPageType = typeof(HomePage);
-                }
-                else if (ControlInfoDataSource.Instance.Groups.Any(g => g.Items.Any(i => i.UniqueId == uri)))
-                {
-                    targetPageType = typeof(ItemPage);
                 }
             }
 

@@ -217,77 +217,7 @@
                     Content="Test"
                     Icon="Home"
                     x:Name="Test" />
-
-                <NavigationViewItem
-                    AutomationProperties.AutomationId="Design_Guidance"
-                    Content="Design guidance"
-                    Tag="Design Guidance"
-                    x:Name="DesignGuidanceItem">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xEB3C;" />
-                    </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem
-                            AutomationProperties.AutomationId="Typography"
-                            Content="Typography"
-                            Tag="Typography"
-                            x:Name="TypographyItem">
-                            <NavigationViewItem.Icon>
-                                <FontIcon Glyph="&#xE8D2;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem
-                            AutomationProperties.AutomationId="Icons"
-                            Content="Icons"
-                            Tag="Icons"
-                            x:Name="IconsItem">
-                            <NavigationViewItem.Icon>
-                                <FontIcon Glyph="&#xED58;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem
-                            AutomationProperties.AutomationId="Colors"
-                            Content="Colors"
-                            Tag="Colors"
-                            x:Name="ColorsItem">
-                            <NavigationViewItem.Icon>
-                                <FontIcon Glyph="&#xE790;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem
-                            AutomationProperties.AutomationId="AccessibilityItem"
-                            Content="Accessibility"
-                            Tag="Accessibility"
-                            x:Name="AccessibilityItem">
-                            <NavigationViewItem.Icon>
-                                <FontIcon Glyph="&#xE776;" />
-                            </NavigationViewItem.Icon>
-                            <NavigationViewItem.MenuItems>
-                                <NavigationViewItem
-                                    AutomationProperties.AutomationId="AccessibilityScreenReader"
-                                    Content="Screen reader support"
-                                    Tag="AccessibilityScreenReader"
-                                    x:Name="AccessibilityScreenReaderPage" />
-                                <NavigationViewItem
-                                    AutomationProperties.AutomationId="AccessibilityKeyboard"
-                                    Content="Keyboard support"
-                                    Tag="AccessibilityKeyboard"
-                                    x:Name="AccessibilityKeyboardPage" />
-                                <NavigationViewItem
-                                    AutomationProperties.AutomationId="AccessibilityColorContrast"
-                                    Content="Color contrast"
-                                    Tag="AccessibilityColorContrast"
-                                    x:Name="AccessibilityContrastPage" />
-                            </NavigationViewItem.MenuItems>
-                        </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
-                </NavigationViewItem>
-
-                <NavigationViewItem
-                    Content="All samples"
-                    Icon="AllApps"
-                    x:Name="AllControlsItem" />
-                <NavigationViewItemSeparator />
+                
             </NavigationView.MenuItems>
         </NavigationView>
         <VisualStateManager.VisualStateGroups>
