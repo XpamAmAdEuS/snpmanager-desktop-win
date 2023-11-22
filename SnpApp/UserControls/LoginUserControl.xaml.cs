@@ -30,8 +30,8 @@ namespace SnpApp.UserControls
                 var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
                 if (localSettings.Values.TryGetValue(Constants.StoredAccountIdKey, value: out var value))
                 {
-                    userNameTextBox.Text = value.ToString();
-                    saveUserNameCheckBox.IsChecked = true;
+                    UserNameTextBox.Text = value.ToString();
+                    SaveUserNameCheckBox.IsChecked = true;
 
                     // if (autoLoginSucceed)
                     // {
@@ -55,23 +55,23 @@ namespace SnpApp.UserControls
         private void SaveUserName()
         {
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            localSettings.Values[Constants.StoredAccountIdKey] = userNameTextBox.Text;
+            localSettings.Values[Constants.StoredAccountIdKey] = UserNameTextBox.Text;
         }
 
         private void ClearUserName()
         {
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             localSettings.Values[Constants.StoredAccountIdKey] = null;
-            userNameTextBox.Text = string.Empty;
+            UserNameTextBox.Text = string.Empty;
         }
 
         private void UserNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Clear the error if the user name field isn't empty.
-            if (!string.IsNullOrEmpty(userNameTextBox.Text))
+            if (!string.IsNullOrEmpty(UserNameTextBox.Text))
             {
-                errorInfoBar.Message = string.Empty;
-                errorInfoBar.IsOpen = false;
+                ErrorInfoBar.Message = string.Empty;
+                ErrorInfoBar.IsOpen = false;
             }
             
             IsEnabled = IsValid();
@@ -80,10 +80,10 @@ namespace SnpApp.UserControls
         private void PasswordTextBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             // Clear the error if the password field isn't empty.
-            if (!string.IsNullOrEmpty(passwordTextBox.Password))
+            if (!string.IsNullOrEmpty(PasswordTextBox.Password))
             {
-                errorInfoBar.Message = string.Empty;
-                errorInfoBar.IsOpen = false;
+                ErrorInfoBar.Message = string.Empty;
+                ErrorInfoBar.IsOpen = false;
             }
             
             IsEnabled = IsValid();
@@ -91,11 +91,11 @@ namespace SnpApp.UserControls
 
         private void PassportSignInButton_Click(object sender, RoutedEventArgs e)
         {
-            errorInfoBar.Message = string.Empty;
+            ErrorInfoBar.Message = string.Empty;
             if (IsValid())
             {
                 
-                var accessToken =  AuthenticationService.Default.GetToken(userNameTextBox.Text,passwordTextBox.Password);
+                var accessToken =  AuthenticationService.Default.GetToken(UserNameTextBox.Text,PasswordTextBox.Password);
                 if (!string.IsNullOrEmpty(accessToken))
                 {
                     UserLoggedIn?.Invoke(this, new TokenChangedEventArgs(accessToken));
@@ -106,7 +106,7 @@ namespace SnpApp.UserControls
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             
-            errorInfoBar.Message = "Goodbye";
+            ErrorInfoBar.Message = "Goodbye";
             UserAbortedLogIn?.Invoke(this, EventArgs.Empty);
             
             
@@ -114,15 +114,15 @@ namespace SnpApp.UserControls
         
         private void RegisterButtonTextBlock_OnPointerPressed(object sender, RoutedEventArgs e)
         {
-            errorInfoBar.Message = string.Empty;
+            ErrorInfoBar.Message = string.Empty;
             
             
-            errorInfoBar.Message = "Error happened";
+            ErrorInfoBar.Message = "Error happened";
         }
         
         private bool IsValid()
         {
-            return !string.IsNullOrEmpty(userNameTextBox.Text) && !string.IsNullOrEmpty(passwordTextBox.Password);
+            return !string.IsNullOrEmpty(UserNameTextBox.Text) && !string.IsNullOrEmpty(PasswordTextBox.Password);
         }
         
         private bool TryAutoLogin()

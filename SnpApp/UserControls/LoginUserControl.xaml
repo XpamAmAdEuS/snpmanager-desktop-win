@@ -11,9 +11,9 @@
 
     <Grid>
         <StackPanel Orientation="Vertical">
-            <TextBox Name="userNameTextBox" Header="User name"
+            <TextBox x:Name="UserNameTextBox" Header="User name"
                      TextChanged="UserNameTextBox_TextChanged"/>
-            <PasswordBox Name="passwordTextBox" Header="Password" IsPasswordRevealButtonEnabled="True"
+            <PasswordBox x:Name="PasswordTextBox" Header="Password" IsPasswordRevealButtonEnabled="True"
                          PasswordChanged="PasswordTextBox_PasswordChanged"/>
             
             <Button x:Name="PassportSignInButton" IsEnabled="{x:Bind IsEnabled}" Content="Login" Background="DodgerBlue" Foreground="White"
@@ -29,8 +29,8 @@
             
             
             
-            <CheckBox Name="saveUserNameCheckBox" Content="Save user name"/>
-            <InfoBar x:Name="errorInfoBar" Severity="Error" IsOpen="False" IsClosable="False"/>
+            <CheckBox x:Name="SaveUserNameCheckBox" Content="Save user name"/>
+            <InfoBar x:Name="ErrorInfoBar" Severity="Error" IsOpen="False" IsClosable="False"/>
 
             <!-- Content body -->
             <TextBlock Name="body" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap">
