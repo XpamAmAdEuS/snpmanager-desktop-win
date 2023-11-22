@@ -101,7 +101,9 @@ namespace SnpApp
                 .AddSingleton(new SiteService(invoker,mapper))
                 .AddSingleton(new UserService(invoker,mapper))
                 .AddSingleton(new MusicImportService(invoker,mapper))
+                .AddSingleton(new MusicService(invoker,mapper))
                 .AddTransient<CustomerListViewModel>()
+                .AddTransient<MusicListViewModel>()
                 .AddTransient<CustomerViewModel>()
                 .AddTransient<MusicUploadViewModel>()
                 .AddTransient<MusicImportListViewModel>()
@@ -137,7 +139,7 @@ namespace SnpApp
         private void EnsureWindow()
         {
             
-            var rootFrame = GetRootFrame();
+            var RootFrame = GetRootFrame();
 
             ThemeHelper.Initialize();
 
@@ -171,26 +173,26 @@ namespace SnpApp
 
         public Frame GetRootFrame()
         {
-            Frame rootFrame;
+            Frame RootFrame;
             var rootPage = StartupWindow.Content as NavigationRootPage;
             if (rootPage == null)
             {
                 rootPage = new NavigationRootPage();
-                rootFrame = (Frame)rootPage.FindName("rootFrame");
-                if (rootFrame == null)
+                RootFrame = (Frame)rootPage.FindName("RootFrame");
+                if (RootFrame == null)
                 {
                     throw new Exception("Root frame not found");
                 }
-                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
-                rootFrame.NavigationFailed += OnNavigationFailed;
+                RootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
+                RootFrame.NavigationFailed += OnNavigationFailed;
                 StartupWindow.Content = rootPage;
             }
             else
             {
-                rootFrame = (Frame)rootPage.FindName("rootFrame");
+                RootFrame = (Frame)rootPage.FindName("RootFrame");
             }
 
-            return rootFrame;
+            return RootFrame;
         }
         
         

@@ -56,7 +56,7 @@ namespace SnpApp.Navigation
             this.InitializeComponent();
             dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
-            _navHelper = new RootFrameNavigationHelper(rootFrame, NavigationViewControl);
+            _navHelper = new RootFrameNavigationHelper(RootFrame, NavigationViewControl);
 
             SetDeviceFamily();
             
@@ -139,8 +139,8 @@ namespace SnpApp.Navigation
             });
         }
 
-        // Wraps a call to rootFrame.Navigate to give the Page a way to know which NavigationRootPage is navigating.
-        // Please call this function rather than rootFrame.Navigate to navigate the rootFrame.
+        // Wraps a call to RootFrame.Navigate to give the Page a way to know which NavigationRootPage is navigating.
+        // Please call this function rather than RootFrame.Navigate to navigate the RootFrame.
         public void Navigate(
             Type pageType,
             object? targetPageArguments = null,
@@ -151,7 +151,7 @@ namespace SnpApp.Navigation
 #pragma warning disable CS8601 // Possible null reference assignment.
             args.Parameter = targetPageArguments;
 #pragma warning restore CS8601 // Possible null reference assignment.
-            rootFrame.Navigate(pageType, args, navigationTransitionInfo);
+            RootFrame.Navigate(pageType, args, navigationTransitionInfo);
         }
 
         public void EnsureNavigationSelection(string id)
@@ -231,7 +231,7 @@ namespace SnpApp.Navigation
         {
             if (args.IsSettingsSelected)
             {
-                if (rootFrame.CurrentSourcePageType != typeof(SettingsPage))
+                if (RootFrame.CurrentSourcePageType != typeof(SettingsPage))
                 {
                     Navigate(typeof(SettingsPage));
                 }
@@ -241,28 +241,35 @@ namespace SnpApp.Navigation
                 var selectedItem = args.SelectedItemContainer;
                 if (selectedItem == Home)
                 {
-                    if (rootFrame.CurrentSourcePageType != typeof(HomePage))
+                    if (RootFrame.CurrentSourcePageType != typeof(HomePage))
                     {
                         Navigate(typeof(HomePage));
                     }
                 }
+                else if (selectedItem == Music)
+                {
+                    if (RootFrame.CurrentSourcePageType != typeof(MusicListPage))
+                    {
+                        Navigate(typeof(MusicListPage));
+                    }
+                }
                 else if (selectedItem == MusicUpload)
                 {
-                    if (rootFrame.CurrentSourcePageType != typeof(MusicUploadPage))
+                    if (RootFrame.CurrentSourcePageType != typeof(MusicUploadPage))
                     {
                         Navigate(typeof(MusicUploadPage));
                     }
                 }
                 else if (selectedItem == MusicImport)
                 {
-                    if (rootFrame.CurrentSourcePageType != typeof(MusicImportPage))
+                    if (RootFrame.CurrentSourcePageType != typeof(MusicImportPage))
                     {
                         Navigate(typeof(MusicImportPage));
                     }
                 }
                 else if (selectedItem == WaveForm)
                 {
-                    if (rootFrame.CurrentSourcePageType != typeof(WaveformPage))
+                    if (RootFrame.CurrentSourcePageType != typeof(WaveformPage))
                     {
                         Navigate(typeof(WaveformPage));
                     }
@@ -270,14 +277,14 @@ namespace SnpApp.Navigation
                 
                 else if (selectedItem == Test)
                 {
-                    if (rootFrame.CurrentSourcePageType != typeof(TestPage))
+                    if (RootFrame.CurrentSourcePageType != typeof(TestPage))
                     {
                         Navigate(typeof(TestPage));
                     }
                 }
-                else if (selectedItem == Customer2)
+                else if (selectedItem == Customers)
                 {
-                    if (rootFrame.CurrentSourcePageType != typeof(CustomerListPage))
+                    if (RootFrame.CurrentSourcePageType != typeof(CustomerListPage))
                     {
                         Navigate(typeof(CustomerListPage));
                     }
@@ -397,16 +404,16 @@ namespace SnpApp.Navigation
             _error = IdleSynchronizer.TryWait(out _log);
         }
 
-        private void CloseAppInvokerButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void CloseAppInvokerButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Exit();
         }
 
-        private void GoBackInvokerButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void GoBackInvokerButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.rootFrame.CanGoBack)
+            if (RootFrame.CanGoBack)
             {
-                this.rootFrame.GoBack();
+                RootFrame.GoBack();
             }
         }
 
@@ -467,34 +474,34 @@ namespace SnpApp.Navigation
             switch (type)
             {
                 case NotifyType.StatusMessage:
-                    StatusBorder.Background = new SolidColorBrush(Microsoft.UI.Colors.Green);
+                    //StatusBorder.Background = new SolidColorBrush(Microsoft.UI.Colors.Green);
                     break;
                 case NotifyType.ErrorMessage:
-                    StatusBorder.Background = new SolidColorBrush(Microsoft.UI.Colors.Red);
+                    //StatusBorder.Background = new SolidColorBrush(Microsoft.UI.Colors.Red);
                     break;
             }
 
-            StatusBlock.Text = strMessage;
+            //StatusBlock.Text = strMessage;
 
             // Collapse the StatusBlock if it has no text to conserve real estate.
-            StatusBorder.Visibility = (StatusBlock.Text != String.Empty) ? Visibility.Visible : Visibility.Collapsed;
-            if (StatusBlock.Text != String.Empty)
-            {
-                StatusBorder.Visibility = Visibility.Visible;
-                StatusPanel.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                StatusBorder.Visibility = Visibility.Collapsed;
-                StatusPanel.Visibility = Visibility.Collapsed;
-            }
-
-			// Raise an event if necessary to enable a screen reader to announce the status update.
-			var peer = FrameworkElementAutomationPeer.FromElement(StatusBlock);
-			if (peer != null)
-			{
-				peer.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
-			}
+   //          StatusBorder.Visibility = (StatusBlock.Text != String.Empty) ? Visibility.Visible : Visibility.Collapsed;
+   //          if (StatusBlock.Text != String.Empty)
+   //          {
+   //              StatusBorder.Visibility = Visibility.Visible;
+   //              StatusPanel.Visibility = Visibility.Visible;
+   //          }
+   //          else
+   //          {
+   //              StatusBorder.Visibility = Visibility.Collapsed;
+   //              StatusPanel.Visibility = Visibility.Collapsed;
+   //          }
+   //
+			// // Raise an event if necessary to enable a screen reader to announce the status update.
+			// var peer = FrameworkElementAutomationPeer.FromElement(StatusBlock);
+			// if (peer != null)
+			// {
+			// 	peer.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
+			// }
 		}
 
         /// <summary>

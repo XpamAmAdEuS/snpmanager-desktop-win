@@ -33,11 +33,11 @@ namespace SnpApp.Helper
         /// <summary>
         /// Initializes a new instance of the <see cref="RootFrameNavigationHelper"/> class.
         /// </summary>
-        /// <param name="rootFrame">A reference to the top-level frame.
+        /// <param name="RootFrame">A reference to the top-level frame.
         /// This reference allows for frame manipulation and to register navigation handlers.</param>
-        public RootFrameNavigationHelper(Frame rootFrame, NavigationView currentNavView)
+        public RootFrameNavigationHelper(Frame RootFrame, NavigationView currentNavView)
         {
-            this.Frame = rootFrame;
+            this.Frame = RootFrame;
             this.Frame.Navigated += (s, e) =>
             {
                 // Update the Back button whenever a navigation occurs.
