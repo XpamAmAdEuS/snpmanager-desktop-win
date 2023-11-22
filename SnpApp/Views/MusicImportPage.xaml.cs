@@ -24,15 +24,18 @@ public sealed partial class MusicImportPage
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     MediaPlayer Player => PlaybackService.Instance.Player;
 
-    MediaPlaybackList PlaybackList
+    MediaPlaybackList? PlaybackList
     {
-        get { return Player.Source as MediaPlaybackList; }
-        set { Player.Source = value; }
+        get => Player.Source as MediaPlaybackList;
+        set => Player.Source = value;
     }
-    MediaList MediaList
+    MediaList? MediaList
     {
-        get { return PlaybackService.Instance.CurrentPlaylist; }
-        set { PlaybackService.Instance.CurrentPlaylist = value; }
+        get => PlaybackService.Instance.CurrentPlaylist;
+        set
+        {
+            if (value != null) PlaybackService.Instance.CurrentPlaylist = value;
+        }
     }
 
     public PlayerViewModel PlayerViewModel { get; set; }
@@ -125,9 +128,8 @@ public sealed partial class MusicImportPage
         // Media callbacks use a worker thread so dispatch to UI as needed
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            var error = string.Format("Item failed to play: {0} | 0x{1:x}",
-                args.Error.ErrorCode, args.Error.ExtendedError.HResult);
-            NavigationRootPage.Current.NotifyUser(error, NotifyType.ErrorMessage);
+            var error = $"Item failed to play: {args.Error.ErrorCode} | 0x{args.Error.ExtendedError.HResult:x}";
+            NavigationRootPage.Current?.NotifyUser(error, NotifyType.ErrorMessage);
         });
     }
 
@@ -188,29 +190,19 @@ public sealed partial class MusicImportPage
     }
 
     /// <summary>
-    ///     Applies any existing filter when navigating to the page.
-    /// </summary>
-    protected override async void OnNavigatedTo(NavigationEventArgs e)
-    {
-    }
-    
-    
-    public void Play_Row_Click(object sender, RoutedEventArgs e)
-    {
-        var model = (sender as Button).DataContext as MusicImport;
-        PlayerViewModel.MediaList.CurrentItemIndex = (int)model.Id;
-
-    }
-
-    /// <summary>
     ///     Sorts the data in the DataGrid.
     /// </summary>
     private async void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
+#pragma warning disable CS8601 // Possible null reference assignment.
         ViewModel.SearchRequestModel.SortColumn = e.Column.Tag.ToString();
+#pragma warning restore CS8601 // Possible null reference assignment.
         var isAscending = e.Column.SortDirection is null or DataGridSortDirection.Descending;
 
-        foreach (var column in (sender as DataGrid).Columns) column.SortDirection = null;
+        var dataGridColumns = (sender as DataGrid)?.Columns;
+        if (dataGridColumns != null)
+            foreach (var column in dataGridColumns)
+                column.SortDirection = null;
 
         var direction = isAscending
             ? DataGridSortDirection.Ascending

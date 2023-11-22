@@ -52,7 +52,7 @@ namespace SnpApp.Views
         /// Loads the specified order, a cached order, or creates a new order.
         /// </summary>
         /// <param name="e">Info about the event.</param>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var id = (uint)e.Parameter;
             // var customer = App.ViewModel.Customers.Where(customer => customer.Model.Id == id).FirstOrDefault();

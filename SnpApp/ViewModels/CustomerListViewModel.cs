@@ -23,7 +23,7 @@ public class CustomerListViewModel : ObservableObject
 
     private int _pageNumber;
 
-    private CustomerViewModel _selectedCustomer;
+    private CustomerViewModel? _selectedCustomer;
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
     public CustomerListViewModel()
@@ -63,7 +63,7 @@ public class CustomerListViewModel : ObservableObject
     /// <summary>
     ///     Gets or sets the selected customer, or null if no customer is selected.
     /// </summary>
-    public CustomerViewModel SelectedCustomer
+    public CustomerViewModel? SelectedCustomer
     {
         get => _selectedCustomer;
         set => SetProperty(ref _selectedCustomer, value);
@@ -168,7 +168,8 @@ public class CustomerListViewModel : ObservableObject
         {
             foreach (var modifiedCustomer in Customers
                          .Where(customer => customer.IsModified).Select(customer => customer.Model))
-                await Ioc.Default.GetRequiredService<CustomerService>().UpsertAsync(modifiedCustomer);
+                if (modifiedCustomer != null)
+                    await Ioc.Default.GetRequiredService<CustomerService>().UpsertAsync(modifiedCustomer);
 
             Refresh();
             // await GetCustomerListAsync();

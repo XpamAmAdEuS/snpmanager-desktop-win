@@ -27,18 +27,9 @@ namespace SnpApp
     public sealed partial class App
     {
         
-        private static Window startupWindow;
+        private static Window _startupWindow  = default!;
         
-        public static Window StartupWindow
-        {
-            get
-            {
-                return startupWindow;
-            }
-        }
-        
-        
-        public static string Title => "Snp Manager";
+        public static Window StartupWindow => _startupWindow;
 
         public App()
         {
@@ -50,10 +41,7 @@ namespace SnpApp
         {
             ElementSoundPlayer.State = ElementSoundPlayerState.On;
 
-            if (!withSpatial)
-                ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.Off;
-            else
-                ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.On;
+            ElementSoundPlayer.SpatialAudioMode = !withSpatial ? ElementSpatialAudioMode.Off : ElementSpatialAudioMode.On;
         }
         
         public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
@@ -73,8 +61,8 @@ namespace SnpApp
             
             JwtTokenHelper.Initialize();
 
-            startupWindow = WindowHelper.CreateWindow();
-            startupWindow.ExtendsContentIntoTitleBar = true;
+            _startupWindow = WindowHelper.CreateWindow();
+            _startupWindow.ExtendsContentIntoTitleBar = true;
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -104,7 +92,7 @@ namespace SnpApp
             //     .Intercept(new AuthorizationHeaderInterceptor(token))
             //     .Intercept(new ErrorHandlerInterceptor());
             
-            CallInvoker invoker = channel.Intercept(new AuthorizationHeaderInterceptor(token));
+            var invoker = channel.Intercept(new AuthorizationHeaderInterceptor(token));
             
             Ioc.Default.ConfigureServices
             (new ServiceCollection()
@@ -113,7 +101,6 @@ namespace SnpApp
                 .AddSingleton(new SiteService(invoker,mapper))
                 .AddSingleton(new UserService(invoker,mapper))
                 .AddSingleton(new MusicImportService(invoker,mapper))
-                .AddSingleton(ConnectionService.Default)
                 .AddTransient<CustomerListViewModel>()
                 .AddTransient<CustomerViewModel>()
                 .AddTransient<MusicUploadViewModel>()
@@ -147,57 +134,35 @@ namespace SnpApp
 #endif
         
         
-        private async void EnsureWindow(IActivatedEventArgs? args = null)
+        private void EnsureWindow()
         {
             
             var rootFrame = GetRootFrame();
 
             ThemeHelper.Initialize();
 
-            Type targetPageType = typeof(HomePage);
-            string targetPageArguments = string.Empty;
-
-            if (args != null)
-            {
-                if (args.Kind == ActivationKind.Launch)
-                {
-                    if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                    {
-                        try
-                        {
-                            await SuspensionManager.RestoreAsync();
-                        }
-                        catch (SuspensionManagerException)
-                        {
-                            //Something went wrong restoring state.
-                            //Assume there is no state and continue
-                        }
-                    }
-
-                    targetPageArguments = ((Windows.ApplicationModel.Activation.LaunchActivatedEventArgs)args).Arguments;
-                }
-            }
-            var eventargs = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().GetActivatedEventArgs();
+            var targetPageType = typeof(HomePage);
+            var targetPageArguments = string.Empty;
+            
+            var eventargs = AppInstance.GetCurrent().GetActivatedEventArgs();
             if (eventargs != null && eventargs.Kind is ExtendedActivationKind.Protocol && eventargs.Data is ProtocolActivatedEventArgs)
             {
-                ProtocolActivatedEventArgs ProtocolArgs = eventargs.Data as ProtocolActivatedEventArgs;
-                var uri = ProtocolArgs.Uri.LocalPath.Replace("/", "");
+                var protocolArgs = eventargs.Data as ProtocolActivatedEventArgs;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                var uri = protocolArgs.Uri.LocalPath.Replace("/", "");
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 targetPageArguments = uri;
-                string targetId = string.Empty;
-                
-                if (uri == "NewControls")
-                {
-                    targetPageType = typeof(HomePage);
-                }
             }
 
-            NavigationRootPage rootPage = StartupWindow.Content as NavigationRootPage;
+            var rootPage = StartupWindow.Content as NavigationRootPage;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             rootPage.Navigate(targetPageType, targetPageArguments);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             if (targetPageType == typeof(HomePage))
             {
-                ((Microsoft.UI.Xaml.Controls.NavigationViewItem)((NavigationRootPage)App.StartupWindow.Content).NavigationView.MenuItems[0]).IsSelected = true;
+                ((NavigationViewItem)((NavigationRootPage)StartupWindow.Content).NavigationView.MenuItems[0]).IsSelected = true;
             }
             
             // Ensure the current window is active
@@ -207,7 +172,7 @@ namespace SnpApp
         public Frame GetRootFrame()
         {
             Frame rootFrame;
-            NavigationRootPage rootPage = StartupWindow.Content as NavigationRootPage;
+            var rootPage = StartupWindow.Content as NavigationRootPage;
             if (rootPage == null)
             {
                 rootPage = new NavigationRootPage();
@@ -216,10 +181,8 @@ namespace SnpApp
                 {
                     throw new Exception("Root frame not found");
                 }
-                SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
                 rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
                 rootFrame.NavigationFailed += OnNavigationFailed;
-
                 StartupWindow.Content = rootPage;
             }
             else
@@ -245,13 +208,10 @@ namespace SnpApp
         
         private void LoginUserControl_UserLoggedIn(object sender, EventArgs e)
         {
-
-            var jwtToken= "";
-            
             if (e.GetType() == typeof(TokenChangedEventArgs))
             {
                 var jwt = e as TokenChangedEventArgs;
-                jwtToken = jwt.NewValue;
+                var jwtToken= jwt?.NewValue;
                 ApplicationData.Current.LocalSettings.Values[Constants.StoredJwtTokenKey] = jwtToken;
             }
             

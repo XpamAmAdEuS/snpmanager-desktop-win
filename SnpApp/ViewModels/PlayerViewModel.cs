@@ -18,10 +18,10 @@ namespace SnpApp.ViewModels
     {
         private bool _disposed;
         private readonly MediaPlayer _player;
-        private MediaPlaybackList _subscribedPlaybackList;
+        private MediaPlaybackList? _subscribedPlaybackList;
         private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-        private MediaListViewModel _mediaList;
+        private MediaListViewModel? _mediaList;
         private bool _canSkipNext;
         private bool _canSkipPrevious;
 
@@ -53,7 +53,7 @@ namespace SnpApp.ViewModels
             }
         }
 
-        public MediaListViewModel MediaList
+        public MediaListViewModel? MediaList
         {
             get => _mediaList;
             set
@@ -71,7 +71,7 @@ namespace SnpApp.ViewModels
 
                     if (_mediaList != null)
                     {
-                        if (_player.Source != _mediaList.PlaybackList)
+                        if ((MediaPlaybackList)_player.Source != _mediaList.PlaybackList)
                             _player.Source = _mediaList.PlaybackList;
 
                         _subscribedPlaybackList = _mediaList.PlaybackList;

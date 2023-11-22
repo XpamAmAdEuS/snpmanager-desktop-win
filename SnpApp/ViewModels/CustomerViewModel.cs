@@ -17,7 +17,7 @@ namespace SnpApp.ViewModels
     /// </summary>
     public class CustomerViewModel : ObservableObject, IEditableObject
     {
-        private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         /// <summary>
         /// Initializes a new instance of the CustomerViewModel class that wraps a Customer object.
@@ -29,7 +29,7 @@ namespace SnpApp.ViewModels
         /// <summary>
         /// Gets or sets the underlying Customer object.
         /// </summary>
-        public Customer Model
+        public Customer? Model
         {
             get => _model;
             set
@@ -184,7 +184,7 @@ namespace SnpApp.ViewModels
         
         private Site? _selectedSite;
         
-        public Site SelectedSite
+        public Site? SelectedSite
         {
             get => _selectedSite;
             set => SetProperty(ref _selectedSite, value);
@@ -290,14 +290,14 @@ namespace SnpApp.ViewModels
         
         public async Task LoadSitesAsync()
         {
-            await dispatcherQueue.EnqueueAsync(() =>
+            await _dispatcherQueue.EnqueueAsync(() =>
             {
                 IsLoading = true;
             });
 
             var sites = await Ioc.Default.GetRequiredService<SiteService>().GetByCustomerId(Model.Id);
 
-            await dispatcherQueue.EnqueueAsync(() =>
+            await _dispatcherQueue.EnqueueAsync(() =>
             {
                 Sites.Clear();
                 foreach (var order in sites)

@@ -6,23 +6,14 @@ namespace SnpApp.Models
 {
     class MusicItem : MediaItem
     {
-        public Uri AlbumArtUri { get; set; }
+        private Uri? AlbumArtUri { get; set; }
 
-        public override Uri PreviewImageUri
+        public override Uri? PreviewImageUri
         {
-            get
-            {
-                return AlbumArtUri;
-            }
+            get => AlbumArtUri;
 
-            set
-            {
-                AlbumArtUri = value;
-            }
+            set => AlbumArtUri = value;
         }
-
-        public MusicItem() : base()
-        { }
         
         public MusicItem(MusicImport mIwm) : base(mIwm)
         {

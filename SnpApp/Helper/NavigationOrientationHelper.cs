@@ -45,16 +45,18 @@ namespace SnpApp.Helper
 
         public static void UpdateNavigationViewForElement(bool isLeftMode, UIElement element)
         {
-            NavigationView _navView = NavigationRootPage.GetForElement(element).NavigationView;
+            var navView = NavigationRootPage.GetForElement(element)?.NavigationView;
             if (isLeftMode)
             {
-                _navView.PaneDisplayMode = NavigationViewPaneDisplayMode.Auto;
-                Grid.SetRow(_navView, 0);
+                if (navView == null) return;
+                navView.PaneDisplayMode = NavigationViewPaneDisplayMode.Auto;
+                Grid.SetRow(navView, 0);
             }
             else
             {
-                _navView.PaneDisplayMode = NavigationViewPaneDisplayMode.Top;
-                Grid.SetRow(_navView, 1);
+                if (navView == null) return;
+                navView.PaneDisplayMode = NavigationViewPaneDisplayMode.Top;
+                Grid.SetRow(navView, 1);
             }
         }
         

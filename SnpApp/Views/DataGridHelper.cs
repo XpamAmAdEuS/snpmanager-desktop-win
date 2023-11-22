@@ -31,7 +31,9 @@ namespace SnpApp.Views
             }
 
             var propertyName = columnToSort.Tag as string ?? columnToSort.Header.ToString();
+#pragma warning disable CS8604 // Possible null reference argument.
             sort(propertyName, isAscending);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         /// <summary>
@@ -39,15 +41,22 @@ namespace SnpApp.Views
         /// </summary>
         public static void Sort<T>(this ObservableCollection<T> collection, string propertyName, bool isAscending)
         {
-            object sortFunc(T obj) => obj.GetType().GetProperty(propertyName).GetValue(obj);
             var sortedCollection = isAscending ?
-                collection.OrderBy(sortFunc).ToList() :
-                collection.OrderByDescending(sortFunc).ToList();
+                collection.OrderBy(SortFunc).ToList() :
+                collection.OrderByDescending(SortFunc).ToList();
             collection.Clear();
             foreach (var obj in sortedCollection)
             {
                 collection.Add(obj);
             }
+
+            return;
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8603 // Possible null reference return.
+            object SortFunc(T obj) => obj.GetType().GetProperty(propertyName).GetValue(obj);
+#pragma warning restore CS8603 // Possible null reference return.
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
     }
 }

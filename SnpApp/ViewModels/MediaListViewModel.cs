@@ -29,16 +29,16 @@ namespace SnpApp.ViewModels
     /// </remarks>
     public class MediaListViewModel : ObservableCollection<MediaItemViewModel>, IDisposable
     {
-        DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-        int currentItemIndex = -1;
-        bool disposed;
-        bool initializing;
+        private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        private int _currentItemIndex = -1;
+        private bool _disposed;
+        private readonly bool _initializing;
 
         public MediaList MediaList { get; private set; }
 
-        public MediaItemViewModel CurrentItem
+        public MediaItemViewModel? CurrentItem
         {
-            get { return currentItemIndex == -1 ? null : this[currentItemIndex]; }
+            get => _currentItemIndex == -1 ? null : this[_currentItemIndex];
             set
             {
                 if (value == null)
@@ -47,7 +47,7 @@ namespace SnpApp.ViewModels
                     return;
                 }
 
-                if (currentItemIndex == -1 || this[currentItemIndex] != value)
+                if (_currentItemIndex == -1 || this[_currentItemIndex] != value)
                 {
                     CurrentItemIndex = IndexOf(value);
                 }
@@ -56,29 +56,26 @@ namespace SnpApp.ViewModels
 
         public int CurrentItemIndex
         {
-            get
-            {
-                return currentItemIndex;
-            }
+            get => _currentItemIndex;
             set
             {
-                if (currentItemIndex != value)
+                if (_currentItemIndex != value)
                 {
                     // Clamp invalid values
                     var min = -1;
                     var max = PlaybackList.Items.Count - 1;
-                    currentItemIndex = (value < min) ? min : (value > max) ? max : value;
+                    _currentItemIndex = (value < min) ? min : (value > max) ? max : value;
 
                     try
                     {
                         // This succeeds if the playlist has been bound to a player
-                        if (currentItemIndex >= 0 && currentItemIndex != PlaybackList.CurrentItemIndex)
-                            PlaybackList.MoveTo((uint)currentItemIndex);
+                        if (_currentItemIndex >= 0 && _currentItemIndex != PlaybackList.CurrentItemIndex)
+                            PlaybackList.MoveTo((uint)_currentItemIndex);
                     }
                     catch
                     {
                         // Most likely the playlist had not been bound to a player so set start index
-                        PlaybackList.StartingItem = CurrentItem.PlaybackItem;
+                        if (CurrentItem != null) PlaybackList.StartingItem = CurrentItem.PlaybackItem;
                     }
 
                     OnPropertyChanged(new PropertyChangedEventArgs(nameof(CurrentItemIndex)));
@@ -104,12 +101,12 @@ namespace SnpApp.ViewModels
                 throw new ArgumentException("The passed in data model and playback model did not have the same sequence of items");
 
             // Initialize the view model items
-            initializing = true;
+            _initializing = true;
 
             foreach (var mediaItem in mediaList)
                 Add(new MediaItemViewModel(this, mediaItem));
 
-            initializing = false;
+            _initializing = false;
 
             // The view model supports TwoWay binding so update when the playback list item changes
             PlaybackList.CurrentItemChanged += PlaybackList_CurrentItemChanged;
@@ -123,7 +120,7 @@ namespace SnpApp.ViewModels
             base.InsertItem(index, item);
 
             // Don't add items during construction
-            if (!initializing)
+            if (!_initializing)
                 PlaybackList.Items.Add(item.PlaybackItem);
         }
 
@@ -167,14 +164,14 @@ namespace SnpApp.ViewModels
         {
             // If the event was unsubscribed before 
             // this handler executed just return.
-            if (disposed)
+            if (_disposed)
                 return;
 
-            await dispatcherQueue.EnqueueAsync(() =>
+            await _dispatcherQueue.EnqueueAsync(() =>
             {
                 // If the event was unsubscribed before 
                 // this handler executed just return.
-                if (disposed)
+                if (_disposed)
                     return;
 
                 var playbackItem = args.NewItem;
@@ -194,12 +191,12 @@ namespace SnpApp.ViewModels
 
         public void Dispose()
         {
-            if (disposed)
+            if (_disposed)
                 return;
 
             PlaybackList.CurrentItemChanged -= PlaybackList_CurrentItemChanged;
 
-            disposed = true;
+            _disposed = true;
         }
     }
 }

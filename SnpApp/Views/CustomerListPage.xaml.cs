@@ -98,20 +98,13 @@ public sealed partial class CustomerListPage
     }
 
     /// <summary>
-    ///     Applies any existing filter when navigating to the page.
-    /// </summary>
-    protected override async void OnNavigatedTo(NavigationEventArgs e)
-    {
-    }
-
-    /// <summary>
     ///     Menu flyout click control for selecting a customer and displaying details.
     /// </summary>
     private void ViewDetails_Click(object sender, RoutedEventArgs e)
     {
         if (ViewModel.SelectedCustomer != null)
         {
-            NavigationRootPage.GetForElement(this).Navigate(typeof(CustomerDetailPage), ViewModel.SelectedCustomer.Model.Id, new DrillInNavigationTransitionInfo());
+            NavigationRootPage.GetForElement(this)?.Navigate(typeof(CustomerDetailPage), ViewModel.SelectedCustomer.Model.Id, new DrillInNavigationTransitionInfo());
             
             // Frame.Navigate(typeof(CustomerDetailPage), ViewModel.SelectedCustomer.Model.Id,
             //     new DrillInNavigationTransitionInfo());
@@ -167,10 +160,14 @@ public sealed partial class CustomerListPage
     /// </summary>
     private async void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
+#pragma warning disable CS8601 // Possible null reference assignment.
         ViewModel.SearchRequestModel.SortColumn = e.Column.Tag.ToString();
+#pragma warning restore CS8601 // Possible null reference assignment.
         var isAscending = e.Column.SortDirection is null or DataGridSortDirection.Descending;
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         foreach (var column in (sender as DataGrid).Columns) column.SortDirection = null;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         var direction = isAscending
             ? DataGridSortDirection.Ascending

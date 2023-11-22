@@ -14,7 +14,7 @@ namespace SnpApp.ViewModels
     /// </summary>
     public class SiteViewModel : ObservableObject
     {
-        private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         /// <summary>
         /// Initializes a new instance of the SiteViewModel class that wraps the specified Site object.
@@ -45,7 +45,7 @@ namespace SnpApp.ViewModels
         private async void LoadCustomer(uint customerId)
         {
             var customer = await Ioc.Default.GetRequiredService<CustomerService>().GetOneById(customerId);
-            await dispatcherQueue.EnqueueAsync(() =>
+            await _dispatcherQueue.EnqueueAsync(() =>
             { 
                 Customer = customer;
             });
@@ -193,7 +193,7 @@ namespace SnpApp.ViewModels
         /// </summary>
         public async Task SaveSiteAsync()
         {
-            Site result = null;
+            Site? result;
             try
             {
                 result = await Ioc.Default.GetRequiredService<SiteService>().UpsertAsync(Model);
@@ -206,11 +206,11 @@ namespace SnpApp.ViewModels
 
             if (result != null)
             {
-                await dispatcherQueue.EnqueueAsync(() => IsModified = false);
+                await _dispatcherQueue.EnqueueAsync(() => IsModified = false);
             }
             else
             {
-                await dispatcherQueue.EnqueueAsync(() => new SiteSavingException(
+                await _dispatcherQueue.EnqueueAsync(() => new SiteSavingException(
                     "Unable to save. There might have been a problem " +
                     "connecting to the database. Please try again."));
             }

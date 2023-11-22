@@ -10,7 +10,7 @@ using Windows.UI;
 using System;
 using CommunityToolkit.WinUI;
 
-namespace SnpApp.Controls
+namespace SnpApp.UserControls
 {
     public sealed partial class HomePageHeaderImage
     {

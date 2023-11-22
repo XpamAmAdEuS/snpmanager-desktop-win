@@ -1,19 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Windows.Storage;
-using Windows.Storage.Pickers;
-using Windows.System;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Navigation;
-using WinRT;
-using System.Runtime.InteropServices;
 
 namespace SnpApp.Helper
 {
@@ -24,9 +10,9 @@ namespace SnpApp.Helper
         // https://task.ms/44172495
         public static Windows.UI.Color ApplySystemThemeToCaptionButtons(Window window)
         {
-            var frame = (Application.Current as App).GetRootFrame() as FrameworkElement;
+            var frame = (Application.Current as App)?.GetRootFrame() as FrameworkElement;
             Windows.UI.Color color;
-            if (frame.ActualTheme == ElementTheme.Dark)
+            if (frame != null && frame.ActualTheme == ElementTheme.Dark)
             {
                 color = Colors.White;
             }

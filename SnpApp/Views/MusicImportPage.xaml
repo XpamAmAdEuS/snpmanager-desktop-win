@@ -6,7 +6,7 @@
     xmlns:common="using:SnpApp.Common"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:SnpApp.Controls"
+    xmlns:local="using:SnpApp.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:SnpApp.Models"
     xmlns:primitives="using:CommunityToolkit.WinUI.UI.Controls.Primitives"

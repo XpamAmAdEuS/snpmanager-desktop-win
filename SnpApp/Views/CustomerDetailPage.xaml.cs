@@ -33,7 +33,7 @@ namespace SnpApp.Views
         /// <summary>
         /// Used to bind the UI to the data.
         /// </summary>
-        public CustomerViewModel ViewModel
+        public CustomerViewModel? ViewModel
         {
             get => _viewModel;
             set
@@ -49,7 +49,7 @@ namespace SnpApp.Views
         /// <summary>
         /// Navigate to the previous page when the user cancels the creation of a new customer record.
         /// </summary>
-        private void AddNewCustomerCanceled(object sender, EventArgs e) => Frame.GoBack();
+        private void AddNewCustomerCanceled(object? sender, EventArgs e) => Frame.GoBack();
 
         /// <summary>
         /// Displays the selected customer data.
@@ -71,14 +71,16 @@ namespace SnpApp.Views
             else
             {
                 
-                NavigationRootPageArgs args = (NavigationRootPageArgs)e.Parameter;
-                uint id = (uint)args.Parameter;
-                var c = await Ioc.Default.GetRequiredService<CustomerService>().GetOneById(id);
-                ViewModel = new CustomerViewModel(c);
-
+                var args = (NavigationRootPageArgs)e.Parameter;
+                if (args.Parameter != null)
+                {
+                    var id = (uint)args.Parameter;
+                    var c = await Ioc.Default.GetRequiredService<CustomerService>().GetOneById(id);
+                    ViewModel = new CustomerViewModel(c);
+                }
             }
 
-            ViewModel.AddNewCustomerCanceled += AddNewCustomerCanceled;
+            if (ViewModel != null) ViewModel.AddNewCustomerCanceled += AddNewCustomerCanceled;
             base.OnNavigatedTo(e);
         }
 
@@ -87,7 +89,7 @@ namespace SnpApp.Views
         /// </summary>
         protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            if (ViewModel.IsModified)
+            if (ViewModel is { IsModified: true })
             {
                 // Cancel the navigation immediately, otherwise it will continue at the await call. 
                 e.Cancel = true;
@@ -138,7 +140,7 @@ namespace SnpApp.Views
         /// </summary>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            ViewModel.AddNewCustomerCanceled -= AddNewCustomerCanceled;
+            if (ViewModel != null) ViewModel.AddNewCustomerCanceled -= AddNewCustomerCanceled;
             base.OnNavigatedFrom(e);
         }
 
@@ -153,7 +155,7 @@ namespace SnpApp.Views
         /// <summary>
         /// Queries the database for a customer result matching the search text entered.
         /// </summary>
-        private async void CustomerSearchBox_TextChanged(AutoSuggestBox sender,
+        private void CustomerSearchBox_TextChanged(AutoSuggestBox sender,
             AutoSuggestBoxTextChangedEventArgs args)
         {
             // We only want to get results when it was a user typing,
@@ -190,21 +192,28 @@ namespace SnpApp.Views
       
         
         private void ViewSiteButton_Click(object sender, RoutedEventArgs e) =>
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             Frame.Navigate(typeof(SiteDetailPage), ((sender as FrameworkElement).DataContext as Site).Id,
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 new DrillInNavigationTransitionInfo());
 
         /// <summary>
         /// Adds a new order for the customer.
         /// </summary>
-        private void AddSite_Click(object sender, RoutedEventArgs e) =>
-            Frame.Navigate(typeof(SiteDetailPage), ViewModel.Model.Id);
-        
+        private void AddSite_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel != null) Frame.Navigate(typeof(SiteDetailPage), ViewModel.Model.Id);
+        }
+
+
 
         /// <summary>
         /// Sorts the data in the DataGrid.
         /// </summary>
-        private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e) =>
-            (sender as DataGrid).Sort(e.Column, ViewModel.Sites.Sort);
+        private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+        {
+            if (ViewModel != null) ((DataGrid)sender).Sort(e.Column, ViewModel.Sites.Sort);
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

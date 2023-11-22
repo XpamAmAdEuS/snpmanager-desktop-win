@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Interop;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
@@ -10,6 +12,8 @@ using CommunityToolkit.WinUI;
 using Microsoft.UI.Dispatching;
 using SnpApp.Models;
 using SnpApp.Services;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace SnpApp.ViewModels;
 
@@ -18,6 +22,13 @@ public class MusicImportListViewModel : ObservableObject
     private bool _isLoading;
     private int _pageCount;
     private int _pageNumber;
+    private bool _isProcessing;
+    
+    [Reactive]
+    public bool? AllStatesIsChecked { get; set; }
+    
+    [Reactive]
+    public bool AllStatesIsSelected { get; set; }
     
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
@@ -48,8 +59,82 @@ public class MusicImportListViewModel : ObservableObject
         string[] fields = { "title", "email", "address", "phone", "person" };
         SearchRequestModel.Fields.AddRange(fields);
         // Entries = new ();
+        
+        AllStatesIsChecked = false;
 
+        
+        this.WhenAnyValue(x => x.AllStatesIsChecked).Subscribe(x =>
+        {
+            if (x != null)
+            {
+                UpdateCheckBoxes(x);
+            }
+        });
+        this.WhenAnyValue(x => x.AllStatesIsSelected).Subscribe(x =>
+        {
+            if ((AllStatesIsChecked == null || AllStatesIsChecked == false) && x == true)
+            {
+                AllStatesIsChecked = true;
+            }
+            else if (AllStatesIsChecked == true && x == false)
+            {
+                AllStatesIsChecked = false;
+            }
+        });
+        
+        
         Refresh();
+    }
+    
+    private void OnSelectedStatesChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        UpdateAllStates();
+    }
+
+    private void UpdateCheckBoxes(bool? isChecked)
+    {
+        if (!_isProcessing)
+        {
+            _isProcessing = true;
+
+            if (isChecked == true)
+            {
+                foreach (var state in Entries)
+                {
+                    if (state.IsChecked == false) state.IsChecked = true;
+                }
+            }
+            else if (isChecked == false)
+            {
+                foreach (var state in Entries)
+                {
+                    if (state.IsChecked == true) state.IsChecked = false;
+                }
+            }
+
+            _isProcessing = false;
+        }
+    }
+
+    private void UpdateAllStates()
+    {
+        var selectedStatesCount = SelectedStates.Count;
+        Debug.WriteLine($"CheckBoxes: {selectedStatesCount}/{Entries.Count}");
+
+        if (selectedStatesCount == Entries.Count)
+        {
+            AllStatesIsSelected = true;
+            AllStatesIsChecked = true;
+        }
+        else if (selectedStatesCount == 0)
+        {
+            AllStatesIsSelected = false;
+            AllStatesIsChecked = false;
+        }
+        else
+        {
+            AllStatesIsChecked = null;
+        }
     }
     
     private void OnCheckAll()
@@ -74,6 +159,8 @@ public class MusicImportListViewModel : ObservableObject
     private ObservableCollection<MusicImport> _entries = new ();
     
     // public ObservableCollection<MusicImport> Entries { get; } = new();
+    
+    public ObservableCollection<MusicImport> SelectedStates { get; set; }
     
     public ObservableCollection<MusicImport> Entries
     {

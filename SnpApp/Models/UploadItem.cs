@@ -13,8 +13,7 @@ namespace SnpApp.Models;
 
 public partial class UploadItem :  ObservableObject
 {
-    
-    static  ChannelBase _channelBase = GrpcChannel.ForAddress(
+    private static readonly ChannelBase ChannelBase = GrpcChannel.ForAddress(
         Constants.GrpcUrl,
         new GrpcChannelOptions
         {
@@ -26,16 +25,16 @@ public partial class UploadItem :  ObservableObject
                 logging.SetMinimumLevel(LogLevel.Debug);
             })
         });
-        
-        
-    MusicUploadCrud.MusicUploadCrudClient client = new (_channelBase);
+
+
+    private readonly MusicUploadCrud.MusicUploadCrudClient _client = new (ChannelBase);
     
     [ObservableProperty]
-    private string _name;
+    private string _name  = null!;
     [ObservableProperty]
-    private string _id;
+    private string _id  = null!;
     [ObservableProperty]
-    private string _path;
+    private string _path  = null!;
     [ObservableProperty]
     private double _progress;
     [ObservableProperty]
@@ -48,7 +47,7 @@ public partial class UploadItem :  ObservableObject
     {
         
         Progress = 0;
-        using var requestStream = client.UploadMusic();
+        using var requestStream = _client.UploadMusic();
         const int chunkSize = 512000;
         
         byte[] fileData;

@@ -30,10 +30,10 @@ namespace SnpApp.Navigation
         public static NavigationRootPage? Current { get; private set; }
 
 
-        public static NavigationRootPage GetForElement(object obj)
+        public static NavigationRootPage? GetForElement(object obj)
         {
-            UIElement element = (UIElement)obj;
-            Window window = WindowHelper.GetWindowForElement(element);
+            var element = (UIElement)obj;
+            var window = WindowHelper.GetWindowForElement(element);
             if (window != null)
             {
                 return (NavigationRootPage)window.Content;
@@ -41,10 +41,7 @@ namespace SnpApp.Navigation
             return null;
         }
 
-        public Microsoft.UI.Xaml.Controls.NavigationView NavigationView
-        {
-            get { return NavigationViewControl; }
-        }
+        public NavigationView NavigationView => NavigationViewControl;
 
         public Action NavigationViewLoaded { get; set; }
 
@@ -52,7 +49,9 @@ namespace SnpApp.Navigation
 
         public string AppTitleText => "SnpManager";
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public NavigationRootPage()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             this.InitializeComponent();
             dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
@@ -76,14 +75,20 @@ namespace SnpApp.Navigation
             {
                 NavigationOrientationHelper.UpdateNavigationViewForElement(NavigationOrientationHelper.IsLeftMode(), this);
 
-                Window window = WindowHelper.GetWindowForElement(sender as UIElement);
-                window.Title = AppTitleText;
-                window.ExtendsContentIntoTitleBar = true;
-                window.Activated += Window_Activated;
-                window.SetTitleBar(this.AppTitleBar);
+#pragma warning disable CS8604 // Possible null reference argument.
+                var window = WindowHelper.GetWindowForElement(sender as UIElement);
+#pragma warning restore CS8604 // Possible null reference argument.
+                if (window != null)
+                {
+                    window.Title = AppTitleText;
+                    window.ExtendsContentIntoTitleBar = true;
+                    window.Activated += Window_Activated;
+                    window.SetTitleBar(this.AppTitleBar);
 
-                AppWindow appWindow = WindowHelper.GetAppWindow(window);
-                appWindow.SetIcon("Assets/Tiles/GalleryIcon.ico");
+                    var appWindow = WindowHelper.GetAppWindow(window);
+                    appWindow.SetIcon("Assets/Tiles/GalleryIcon.ico");
+                }
+
                 _settings = new UISettings();
                 _settings.ColorValuesChanged += _settings_ColorValuesChanged; // cannot use FrameworkElement.ActualThemeChanged event because the triggerTitleBarRepaint workaround no longer works
             };
@@ -143,7 +148,9 @@ namespace SnpApp.Navigation
         {
             var args = new NavigationRootPageArgs();
             args.NavigationRootPage = this;
+#pragma warning disable CS8601 // Possible null reference assignment.
             args.Parameter = targetPageArguments;
+#pragma warning restore CS8601 // Possible null reference assignment.
             rootFrame.Navigate(pageType, args, navigationTransitionInfo);
         }
 
@@ -205,15 +212,19 @@ namespace SnpApp.Navigation
             Task.Delay(500).ContinueWith(_ => this.NavigationViewLoaded?.Invoke(), TaskScheduler.FromCurrentSynchronizationContext());
 
             var navigationView = sender as NavigationView;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             navigationView.RegisterPropertyChangedCallback(NavigationView.IsPaneOpenProperty, OnIsPaneOpenChanged);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         private void OnIsPaneOpenChanged(DependencyObject sender, DependencyProperty dp)
         {
             var navigationView = sender as NavigationView;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             var announcementText = navigationView.IsPaneOpen ? "Navigation Pane Opened" : "Navigation Pane Closed";
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-            UIHelper.AnnounceActionForAccessibility(navigationView, announcementText, "NavigationViewPaneIsOpenChangeNotificationId");
+            UiHelper.AnnounceActionForAccessibility(navigationView, announcementText, "NavigationViewPaneIsOpenChangeNotificationId");
         }
 
         private void OnNavigationViewSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -299,7 +310,9 @@ namespace SnpApp.Navigation
                 var item = rawItem as NavigationViewItem;
 
                 // Check if we are this category
-                if ((string)item.Content == name)
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+                if ((string)item?.Content == name)
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                 {
                     NavigationView.SelectedItem = item;
                     changedSelection = true;
@@ -308,7 +321,7 @@ namespace SnpApp.Navigation
                 else
                 {
                     // Maybe one of our items is?
-                    if (item.MenuItems.Count != 0)
+                    if (item != null && item.MenuItems.Count != 0)
                     {
                         foreach (NavigationViewItem child in item.MenuItems)
                         {
@@ -512,8 +525,8 @@ namespace SnpApp.Navigation
 
     public class NavigationRootPageArgs
     {
-        public NavigationRootPage NavigationRootPage;
-        public object Parameter;
+        public NavigationRootPage? NavigationRootPage;
+        public object? Parameter;
     }
 
     public enum DeviceType

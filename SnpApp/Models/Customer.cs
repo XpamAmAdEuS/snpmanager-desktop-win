@@ -6,22 +6,22 @@ namespace SnpApp.Models
     public class Customer : IdObject
     {
       
-        public string Title { get; set; }
+        public string Title { get; set; } = default!;
         
-        public string Person { get; set; }
+        public string Person { get; set; } = default!;
      
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
         
-        public string Phone { get; set; }
+        public string Phone { get; set; } = default!;
         
-        public string Address { get; set; }
+        public string Address { get; set; } = default!;
         
         public bool Muted { get; set; }
         
-        public SizeLimitModel SizeLimit { get; set; }
+        public SizeLimitModel SizeLimit { get; set; } = default!;
         
         public ulong SizeLimitValue { get; set; }
         
-        public List<Site> Sites  { get; set; }
+        public List<Site> Sites  { get; set; } = default!;
     }
 }

@@ -8,15 +8,15 @@ namespace SnpApp.Models
     {
         private bool _isChecked;
         
-        public uint Id { get; set; }
-        public string FileName { get; set; }
-        public ulong FileSize { get; set; }
-        public string Hash { get; set; }
-        public ulong Duration { get; set; }
-        public string Artist { get; set; }
-        public string Title { get; set; }
-        public string Album { get; set; }
-        public string Genre { get; set; }
+        public uint Id { get; set; } = default!;
+        public string FileName { get; set; } = default!;
+        public ulong FileSize { get; set; } = default!;
+        public string Hash { get; set; } = default!;
+        public ulong Duration { get; set; } = default!;
+        public string Artist { get; set; } = default!;
+        public string Title { get; set; } = default!;
+        public string Album { get; set; } = default!;
+        public string Genre { get; set; } = default!;
         
         public bool IsChecked
         {

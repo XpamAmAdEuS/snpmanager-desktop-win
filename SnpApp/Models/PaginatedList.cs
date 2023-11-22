@@ -9,7 +9,7 @@ namespace SnpApp.Models
 
         public int PageCount { get; private set; }
         
-        public List<T> Items { get; private set; }
+        public List<T>? Items { get; private set; }
 
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
         {

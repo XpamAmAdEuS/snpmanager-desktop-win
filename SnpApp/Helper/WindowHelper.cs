@@ -44,7 +44,7 @@ namespace SnpApp.Helper
             return AppWindow.GetFromWindowId(wndId);
         }
 
-        public static Window GetWindowForElement(UIElement element)
+        public static Window? GetWindowForElement(UIElement element)
         {
             if (element.XamlRoot != null)
             {
@@ -56,7 +56,9 @@ namespace SnpApp.Helper
                     }
                 }
             }
+#pragma warning disable CS8603 // Possible null reference return.
             return null;
+#pragma warning restore CS8603 // Possible null reference return.
         }
         // get dpi for an element
         public static double GetRasterizationScaleForElement(UIElement element)
@@ -74,7 +76,7 @@ namespace SnpApp.Helper
             return 0.0;
         }
 
-        public static List<Window> ActiveWindows { get { return _activeWindows; }}
+        public static List<Window> ActiveWindows => _activeWindows;
 
         private static List<Window> _activeWindows = new ();
 

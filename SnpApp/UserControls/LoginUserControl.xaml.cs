@@ -4,9 +4,9 @@ using Microsoft.UI.Xaml.Controls;
 using SnpApp.Common;
 using SnpApp.Services;
 
-namespace SnpApp.Views.Widgets
+namespace SnpApp.UserControls
 {
-    public sealed partial class LoginUserControl
+    public sealed partial class LoginUserControl: UserControl
     {
         
         public new bool IsEnabled { get; set; }

@@ -6,37 +6,37 @@ using Microsoft.UI.Dispatching;
 
 namespace SnpApp
 {
-    class IdleSynchronizer
+    internal class IdleSynchronizer
     {
-        const uint s_idleTimeoutMs = 100000;
-        const int s_defaultWaitForEventMs = 10000;
+        private const uint SIdleTimeoutMs = 100000;
+        private const int SDefaultWaitForEventMs = 10000;
 
-        const string s_hasAnimationsHandleName = "HasAnimations";
-        const string s_animationsCompleteHandleName = "AnimationsComplete";
-        const string s_hasDeferredAnimationOperationsHandleName = "HasDeferredAnimationOperations";
-        const string s_deferredAnimationOperationsCompleteHandleName = "DeferredAnimationOperationsComplete";
-        const string s_rootVisualResetHandleName = "RootVisualReset";
-        const string s_imageDecodingIdleHandleName = "ImageDecodingIdle";
-        const string s_fontDownloadsIdleHandleName = "FontDownloadsIdle";
+        private const string SHasAnimationsHandleName = "HasAnimations";
+        private const string SAnimationsCompleteHandleName = "AnimationsComplete";
+        private const string SHasDeferredAnimationOperationsHandleName = "HasDeferredAnimationOperations";
+        private const string SDeferredAnimationOperationsCompleteHandleName = "DeferredAnimationOperationsComplete";
+        private const string SRootVisualResetHandleName = "RootVisualReset";
+        private const string SImageDecodingIdleHandleName = "ImageDecodingIdle";
+        private const string SFontDownloadsIdleHandleName = "FontDownloadsIdle";
 
-        private DispatcherQueue m_dispatcherQueue = null;
+        private readonly DispatcherQueue _mDispatcherQueue;
 
-        private Handle m_hasAnimationsHandle;
-        private Handle m_animationsCompleteHandle;
-        private Handle m_hasDeferredAnimationOperationsHandle;
-        private Handle m_deferredAnimationOperationsCompleteHandle;
-        private Handle m_rootVisualResetHandle;
-        private Handle m_imageDecodingIdleHandle;
-        private Handle m_fontDownloadsIdleHandle;
+        private readonly Handle _mHasAnimationsHandle;
+        private readonly Handle _mAnimationsCompleteHandle;
+        private readonly Handle _mHasDeferredAnimationOperationsHandle;
+        private readonly Handle _mDeferredAnimationOperationsCompleteHandle;
+        private readonly Handle _mRootVisualResetHandle;
+        private readonly Handle _mImageDecodingIdleHandle;
+        private readonly Handle _mFontDownloadsIdleHandle;
 
-        private bool m_waitForAnimationsIsDisabled = false;
-        private bool m_isRS2OrHigherInitialized = false;
-        private bool m_isRS2OrHigher = false;
+        private bool _mWaitForAnimationsIsDisabled;
+        private bool _mIsRs2OrHigherInitialized;
+        private bool _mIsRs2OrHigher;
 
         private Handle OpenNamedEvent(uint processId, uint threadId, string eventNamePrefix)
         {
-            string eventName = string.Format("{0}.{1}.{2}", eventNamePrefix, processId, threadId);
-            Handle handle = new Handle(
+            var eventName = $"{eventNamePrefix}.{processId}.{threadId}";
+            var handle = new Handle(
                 NativeMethods.OpenEvent(
                     (uint)(SyncObjectAccess.EVENT_MODIFY_STATE | SyncObjectAccess.SYNCHRONIZE),
                     false /* inherit handle */,
@@ -62,10 +62,10 @@ namespace SnpApp
 
         private Handle OpenNamedEvent(DispatcherQueue dispatcherQueue, string eventNamePrefix)
         {
-            return OpenNamedEvent(NativeMethods.GetCurrentProcessId(), GetUIThreadId(dispatcherQueue), eventNamePrefix);
+            return OpenNamedEvent(NativeMethods.GetCurrentProcessId(), GetUiThreadId(dispatcherQueue), eventNamePrefix);
         }
 
-        private uint GetUIThreadId(DispatcherQueue dispatcherQueue)
+        private uint GetUiThreadId(DispatcherQueue dispatcherQueue)
         {
             uint threadId = 0;
             if (dispatcherQueue.HasThreadAccess)
@@ -74,50 +74,50 @@ namespace SnpApp
             }
             else
             {
-                AutoResetEvent threadIdReceivedEvent = new AutoResetEvent(false);
+                var threadIdReceivedEvent = new AutoResetEvent(false);
 
                 dispatcherQueue.TryEnqueue(
                     DispatcherQueuePriority.Normal,
-                    new DispatcherQueueHandler(() =>
+                    () =>
                     {
                         threadId = NativeMethods.GetCurrentThreadId();
                         threadIdReceivedEvent.Set();
-                    }));
+                    });
 
-                threadIdReceivedEvent.WaitOne(s_defaultWaitForEventMs);
+                threadIdReceivedEvent.WaitOne(SDefaultWaitForEventMs);
             }
 
             return threadId;
         }
 
-        private static IdleSynchronizer instance = null;
+        private static IdleSynchronizer? _instance;
 
-        public static IdleSynchronizer Instance
+        private static IdleSynchronizer Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
                     throw new Exception("Init() must be called on the UI thread before retrieving Instance.");
                 }
 
-                return instance;
+                return _instance;
             }
         }
 
-        public string Log { get; set; }
-        public int TickCountBegin { get; set; }
+        private string? Log { get; set; }
+        private int TickCountBegin { get; set; }
 
         private IdleSynchronizer(DispatcherQueue dispatcherQueue)
         {
-            m_dispatcherQueue = dispatcherQueue;
-            m_hasAnimationsHandle = OpenNamedEvent(m_dispatcherQueue, s_hasAnimationsHandleName);
-            m_animationsCompleteHandle = OpenNamedEvent(m_dispatcherQueue, s_animationsCompleteHandleName);
-            m_hasDeferredAnimationOperationsHandle = OpenNamedEvent(m_dispatcherQueue, s_hasDeferredAnimationOperationsHandleName);
-            m_deferredAnimationOperationsCompleteHandle = OpenNamedEvent(m_dispatcherQueue, s_deferredAnimationOperationsCompleteHandleName);
-            m_rootVisualResetHandle = OpenNamedEvent(m_dispatcherQueue, s_rootVisualResetHandleName);
-            m_imageDecodingIdleHandle = OpenNamedEvent(m_dispatcherQueue, s_imageDecodingIdleHandleName);
-            m_fontDownloadsIdleHandle = OpenNamedEvent(m_dispatcherQueue, s_fontDownloadsIdleHandleName);
+            _mDispatcherQueue = dispatcherQueue;
+            _mHasAnimationsHandle = OpenNamedEvent(_mDispatcherQueue, SHasAnimationsHandleName);
+            _mAnimationsCompleteHandle = OpenNamedEvent(_mDispatcherQueue, SAnimationsCompleteHandleName);
+            _mHasDeferredAnimationOperationsHandle = OpenNamedEvent(_mDispatcherQueue, SHasDeferredAnimationOperationsHandleName);
+            _mDeferredAnimationOperationsCompleteHandle = OpenNamedEvent(_mDispatcherQueue, SDeferredAnimationOperationsCompleteHandleName);
+            _mRootVisualResetHandle = OpenNamedEvent(_mDispatcherQueue, SRootVisualResetHandleName);
+            _mImageDecodingIdleHandle = OpenNamedEvent(_mDispatcherQueue, SImageDecodingIdleHandleName);
+            _mFontDownloadsIdleHandle = OpenNamedEvent(_mDispatcherQueue, SFontDownloadsIdleHandleName);
         }
 
         public static void Init()
@@ -129,7 +129,7 @@ namespace SnpApp
                 throw new Exception("Init() must be called on the UI thread.");
             }
 
-            instance = new IdleSynchronizer(dispatcherQueue);
+            _instance = new IdleSynchronizer(dispatcherQueue);
         }
 
         public static void Wait()
@@ -173,7 +173,7 @@ namespace SnpApp
         private string WaitInternal(out string logMessage)
         {
             logMessage = string.Empty;
-            if (m_dispatcherQueue.HasThreadAccess)
+            if (_mDispatcherQueue.HasThreadAccess)
             {
                 return "Cannot wait for UI thread idle from the UI thread.";
             }
@@ -212,7 +212,7 @@ namespace SnpApp
                 // The AnimationsComplete handle sometimes is never set in RS1,
                 // so we'll skip waiting for animations to complete
                 // if we've timed out once while waiting for animations in RS1.
-                if (!m_waitForAnimationsIsDisabled)
+                if (!_mWaitForAnimationsIsDisabled)
                 {
                     errorString = WaitForAnimationsComplete(out hadAnimations);
                     if (errorString.Length > 0) { return errorString; }
@@ -245,9 +245,9 @@ namespace SnpApp
 
         private string WaitForRootVisualReset()
         {
-            uint waitResult = NativeMethods.WaitForSingleObject(m_rootVisualResetHandle.NativeHandle, 5000);
+            uint waitResult = NativeMethods.WaitForSingleObject(_mRootVisualResetHandle.NativeHandle, 5000);
 
-            if (waitResult != NativeMethods.WAIT_OBJECT_0 && waitResult != NativeMethods.WAIT_TIMEOUT)
+            if (waitResult != NativeMethods.WaitObject0 && waitResult != NativeMethods.WaitTimeout)
             {
                 return "Waiting for root visual reset handle returned an invalid value.";
             }
@@ -257,9 +257,9 @@ namespace SnpApp
 
         private string WaitForImageDecodingIdle()
         {
-            uint waitResult = NativeMethods.WaitForSingleObject(m_imageDecodingIdleHandle.NativeHandle, 5000);
+            uint waitResult = NativeMethods.WaitForSingleObject(_mImageDecodingIdleHandle.NativeHandle, 5000);
 
-            if (waitResult != NativeMethods.WAIT_OBJECT_0 && waitResult != NativeMethods.WAIT_TIMEOUT)
+            if (waitResult != NativeMethods.WaitObject0 && waitResult != NativeMethods.WaitTimeout)
             {
                 return "Waiting for image decoding idle handle returned an invalid value.";
             }
@@ -267,11 +267,11 @@ namespace SnpApp
             return string.Empty;
         }
 
-        string WaitForFontDownloadsIdle()
+        private string WaitForFontDownloadsIdle()
         {
-            uint waitResult = NativeMethods.WaitForSingleObject(m_fontDownloadsIdleHandle.NativeHandle, 5000);
+            uint waitResult = NativeMethods.WaitForSingleObject(_mFontDownloadsIdleHandle.NativeHandle, 5000);
 
-            if (waitResult != NativeMethods.WAIT_OBJECT_0 && waitResult != NativeMethods.WAIT_TIMEOUT)
+            if (waitResult != NativeMethods.WaitObject0 && waitResult != NativeMethods.WaitTimeout)
             {
                 return "Waiting for font downloads handle returned an invalid value.";
             }
@@ -279,18 +279,18 @@ namespace SnpApp
             return string.Empty;
         }
 
-        void WaitForIdleDispatcher()
+        private void WaitForIdleDispatcher()
         {
             AutoResetEvent shouldContinueEvent = new AutoResetEvent(false);
 
             // DispatcherQueueTimer runs at below idle priority, so we can use it to ensure that we only raise the event when we're idle.
-            var timer = m_dispatcherQueue.CreateTimer();
+            var timer = _mDispatcherQueue.CreateTimer();
             timer.Interval = TimeSpan.FromMilliseconds(0);
             timer.IsRepeating = false;
 
-            TypedEventHandler<DispatcherQueueTimer,object> tickHandler = null;
+            TypedEventHandler<DispatcherQueueTimer, object>? tickHandler = null;
 
-            tickHandler = (sender, args) =>
+            tickHandler = (_, _) =>
             {
                 timer.Tick -= tickHandler;
                 shouldContinueEvent.Set();
@@ -299,14 +299,14 @@ namespace SnpApp
             timer.Tick += tickHandler;
 
             timer.Start();
-            shouldContinueEvent.WaitOne(s_defaultWaitForEventMs);
+            shouldContinueEvent.WaitOne(SDefaultWaitForEventMs);
         }
 
-        string WaitForAnimationsComplete(out bool hadAnimations)
+        private string WaitForAnimationsComplete(out bool hadAnimations)
         {
             hadAnimations = false;
 
-            if (!NativeMethods.ResetEvent(m_animationsCompleteHandle.NativeHandle))
+            if (!NativeMethods.ResetEvent(_mAnimationsCompleteHandle.NativeHandle))
             {
                 return "Failed to reset AnimationsComplete handle.";
             }
@@ -315,32 +315,32 @@ namespace SnpApp
 
             // This will be signaled if and only if XAML plans to at some point in the near
             // future set the animations complete event.
-            uint waitResult = NativeMethods.WaitForSingleObject(m_hasAnimationsHandle.NativeHandle, 0);
+            uint waitResult = NativeMethods.WaitForSingleObject(_mHasAnimationsHandle.NativeHandle, 0);
 
-            if (waitResult != NativeMethods.WAIT_OBJECT_0 && waitResult != NativeMethods.WAIT_TIMEOUT)
+            if (waitResult != NativeMethods.WaitObject0 && waitResult != NativeMethods.WaitTimeout)
             {
                 return "HasAnimations handle wait returned an invalid value.";
             }
 
             AddLog("WaitForAnimationsComplete: After Wait(m_hasAnimationsHandle)");
 
-            bool hasAnimations = (waitResult == NativeMethods.WAIT_OBJECT_0);
+            bool hasAnimations = (waitResult == NativeMethods.WaitObject0);
 
             if (hasAnimations)
             {
-                uint animationCompleteWaitResult = NativeMethods.WaitForSingleObject(m_animationsCompleteHandle.NativeHandle, s_idleTimeoutMs);
+                uint animationCompleteWaitResult = NativeMethods.WaitForSingleObject(_mAnimationsCompleteHandle.NativeHandle, SIdleTimeoutMs);
 
                 AddLog("WaitForAnimationsComplete: HasAnimations, After Wait(m_animationsCompleteHandle)");
 
-                if (animationCompleteWaitResult != NativeMethods.WAIT_OBJECT_0)
+                if (animationCompleteWaitResult != NativeMethods.WaitObject0)
                 {
-                    if (!IsRS2OrHigher())
+                    if (!IsRs2OrHigher())
                     {
                         // The AnimationsComplete handle is sometimes just never signaled on RS1, ever.
                         // If we run into this problem, we'll just disable waiting for animations to complete
                         // and continue execution.  When the current test completes, we'll then close and reopen
                         // the test app to minimize the effects of this problem.
-                        m_waitForAnimationsIsDisabled = true;
+                        _mWaitForAnimationsIsDisabled = true;
 
                         hadAnimations = false;
                     }
@@ -353,31 +353,31 @@ namespace SnpApp
             return string.Empty;
         }
 
-        string WaitForDeferredAnimationOperationsComplete(out bool hadDeferredAnimationOperations)
+        private string WaitForDeferredAnimationOperationsComplete(out bool hadDeferredAnimationOperations)
         {
             hadDeferredAnimationOperations = false;
 
-            if (!NativeMethods.ResetEvent(m_deferredAnimationOperationsCompleteHandle.NativeHandle))
+            if (!NativeMethods.ResetEvent(_mDeferredAnimationOperationsCompleteHandle.NativeHandle))
             {
                 return "Failed to reset DeferredAnimationOperations handle.";
             }
 
             // This will be signaled if and only if XAML plans to at some point in the near
             // future set the animations complete event.
-            uint waitResult = NativeMethods.WaitForSingleObject(m_hasDeferredAnimationOperationsHandle.NativeHandle, 0);
+            uint waitResult = NativeMethods.WaitForSingleObject(_mHasDeferredAnimationOperationsHandle.NativeHandle, 0);
 
-            if (waitResult != NativeMethods.WAIT_OBJECT_0 && waitResult != NativeMethods.WAIT_TIMEOUT)
+            if (waitResult != NativeMethods.WaitObject0 && waitResult != NativeMethods.WaitTimeout)
             {
                 return "HasDeferredAnimationOperations handle wait returned an invalid value.";
             }
 
-            bool hasDeferredAnimationOperations = (waitResult == NativeMethods.WAIT_OBJECT_0);
+            bool hasDeferredAnimationOperations = (waitResult == NativeMethods.WaitObject0);
 
             if (hasDeferredAnimationOperations)
             {
-                uint animationCompleteWaitResult = NativeMethods.WaitForSingleObject(m_deferredAnimationOperationsCompleteHandle.NativeHandle, s_idleTimeoutMs);
+                uint animationCompleteWaitResult = NativeMethods.WaitForSingleObject(_mDeferredAnimationOperationsCompleteHandle.NativeHandle, SIdleTimeoutMs);
 
-                if (animationCompleteWaitResult != NativeMethods.WAIT_OBJECT_0 && animationCompleteWaitResult != NativeMethods.WAIT_TIMEOUT)
+                if (animationCompleteWaitResult != NativeMethods.WaitObject0 && animationCompleteWaitResult != NativeMethods.WaitTimeout)
                 {
                     return "Deferred animation operations complete wait took longer than idle timeout.";
                 }
@@ -387,15 +387,15 @@ namespace SnpApp
             return string.Empty;
         }
 
-        private bool IsRS2OrHigher()
+        private bool IsRs2OrHigher()
         {
-            if (!m_isRS2OrHigherInitialized)
+            if (!_mIsRs2OrHigherInitialized)
             {
-                m_isRS2OrHigherInitialized = true;
-                m_isRS2OrHigher = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 4);
+                _mIsRs2OrHigherInitialized = true;
+                _mIsRs2OrHigher = Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 4);
             }
 
-            return m_isRS2OrHigher;
+            return _mIsRs2OrHigher;
         }
     }
 
@@ -447,12 +447,12 @@ namespace SnpApp
         public static extern IntPtr OpenEvent(uint dwDesiredAccess, bool bInheritHandle, string lpName);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern UInt32 WaitForSingleObject(IntPtr hHandle, UInt32 dwMilliseconds);
+        public static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
 
-        public const UInt32 INFINITE = 0xFFFFFFFF;
-        public const UInt32 WAIT_ABANDONED = 0x00000080;
-        public const UInt32 WAIT_OBJECT_0 = 0x00000000;
-        public const UInt32 WAIT_TIMEOUT = 0x00000102;
+        public const uint Infinite = 0xFFFFFFFF;
+        public const uint WaitAbandoned = 0x00000080;
+        public const uint WaitObject0 = 0x00000000;
+        public const uint WaitTimeout = 0x00000102;
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool ResetEvent(IntPtr hEvent);

@@ -19,7 +19,7 @@ namespace SnpApp.Helper
             {
                 if (NativeHelper.IsAppPackaged)
                 {
-                    string savedJwtToken = ApplicationData.Current.LocalSettings.Values[SelectedAppJwtTokenKey]?.ToString();
+                    var savedJwtToken = ApplicationData.Current.LocalSettings.Values[SelectedAppJwtTokenKey]?.ToString();
 
                     if (savedJwtToken != null)
                     {
@@ -43,7 +43,7 @@ namespace SnpApp.Helper
         {
             if (NativeHelper.IsAppPackaged)
             {
-                string savedJwtToken = ApplicationData.Current.LocalSettings.Values[SelectedAppJwtTokenKey]?.ToString();
+                var savedJwtToken = ApplicationData.Current.LocalSettings.Values[SelectedAppJwtTokenKey]?.ToString();
 
                 if (savedJwtToken != null)
                 {

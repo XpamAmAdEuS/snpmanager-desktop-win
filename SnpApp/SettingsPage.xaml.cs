@@ -1,20 +1,8 @@
-﻿//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
-using System;
+﻿using System;
 using SnpApp.Helper;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.Storage;
-using Windows.Storage.Pickers;
 using Windows.System;
 using SnpApp.Navigation;
 using SnpApp.ViewModels;
@@ -24,7 +12,7 @@ namespace SnpApp
     /// <summary>
     /// A page that displays the app's settings.
     /// </summary>
-    public sealed partial class SettingsPage : Page
+    public sealed partial class SettingsPage
     {
         
         public SettingsViewModel ViewModel { get; set; }
@@ -33,12 +21,12 @@ namespace SnpApp
         {
             get
             {
-                var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
-                return string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+                var version = System.Reflection.Assembly.GetEntryAssembly()!.GetName().Version;
+                return $"{version!.Major}.{version.Minor}.{version.Build}.{version.Revision}";
             }
         }
         
-        private int lastNavigationSelectionMode = 0;
+        private int _lastNavigationSelectionMode;
 
         public SettingsPage()
         {
@@ -47,11 +35,6 @@ namespace SnpApp
             
             this.InitializeComponent();
             Loaded += OnSettingsPageLoaded;
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
         }
 
         private void OnSettingsPageLoaded(object sender, RoutedEventArgs e)
@@ -70,7 +53,7 @@ namespace SnpApp
                     break;
             }
 
-            NavigationRootPage navigationRootPage = NavigationRootPage.GetForElement(this);
+            var navigationRootPage = NavigationRootPage.GetForElement(this);
             if (navigationRootPage != null)
             {
                 if (navigationRootPage.NavigationView.PaneDisplayMode == NavigationViewPaneDisplayMode.Auto)
@@ -81,7 +64,7 @@ namespace SnpApp
                 {
                     navigationLocation.SelectedIndex = 1;
                 }
-                lastNavigationSelectionMode = navigationLocation.SelectedIndex;
+                _lastNavigationSelectionMode = navigationLocation.SelectedIndex;
             }
 
             if (ElementSoundPlayer.State == ElementSoundPlayerState.On)
@@ -100,20 +83,20 @@ namespace SnpApp
                 ThemeHelper.RootTheme = App.GetEnum<ElementTheme>(selectedTheme);
                 if (selectedTheme == "Dark")
                 {
-                    TitleBarHelper.SetCaptionButtonColors(window, Colors.White);
+                    if (window != null) TitleBarHelper.SetCaptionButtonColors(window, Colors.White);
                     color = selectedTheme;
                 }
                 else if (selectedTheme == "Light")
                 {
-                    TitleBarHelper.SetCaptionButtonColors(window, Colors.Black);
+                    if (window != null) TitleBarHelper.SetCaptionButtonColors(window, Colors.Black);
                     color = selectedTheme;
                 }
                 else
                 {
-                    color = TitleBarHelper.ApplySystemThemeToCaptionButtons(window) == Colors.White  ? "Dark" : "Light";
+                    color = window != null && TitleBarHelper.ApplySystemThemeToCaptionButtons(window) == Colors.White  ? "Dark" : "Light";
                 }
                 // announce visual change to automation
-                UIHelper.AnnounceActionForAccessibility(sender as UIElement, $"Theme changed to {color}",
+                UiHelper.AnnounceActionForAccessibility((sender as UIElement)!, $"Theme changed to {color}",
                                                                                 "ThemeChangedNotificationActivityId");
             }
         }
@@ -140,30 +123,11 @@ namespace SnpApp
         {
             // Since setting the left mode does not look at the old setting we 
             // need to check if this is an actual update
-            if (navigationLocation.SelectedIndex != lastNavigationSelectionMode)
+            if (navigationLocation.SelectedIndex != _lastNavigationSelectionMode)
             {
                 NavigationOrientationHelper.IsLeftModeForElement(navigationLocation.SelectedIndex == 0, this);
-                lastNavigationSelectionMode = navigationLocation.SelectedIndex;
+                _lastNavigationSelectionMode = navigationLocation.SelectedIndex;
             }
-        }
-
-        private async void FolderButton_Click(object sender, RoutedEventArgs e)
-        {
-            FolderPicker folderPicker = new FolderPicker();
-            folderPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
-            folderPicker.FileTypeFilter.Add(".png"); // meaningless, but you have to have something
-            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
-
-            // if (folder != null)
-            // {
-            //     UIHelper.ScreenshotStorageFolder = folder;
-            //     screenshotFolderLink.Content = UIHelper.ScreenshotStorageFolder.Path;
-            // }
-        }
-
-        private async void screenshotFolderLink_Click(object sender, RoutedEventArgs e)
-        {
-            await Launcher.LaunchFolderAsync(UIHelper.ScreenshotStorageFolder);
         }
 
         private void spatialSoundBox_Toggled(object sender, RoutedEventArgs e)

@@ -71,7 +71,7 @@ namespace SnpApp.Helper
         {
             if (NativeHelper.IsAppPackaged)
             {
-                string savedTheme = ApplicationData.Current.LocalSettings.Values[SelectedAppThemeKey]?.ToString();
+                var savedTheme = ApplicationData.Current.LocalSettings.Values[SelectedAppThemeKey]?.ToString();
 
                 if (savedTheme != null)
                 {

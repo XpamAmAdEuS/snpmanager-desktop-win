@@ -5,7 +5,6 @@ using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Navigation;
 using SnpApp.Helper;
 using SnpApp.ViewModels;
 using WinRT.Interop;
@@ -29,22 +28,6 @@ namespace SnpApp.Views
         }
         
         public MusicUploadViewModel ViewModel => (MusicUploadViewModel)DataContext;
-
-        /// <summary>
-        /// Resets the customer list when leaving the page.
-        /// </summary>
-        protected override async void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            
-        }
-
-        /// <summary>
-        /// Applies any existing filter when navigating to the page.
-        /// </summary>
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-           
-        }
         
          private async void PickFolderButton_Click(object sender, RoutedEventArgs e)
         {

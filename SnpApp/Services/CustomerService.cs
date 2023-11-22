@@ -65,9 +65,7 @@ namespace SnpApp.Services
         {
 
             var request = new ProtoCustomerRepo.Types.UpdateRequest();
-            
             var reqCustomer = new ProtoCustomerRepo.Types.ProtoCustomer();
-
             request.ID = customer.Id;
             reqCustomer.Id = customer.Id;
             reqCustomer.Title = customer.Title;
@@ -77,22 +75,10 @@ namespace SnpApp.Services
             reqCustomer.Person = customer.Person;
             reqCustomer.Phone = customer.Phone;
             reqCustomer.SizeLimit = customer.SizeLimit.Value;
-
             request.Customer = reqCustomer;
-            
-            
             var result = await  _client.UpdateCustomerAsync(request);
-
             return _mapper.Map<Customer>(result);
         }
-
-
-
-        public 
-            async Task DeleteAsync(uint customerId)
-        {
-            
-        } 
            
     }
 }

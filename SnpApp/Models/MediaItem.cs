@@ -14,17 +14,15 @@ namespace SnpApp.Models
         
         private bool _isChecked;
 
-        Uri previewImageUri;
+        public string ItemId { get; set; } = default!;
 
-        public string ItemId { get; set; }
-
-        public string Title { get; set; }
+        public string Title { get; set; } = default!;
         
-        public string Artist { get; set; }
+        public string Artist { get; set; } = default!;
         
-        public string Album { get; set; }
+        public string Album { get; set; } = default!;
         
-        public string Hash { get; set; }
+        public string Hash { get; set; } = default!;
         
         public bool IsChecked
         {
@@ -37,24 +35,13 @@ namespace SnpApp.Models
             }
         }
 
-        public Uri MediaUri { get; set; }
+        public Uri MediaUri { get; set; } = default!;
 
-        public virtual Uri PreviewImageUri
-        {
-            get
-            {
-                return previewImageUri;
-            }
-            set
-            {
-                previewImageUri = value;
-            }
-        }
+        public virtual Uri? PreviewImageUri { get; set; } = default!;
 
-        public MediaItem()
-        { }
-        
-        public MediaItem(MusicImport mIwm) : this()
+        public MediaItem() {}
+
+        protected MediaItem(MusicImport mIwm) : this()
         {
             ItemId = mIwm.Id.ToString();
             Title = mIwm.Title;

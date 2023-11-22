@@ -14,8 +14,9 @@ namespace SnpApp
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var args = (NavigationRootPageArgs)e.Parameter;
+            if (args.NavigationRootPage == null) return;
             var menuItem = (Microsoft.UI.Xaml.Controls.NavigationViewItem)args.NavigationRootPage.NavigationView.MenuItems.First();
-            menuItem.IsSelected = true;
+            if (menuItem != null) menuItem.IsSelected = true;
         }
     }
 }

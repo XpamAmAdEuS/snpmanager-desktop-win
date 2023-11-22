@@ -76,7 +76,7 @@ namespace SnpApp.ViewModels
             this.listViewModel = listViewModel;
             MediaItem = mediaItem;
 
-            RaisePropertyChanged("Title");
+            RaisePropertyChanged(nameof(Title));
 
             // This app caches all images by loading the BitmapImage
             // when the item is created, but production apps would

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 
@@ -10,57 +6,42 @@ namespace SnpApp.Services
 {
     class SettingsService
     {
-        static SettingsService instance;
+        static SettingsService? _instance;
 
-        public static SettingsService Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new SettingsService();
+        public static SettingsService Instance => _instance ??= new SettingsService();
 
-                return instance;
-            }
-        }
+        private const string ToastOnAppEventsKey = "toast-on-app-events";
+        private const string UseCustomControlsKey = "use-custom-controls";
+        private readonly IPropertySet _settings = ApplicationData.Current.RoamingSettings.Values;
 
-        const string ToastOnAppEventsKey = "toast-on-app-events";
-        const string UseCustomControlsKey = "use-custom-controls";
-        IPropertySet settings = ApplicationData.Current.RoamingSettings.Values;
-
-        public event EventHandler UseCustomControlsChanged;
+        public event EventHandler? UseCustomControlsChanged;
 
         public bool ToastOnAppEvents
         {
             get
             {
-                object setting;
-                if (settings.TryGetValue(ToastOnAppEventsKey, out setting))
+                if (_settings.TryGetValue(ToastOnAppEventsKey, out var setting))
                     return (bool)setting;
 
                 return true;
             }
-            set
-            {
-                settings[ToastOnAppEventsKey] = value;
-            }
+            set => _settings[ToastOnAppEventsKey] = value;
         }
 
         public bool UseCustomControls
         {
             get
             {
-                object setting;
-                if (settings.TryGetValue(UseCustomControlsKey, out setting))
+                if (_settings.TryGetValue(UseCustomControlsKey, out var setting))
                     return (bool)setting;
 
                 return false;
             }
             set
             {
-                if (UseCustomControls != value) {
-                    settings[UseCustomControlsKey] = value;
-                    UseCustomControlsChanged?.Invoke(this, EventArgs.Empty);
-                }
+                if (UseCustomControls == value) return;
+                _settings[UseCustomControlsKey] = value;
+                UseCustomControlsChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }

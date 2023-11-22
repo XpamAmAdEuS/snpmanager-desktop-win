@@ -1,42 +1,18 @@
 ﻿using SnpApp.ViewModels;
 using System.ComponentModel;
-using Microsoft.UI.Xaml.Controls;
-using SnpApp.Common;
 
-namespace SnpApp.Controls
+namespace SnpApp.UserControls
 {
-    /// <summary>
-    /// A custom control for playlists that wraps a ListView.
-    /// </summary>
+    
     public sealed partial class PlaylistView: INotifyPropertyChanged
     {
         private MediaListViewModel? _mediaList;
-        
-        private ListViewColumnSorter? lvwColumnSorter;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public PlaylistView()
         {
-            this.InitializeComponent();
-        }
-
-        /// <summary>
-        /// Raised when an item is clicked
-        /// </summary>
-        public event ItemClickEventHandler ItemClick
-        {
-            add { listView.ItemClick += value; }
-            remove { listView.ItemClick -= value; }
-        }
-
-        /// <summary>
-        /// Raised when the selection changes
-        /// </summary>
-        public event SelectionChangedEventHandler SelectionChanged
-        {
-            add { listView.SelectionChanged += value; }
-            remove { listView.SelectionChanged -= value; }
+            InitializeComponent();
         }
 
         /// <summary>

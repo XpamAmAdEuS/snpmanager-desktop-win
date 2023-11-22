@@ -7,20 +7,11 @@ namespace SnpApp.Services
     /// The central authority on playback in the application
     /// providing access to the player and active playlist.
     /// </summary>
-    class PlaybackService
+    internal class PlaybackService
     {
-        static PlaybackService instance;
+        private static PlaybackService? _instance;
 
-        public static PlaybackService Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new PlaybackService();
-
-                return instance;
-            }
-        }
+        public static PlaybackService Instance => _instance ??= new PlaybackService();
 
         /// <summary>
         /// This application only requires a single shared MediaPlayer
@@ -35,9 +26,9 @@ namespace SnpApp.Services
         /// have a database of items representing a user's media library,
         /// but here we use a simple list loaded from a JSON asset.
         /// </summary>
-        public MediaList CurrentPlaylist { get; set; }
+        public MediaList CurrentPlaylist { get; set; } = default!;
 
-        public PlaybackService()
+        private PlaybackService()
         {
             // Create the player instance
             Player = new MediaPlayer();

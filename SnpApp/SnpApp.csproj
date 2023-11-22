@@ -58,6 +58,10 @@
     <Manifest Include="$(ApplicationManifest)" />
     
     <PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
+    
+    <PackageReference Include="ReactiveUI.Fody" Version="19.5.1" />
+    
+    <PackageReference Include="ReactiveUI.WinUI" Version="19.5.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
   </ItemGroup>
 

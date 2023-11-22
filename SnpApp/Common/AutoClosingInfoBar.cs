@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.UI.Xaml;
 
-namespace SnpApp.Controls
+namespace SnpApp.Common
 {
     /// <summary>
     /// An InfoBar that closes itself after an interval.

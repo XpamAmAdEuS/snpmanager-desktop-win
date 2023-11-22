@@ -9,7 +9,7 @@ public partial class SizeLimitModel : ObservableObject
 
     [ObservableProperty] private ulong _value;
 
-    [ObservableProperty] private string _name;
+    [ObservableProperty] private string? _name;
 
     #endregion
 }
